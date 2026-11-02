@@ -106,6 +106,7 @@ Code/
 | `res://CopyWriting/` | 剧情与文案文本 |
 | `res://Data/` | 表格与配置数据 |
 | `res://Docs/GameDesign.md` | 策划案：核心玩法、共鸣系统、关卡、存档与系统需求的事实来源 |
+| `res://Docs/Ghosts.md` | 鬼总表：每只鬼的机制、端口、反射、几何占位、数值与共鸣规则 |
 | `res://../tools/` | 仓库级离线工具（切图打包、图块归一化等），不参与运行时 |
 | `res://addons/` | 第三方插件：Godot AI（MCP）、Phantom Camera；不得修改其内容 |
 
