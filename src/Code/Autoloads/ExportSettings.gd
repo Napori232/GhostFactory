@@ -19,6 +19,40 @@ extends Node
 @export var audio_dialogue_bus: StringName = &"Dialogue"
 @export var audio_ambience_bus: StringName = &"Ambience"
 
+@export_group("Save", "save_")
+## 完整存档文件路径。
+@export var save_game_path: String = "user://savegame.cfg"
+## 存档版本号，读入时用于迁移。
+@export var save_version: int = 1
+
+@export_group("Level", "level_")
+## 关卡数据资源目录，存放 Level%02d.tres。
+@export var levels_directory: String = "res://Data/Levels"
+## 关卡数据文件命名模板，%02d 为关卡编号。
+@export var level_file_template: String = "Level%02d.tres"
+## Demo 关卡总数。
+@export_range(1, 20, 1) var level_count: int = 3
+## 结算三轴的星级阈值，占位数值，玩法实装后按真实评分调整。
+@export var star_threshold_efficiency: float = 1.0
+@export var star_threshold_manual: float = 1.0
+@export var star_threshold_space: float = 1.0
+## 结算面板三轴的占位分数，玩法未实现时写死显示。
+@export var placeholder_score_efficiency: int = 0
+@export var placeholder_score_manual: int = 0
+@export var placeholder_score_space: int = 0
+## 关卡内模拟结算按钮是否显示，玩法未实现时用于验证结算流程。
+@export var debug_level_simulate_enabled: bool = true
+
+@export_group("Scene", "scene_")
+## 主菜单场景路径。
+@export var scene_menu: String = "res://Code/Entities/StartMenu/StartMenu.tscn"
+## 关卡选择场景路径。
+@export var scene_level_select: String = "res://Code/Entities/LevelSelect/LevelSelect.tscn"
+## 关卡场景路径。
+@export var scene_level: String = "res://Code/Entities/Level/Level.tscn"
+## 设置场景路径。
+@export var scene_settings: String = "res://Code/Entities/Setting/SettingPanel.tscn"
+
 @export_group("Debug", "debug_")
 ## 是否显示调试面板。
 @export var debug_panel_enabled: bool = false

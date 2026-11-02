@@ -25,6 +25,7 @@ Util="*res://Code/Autoloads/Util.gd"
 SignalBus="*res://Code/Autoloads/SignalBus.gd"
 GlobalValue="*res://Code/Autoloads/GlobalValue.gd"
 ExportSettings="*res://Code/Autoloads/ExportSettings.tscn"
+SaveManager="*res://Code/Autoloads/SaveManager.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 

@@ -5,6 +5,9 @@ extends Node
 ## 全局重力加速度，单位像素/秒²。
 var gravity: float = 1440.0
 
+## 待进入的关卡编号，-1 表示无。场景跳转时写入，目标场景在 _ready 中读取。
+var _pending_level_id: int = -1
+
 var _mobile: bool = false
 var _application_paused: bool = false
 var _application_unfocused: bool = false
@@ -32,6 +35,18 @@ func _notification(what: int) -> void:
 		_:
 			return
 	_sync_application_pause()
+
+## 记录待进入的关卡编号。
+## @param level_id 关卡编号，从 1 开始
+func SetPendingLevelId(level_id: int) -> void:
+	_pending_level_id = level_id
+
+## 读取并清除待进入的关卡编号。
+## @return 关卡编号；无待进入关卡时返回 -1。
+func TakePendingLevelId() -> int:
+	var id := _pending_level_id
+	_pending_level_id = -1
+	return id
 
 func _sync_application_pause() -> void:
 	var should_pause := _application_paused or _application_unfocused

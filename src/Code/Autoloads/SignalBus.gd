@@ -24,3 +24,36 @@ signal PlayerInteracted(entity: Node)
 ## 玩家离开可交互范围。
 ## @param entity 被离开的实体节点
 signal PlayerInteractionEnded(entity: Node)
+
+## 关卡开始。
+## @param level_id 关卡编号，从 1 开始
+signal LevelStarted(level_id: int)
+
+## 关卡通关并完成结算。
+## @param level_id 关卡编号，从 1 开始
+## @param stars 本次获得的星级，1~3
+signal LevelCompleted(level_id: int, stars: int)
+
+## 关卡失败。
+## @param level_id 关卡编号，从 1 开始
+signal LevelFailed(level_id: int)
+
+## 新内容解锁。
+## @param ghost_id 解锁的鬼 id
+signal GhostUnlocked(ghost_id: String)
+
+## 存档写入完成。
+## @param success 是否写入成功
+signal SaveGameWritten(success: bool)
+
+## 设置项发生变化。
+## @param key 设置项键名
+## @param value 设置项的新值
+signal SettingChanged(key: StringName, value: Variant)
+
+## 请求切换场景。
+## @param target 目标场景标识：menu 主菜单、level_select 关卡选择、level 关卡、settings 设置
+signal NavigateTo(target: StringName)
+
+## 进度发生变化（解锁关卡或星级更新），界面据此刷新。
+signal ProgressChanged

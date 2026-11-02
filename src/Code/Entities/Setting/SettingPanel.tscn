@@ -1,0 +1,230 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Setting/SettingPanel.gd" id="1_settingpanel"]
+
+[node name="SettingPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_settingpanel")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.043137, 0.047059, 0.062745, 1)
+
+[node name="Layout" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 48
+
+[node name="Content" type="VBoxContainer" parent="Layout"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Layout/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "设置"
+
+[node name="VolumeSection" type="VBoxContainer" parent="Layout/Content"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MasterRow" type="HBoxContainer" parent="Layout/Content/VolumeSection"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MasterLabel" type="Label" parent="Layout/Content/VolumeSection/MasterRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "主音量"
+
+[node name="MasterSlider" type="HSlider" parent="Layout/Content/VolumeSection/MasterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="MasterValue" type="Label" parent="Layout/Content/VolumeSection/MasterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="MusicRow" type="HBoxContainer" parent="Layout/Content/VolumeSection"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MusicLabel" type="Label" parent="Layout/Content/VolumeSection/MusicRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "音乐"
+
+[node name="MusicSlider" type="HSlider" parent="Layout/Content/VolumeSection/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="MusicValue" type="Label" parent="Layout/Content/VolumeSection/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="SfxRow" type="HBoxContainer" parent="Layout/Content/VolumeSection"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SfxLabel" type="Label" parent="Layout/Content/VolumeSection/SfxRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "音效"
+
+[node name="SfxSlider" type="HSlider" parent="Layout/Content/VolumeSection/SfxRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="SfxValue" type="Label" parent="Layout/Content/VolumeSection/SfxRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="DialogueRow" type="HBoxContainer" parent="Layout/Content/VolumeSection"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="DialogueLabel" type="Label" parent="Layout/Content/VolumeSection/DialogueRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "对白"
+
+[node name="DialogueSlider" type="HSlider" parent="Layout/Content/VolumeSection/DialogueRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="DialogueValue" type="Label" parent="Layout/Content/VolumeSection/DialogueRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="AmbienceRow" type="HBoxContainer" parent="Layout/Content/VolumeSection"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="AmbienceLabel" type="Label" parent="Layout/Content/VolumeSection/AmbienceRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "环境音"
+
+[node name="AmbienceSlider" type="HSlider" parent="Layout/Content/VolumeSection/AmbienceRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="AmbienceValue" type="Label" parent="Layout/Content/VolumeSection/AmbienceRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="OptionsSection" type="VBoxContainer" parent="Layout/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SkipTutorialCheck" type="CheckButton" parent="Layout/Content/OptionsSection"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "跳过教程段落"
+
+[node name="ScreenShakeCheck" type="CheckButton" parent="Layout/Content/OptionsSection"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "屏幕震动"
+
+[node name="QualityRow" type="HBoxContainer" parent="Layout/Content/OptionsSection"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="QualityLabel" type="Label" parent="Layout/Content/OptionsSection/QualityRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "特效质量"
+
+[node name="QualityOption" type="OptionButton" parent="Layout/Content/OptionsSection/QualityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ButtonsRow" type="HBoxContainer" parent="Layout/Content"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ResetButton" type="Button" parent="Layout/Content/ButtonsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 52)
+layout_mode = 2
+text = "重置进度"
+
+[node name="BackButton" type="Button" parent="Layout/Content/ButtonsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 52)
+layout_mode = 2
+text = "返回主菜单"
+
+[node name="ResetDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "重置进度"
+dialog_text = "确定要清空所有关卡进度吗？此操作不可撤销。"
+dialog_hide_on_ok = true
+ok_button_text = "确认重置"
+cancel_button_text = "取消"

@@ -74,11 +74,12 @@ Code/
 
 | 文件 | 职责 |
 | --- | --- |
-| `Code/Autoloads/GlobalValue.gd` | 全局常量（重力）与应用暂停/失焦同步 |
+| `Code/Autoloads/GlobalValue.gd` | 全局常量（重力）、应用暂停/失焦同步与待进入关卡记录 |
 | `Code/Autoloads/SignalBus.gd` | 全局信号总线，实体间解耦通信的唯一入口 |
 | `Code/Autoloads/Util.gd` | 通用工具：定时器、补间、音效播放、格式化等 |
 | `Code/Autoloads/ExportSettings.gd` | 全局可调参数出口，实体数值一律在此导出 |
 | `Code/Autoloads/ExportSettings.tscn` | 参数单例的实例化场景，作为 autoload 挂载 |
+| `Code/Autoloads/SaveManager.gd` | 存档单例：进度、解锁、设置的持久化与读写 |
 
 ### 10.3 通用组件与基类
 
@@ -89,6 +90,9 @@ Code/
 | `Code/Common/GameInputControl.gd` | 输入控制组件基类 |
 | `Code/Common/InteractionDot.gd` | 实体交互提示圆点组件 |
 | `Code/Common/TouchActionButton.gd` | 移动端虚拟触控动作按钮 |
+| `Code/Common/LevelData.gd` | 关卡数据资源：时长、目标、空间预算、可用鬼池与地图占位 |
+| `Code/Common/SceneRouter.gd` | 场景路由：跨场景跳转的唯一入口 |
+| `Code/Common/StarRating.gd` | 结算星级计算（当前为占位阈值） |
 
 ### 10.4 业务实体
 
@@ -96,6 +100,16 @@ Code/
 | --- | --- |
 | `Code/Entities/StartMenu/StartMenu.tscn` | 启动主场景 |
 | `Code/Entities/StartMenu/StartMenu.gd` | 主菜单逻辑与新游戏入口 |
+| `Code/Entities/LevelSelect/LevelSelect.tscn` | 关卡选择界面：关卡卡片、解锁态与最佳星级 |
+| `Code/Entities/LevelSelect/LevelSelect.gd` | 关卡列表构建与解锁状态刷新 |
+| `Code/Entities/Setting/SettingPanel.tscn` | 设置面板：音量、开关、画质与重置进度 |
+| `Code/Entities/Setting/SettingPanel.gd` | 设置项读写、音量实时应用与二次确认流程 |
+| `Code/Entities/Level/Level.tscn` | 关卡场景框架：HUD、棋盘占位、鬼牌栏与暂停菜单 |
+| `Code/Entities/Level/Level.gd` | 关卡进入流程、HUD 刷新与暂停/结算触发 |
+| `Code/Entities/Level/ResultPanel.tscn` | 结算面板：三轴评分、星级与解锁展示 |
+| `Code/Entities/Level/ResultPanel.gd` | 结算展示、星级写档与下一关解锁 |
+| `Code/Tests/SaveManagerRoundTrip.tscn` | 存档与关卡数据的 headless 往返测试 |
+| `Code/Tests/UiFlowTest.tscn` | UI 流程的 headless 测试 |
 
 ### 10.5 资源目录约定
 

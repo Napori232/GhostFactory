@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/LevelData.gd" id="1_leveldata"]
+
+[resource]
+script = ExtResource("1_leveldata")
+level_id = 3
+display_name = "第三关：产能与分流"
+chapter = 3
+description = "产能区推挤链与形态分流。"
+time_limit = 120
+goal_score = 36
+space_budget = 24
+forms_used = PackedStringArray("Raw", "Processed")
+recipes_in_use = PackedStringArray("RawToProcessed")
+available_ghosts = PackedStringArray("LongTongue", "Terminal", "StoveGhost", "GluttonGhost", "ContainGhost", "ForkGhost", "HangedGhost", "TumblerGhost")
+terminals = Array[Dictionary]([])
+fields = Array[Dictionary]([])
+obstacles = Array[Dictionary]([])

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/LevelData.gd" id="1_leveldata"]
+
+[resource]
+script = ExtResource("1_leveldata")
+level_id = 1
+display_name = "第一关：输送线"
+chapter = 1
+description = "拖放、连线、自动运转、交付。"
+time_limit = 90
+goal_score = 20
+space_budget = 12
+forms_used = PackedStringArray("Raw")
+recipes_in_use = PackedStringArray()
+available_ghosts = PackedStringArray("LongTongue", "Terminal")
+terminals = Array[Dictionary]([])
+fields = Array[Dictionary]([])
+obstacles = Array[Dictionary]([])
