@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="GhostData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/GhostData.gd" id="1_ghostdata"]
+
+[resource]
+script = ExtResource("1_ghostdata")
+id = "Hanged"
+display_name = "吊死鬼"
+verb = "悬挂"
+mechanism = "点一下挂上吊绳；挂上后自动荡回"
+cost = 5
+footprint = Array[Vector2i]([Vector2i(0, 0)])
+appendages = Array[Vector2i]([Vector2i(0, -1)])
+input_buffer = 0
+output_buffer = 0
+cd = 0
+base_rate = 0
+garbage_rate = 0
+yield_rate = 0
+cycle_time = 0
+manual = true
+action_tags = Array[StringName]([&"HANG"])
+receptacle_tags = Array[StringName]([&"GRAB"])
+body_color = Color(0.6, 0.5, 0.75, 1)
+spawnable = true
+is_area_ghost = false

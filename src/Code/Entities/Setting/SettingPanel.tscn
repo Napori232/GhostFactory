@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/Setting/SettingPanel.gd" id="1_settingpanel"]
+[ext_resource type="PackedScene" path="res://Code/UI/BackgroundLayer.tscn" id="2_background"]
 
 [node name="SettingPanel" type="Control"]
 layout_mode = 3
@@ -11,15 +12,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_settingpanel")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" parent="." instance=ExtResource("2_background")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.043137, 0.047059, 0.062745, 1)
 
 [node name="Layout" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -40,8 +35,20 @@ theme_override_constants/separation = 18
 [node name="Title" type="Label" parent="Layout/Content"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0.949019, 0.933333, 1, 1)
+theme_override_colors/font_outline_color = Color(0.486274, 0.360784, 1, 0.7)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 44
 text = "设置"
+
+[node name="VolumeHeader" type="Label" parent="Layout/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.486274, 0.360784, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "音量"
+
+[node name="VolumeSeparator" type="HSeparator" parent="Layout/Content"]
+layout_mode = 2
 
 [node name="VolumeSection" type="VBoxContainer" parent="Layout/Content"]
 layout_mode = 2
@@ -176,6 +183,15 @@ custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 text = "100%"
 horizontal_alignment = 2
+
+[node name="OptionsHeader" type="Label" parent="Layout/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.486274, 0.360784, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "选项"
+
+[node name="OptionsSeparator" type="HSeparator" parent="Layout/Content"]
+layout_mode = 2
 
 [node name="OptionsSection" type="VBoxContainer" parent="Layout/Content"]
 layout_mode = 2

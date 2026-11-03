@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="GhostData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/GhostData.gd" id="1_ghostdata"]
+
+[resource]
+script = ExtResource("1_ghostdata")
+id = "Terminal"
+display_name = "供品口"
+verb = "交付"
+mechanism = "接受指定形态并计分，无速率上限"
+cost = 0
+footprint = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0)])
+appendages = Array[Vector2i]([])
+input_buffer = 0
+output_buffer = 6
+cd = 0
+base_rate = 0
+garbage_rate = 0
+yield_rate = 0
+cycle_time = 0
+manual = false
+action_tags = Array[StringName]([])
+receptacle_tags = Array[StringName]([&"OFFER"])
+body_color = Color(0.95, 0.95, 0.95, 1)
+spawnable = false
+is_area_ghost = false

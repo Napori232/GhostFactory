@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/StartMenu/StartMenu.gd" id="1_startmenu"]
+[ext_resource type="PackedScene" path="res://Code/UI/BackgroundLayer.tscn" id="2_background"]
+[ext_resource type="PackedScene" path="res://Code/UI/ArtPlaceholder.tscn" id="3_artplaceholder"]
 
 [node name="StartMenu" type="Control"]
 layout_mode = 3
@@ -11,15 +13,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_startmenu")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" parent="." instance=ExtResource("2_background")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.043137, 0.047059, 0.062745, 1)
 
 [node name="Layout" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -28,78 +24,107 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 64
-theme_override_constants/margin_top = 48
-theme_override_constants/margin_right = 64
+theme_override_constants/margin_left = 72
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 72
 theme_override_constants/margin_bottom = 48
 
-[node name="Column" type="VBoxContainer" parent="Layout"]
+[node name="Content" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
+theme_override_constants/separation = 56
 
-[node name="Title" type="Label" parent="Layout/Column"]
-unique_name_in_owner = true
+[node name="LeftColumn" type="VBoxContainer" parent="Layout/Content"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 64
-text = "鬼工厂"
-horizontal_alignment = 1
-
-[node name="Subtitle" type="Label" parent="Layout/Column"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.607843, 0.615686, 0.658824, 1)
-theme_override_font_sizes/font_size = 20
-text = "在废弃工厂里，用规则造出鬼，让鬼替你干活。"
-horizontal_alignment = 1
-
-[node name="Spacer" type="Control" parent="Layout/Column"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 32)
-
-[node name="ButtonBox" type="VBoxContainer" parent="Layout/Column"]
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
 theme_override_constants/separation = 10
-alignment = 1
 
-[node name="StartButton" type="Button" parent="Layout/Column/ButtonBox"]
+[node name="Title" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(280, 48)
-text = "开始游戏"
+theme_override_colors/font_color = Color(0.949019, 0.933333, 1, 1)
+theme_override_colors/font_outline_color = Color(0.486274, 0.360784, 1, 0.85)
+theme_override_constants/outline_size = 10
+theme_override_colors/font_shadow_color = Color(0.486274, 0.360784, 1, 0.35)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 6
+theme_override_font_sizes/font_size = 76
+text = "鬼工厂"
 
-[node name="ContinueButton" type="Button" parent="Layout/Column/ButtonBox"]
+[node name="Subtitle" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(280, 48)
-text = "继续游戏"
+theme_override_colors/font_color = Color(0.658824, 0.623529, 0.831373, 1)
+theme_override_font_sizes/font_size = 22
+text = "在废弃工厂里，用规则造出鬼，让鬼替你干活。"
 
-[node name="LevelSelectButton" type="Button" parent="Layout/Column/ButtonBox"]
+[node name="WorldLabel" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(280, 48)
-text = "关卡选择"
+theme_override_colors/font_color = Color(0.372549, 0.345098, 0.564706, 1)
+theme_override_font_sizes/font_size = 16
+text = "拼接规则 · 引流 · 交付 —— 每一关都是一道会动的机关题。"
 
-[node name="SettingsButton" type="Button" parent="Layout/Column/ButtonBox"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(280, 48)
-text = "设置"
-
-[node name="QuitButton" type="Button" parent="Layout/Column/ButtonBox"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(280, 48)
-text = "退出游戏"
-
-[node name="BottomSpacer" type="Control" parent="Layout/Column"]
+[node name="Spacer" type="Control" parent="Layout/Content/LeftColumn"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="Version" type="Label" parent="Layout/Column"]
+[node name="ButtonBox" type="VBoxContainer" parent="Layout/Content/LeftColumn"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="StartButton" type="Button" parent="Layout/Content/LeftColumn/ButtonBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "开始游戏"
+
+[node name="ContinueButton" type="Button" parent="Layout/Content/LeftColumn/ButtonBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 52)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "继续游戏"
+
+[node name="LevelSelectButton" type="Button" parent="Layout/Content/LeftColumn/ButtonBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 52)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "关卡选择"
+
+[node name="SettingsButton" type="Button" parent="Layout/Content/LeftColumn/ButtonBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 52)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "设置"
+
+[node name="QuitButton" type="Button" parent="Layout/Content/LeftColumn/ButtonBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 52)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "退出游戏"
+
+[node name="Version" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.407843, 0.443137, 1)
+theme_override_colors/font_color = Color(0.372549, 0.345098, 0.564706, 1)
 theme_override_font_sizes/font_size = 14
 text = "v0.1.0"
-horizontal_alignment = 1
+
+[node name="RightColumn" type="VBoxContainer" parent="Layout/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/separation = 12
+
+[node name="KeyArt" parent="Layout/Content/RightColumn" instance=ExtResource("3_artplaceholder")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(420, 420)
+layout_mode = 2
+size_flags_vertical = 3
+label_text = "主视觉 · 工厂剖面图"

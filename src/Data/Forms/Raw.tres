@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FormData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/FormData.gd" id="1_formdata"]
+
+[resource]
+script = ExtResource("1_formdata")
+id = "Raw"
+display_name = "生料"
+letter = "R"
+color = Color(0.75, 0.8, 0.85, 1)

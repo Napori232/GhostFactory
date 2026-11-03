@@ -103,8 +103,8 @@ func _test_level_scene() -> void:
 	_check(name_label.text == "第一关：输送线", "关卡标题显示关卡名，实际 %s" % name_label.text)
 	var delivered: Label = level.get_node("%DeliveredValue")
 	_check(delivered.text == "0 / 20", "交付目标显示正确，实际 %s" % delivered.text)
-	var ghost_bar: HBoxContainer = level.get_node("%GhostBar")
-	_check(ghost_bar.get_child_count() == 2, "鬼牌栏占位条目数为 2，实际 %d" % ghost_bar.get_child_count())
+	var ghost_bar: Control = level.get_node("%GhostBar")
+	_check(ghost_bar.get_child_count() >= 1, "鬼牌栏占位条目已生成，实际 %d" % ghost_bar.get_child_count())
 	level.queue_free()
 
 ## 测试结算面板：星级写入存档并解锁下一关。

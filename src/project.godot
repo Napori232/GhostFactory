@@ -15,10 +15,6 @@ run/main_scene="res://Code/Entities/StartMenu/StartMenu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[audio]
-
-buses/default_bus_layout="res://default_bus_layout.tres"
-
 [autoload]
 
 Util="*res://Code/Autoloads/Util.gd"

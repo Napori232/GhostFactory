@@ -93,6 +93,14 @@ Code/
 | `Code/Common/LevelData.gd` | 关卡数据资源：时长、目标、空间预算、可用鬼池与地图占位 |
 | `Code/Common/SceneRouter.gd` | 场景路由：跨场景跳转的唯一入口 |
 | `Code/Common/StarRating.gd` | 结算星级计算（当前为占位阈值） |
+| `Code/Common/GhostData.gd` | 鬼的数据模板：造价、占位、端口标签、CD 与产出率 |
+| `Code/Common/GhostTag.gd` | 端口标签常量：GRAB / HANG / SWALLOW / FEED / SPLIT / MIRROR / OFFER / SPIT |
+| `Code/Common/FormData.gd` | 形态数据：生料、加工品、垃圾 |
+| `Code/Common/RecipeData.gd` | 配方数据：形态转换关系与产出率 |
+| `Code/Common/GridUtil.gd` | 网格几何工具：格子换算、路径生成、占位重叠检测 |
+| `Code/Common/UIPalette.gd` | UI 12 色板与全局主题生成 |
+| `Code/Common/UIEffects.gd` | UI 动效库：缩放弹跳、淡入淡出、粒子迸发、数字滚动 |
+| `Code/Common/ResourceUtil.gd` | 资源属性读取工具：统一处理 Object.get 与 Dictionary.get 的差异 |
 
 ### 10.4 业务实体
 

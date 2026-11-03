@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="FormData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/FormData.gd" id="1_formdata"]
+
+[resource]
+script = ExtResource("1_formdata")
+id = "Garbage"
+display_name = "垃圾"
+letter = "G"
+color = Color(0.35, 0.35, 0.38, 1)

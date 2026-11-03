@@ -1,0 +1,116 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Tutorial/TutorialOverlay.gd" id="1_overlay"]
+[ext_resource type="Script" path="res://Code/Entities/Tutorial/TutorialHighlight.gd" id="2_highlight"]
+
+[node name="TutorialOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_overlay")
+
+[node name="MaskTop" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="MaskBottom" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="MaskLeft" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="MaskRight" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.72)
+
+[node name="Highlight" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+script = ExtResource("2_highlight")
+
+[node name="ClickCatcher" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Bubble" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 344.0
+offset_bottom = 160.0
+
+[node name="BubbleRows" type="VBoxContainer" parent="Bubble"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="Bubble/BubbleRows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.972549, 0.937255, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "步骤标题"
+
+[node name="BodyLabel" type="Label" parent="Bubble/BubbleRows"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.658824, 0.623529, 0.831373, 1)
+theme_override_font_sizes/font_size = 16
+text = "步骤说明"
+autowrap_mode = 3
+
+[node name="ProgressLabel" type="Label" parent="Bubble/BubbleRows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.486274, 0.470588, 0.564706, 1)
+theme_override_font_sizes/font_size = 14
+text = "第 1 / 6 步"
+
+[node name="ButtonRow" type="HBoxContainer" parent="Bubble/BubbleRows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PrevButton" type="Button" parent="Bubble/BubbleRows/ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "上一步"
+
+[node name="NextButton" type="Button" parent="Bubble/BubbleRows/ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "下一步"
+
+[node name="SkipButton" type="Button" parent="Bubble/BubbleRows/ButtonRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.360784, 0.478431, 1)
+theme_override_font_sizes/font_size = 16
+text = "跳过教程"

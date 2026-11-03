@@ -77,9 +77,9 @@ func _test_best_stars_monotonic() -> void:
 ## 测试三个关卡资源可加载且字段正确。
 func _test_level_resources() -> void:
 	var expected := {
-		1: {"name": "第一关：输送线", "time": 90, "goal": 20, "space": 12},
-		2: {"name": "第二关：加工与损耗", "time": 120, "goal": 28, "space": 18},
-		3: {"name": "第三关：产能与分流", "time": 120, "goal": 36, "space": 24},
+		1: {"name": "第一关：输送线", "time": 80, "goal": 20, "space": 12},
+		2: {"name": "第二关：加工与损耗", "time": 100, "goal": 28, "space": 18},
+		3: {"name": "第三关：产能与分流", "time": 90, "goal": 30, "space": 24},
 	}
 	for level_id: int in expected:
 		var data := LevelData.LoadLevel(level_id)

@@ -117,22 +117,12 @@ text = "暂停"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BoardPlaceholder" type="Control" parent="Root/Column/BoardFrame"]
+[node name="BoardHost" type="Control" parent="Root/Column/BoardFrame"]
+unique_name_in_owner = true
+clip_contents = true
 custom_minimum_size = Vector2(0, 320)
 layout_mode = 2
-
-[node name="PlaceholderText" type="Label" parent="Root/Column/BoardFrame/BoardPlaceholder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.4, 0.407843, 0.443137, 1)
-theme_override_font_sizes/font_size = 20
-text = "棋盘占位 · 玩法未实现"
-horizontal_alignment = 1
-vertical_alignment = 1
+mouse_filter = 1
 
 [node name="GhostBarRow" type="VBoxContainer" parent="Root/Column"]
 layout_mode = 2
@@ -142,12 +132,12 @@ theme_override_constants/separation = 4
 layout_mode = 2
 theme_override_colors/font_color = Color(0.607843, 0.615686, 0.658824, 1)
 theme_override_font_sizes/font_size = 14
-text = "鬼牌栏（占位）"
+text = "鬼牌栏（拖到棋盘上放置）"
 
-[node name="GhostBar" type="HBoxContainer" parent="Root/Column/GhostBarRow"]
+[node name="GhostBar" type="Control" parent="Root/Column/GhostBarRow"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
 layout_mode = 2
-theme_override_constants/separation = 8
 
 [node name="PauseMenu" type="Control" parent="."]
 unique_name_in_owner = true

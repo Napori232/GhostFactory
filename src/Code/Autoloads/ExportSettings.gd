@@ -63,3 +63,65 @@ extends Node
 ## 圆点颜色与半径，单位为世界像素。
 @export var interaction_dot_color: Color = Color(1.0, 0.96, 0.85, 0.65)
 @export_range(1.0, 32.0, 0.5) var interaction_dot_radius: float = 15.0
+
+@export_group("Simulation", "sim_")
+## 逻辑 tick 频率（Hz）。
+@export var sim_tick_rate: float = 20.0
+## 物品步进间隔（秒）。
+@export var sim_item_step_interval: float = 0.3
+## 每段线的容量。
+@export var sim_line_capacity: int = 3
+## 同格堆叠压缩阈值。
+@export var sim_stack_threshold: int = 5
+## 推挤链上每只不倒翁鬼的单次产鬼能。
+@export var sim_tumbler_spirit: int = 3
+## 加工鬼吞吐速率减半（共鸣代价）。
+@export var sim_processing_rate_halved: float = 0.5
+## 镜鬼复制品产出比例。
+@export var sim_mirror_output_scale: float = 0.5
+## 镜鬼复制品寿命（秒）。
+@export var sim_mirror_lifetime: float = 8.0
+## 收容鬼处理一个垃圾的耗时（秒）。
+@export var sim_contain_interval: float = 2.0
+## 收容鬼每吃一个垃圾返还的鬼能。
+@export var sim_contain_refund: int = 1
+## 长舌鬼舌头节拍：伸出。
+@export var sim_tongue_extend: float = 0.4
+## 长舌鬼舌头节拍：停留。
+@export var sim_tongue_hold: float = 0.3
+## 长舌鬼舌头节拍：收回。
+@export var sim_tongue_retract: float = 0.4
+## 长舌鬼舌头节拍：间歇。
+@export var sim_tongue_rest: float = 0.9
+## 采集区掉落速率的面积指数，边际递减。
+@export var sim_area_exponent: float = 0.5
+
+@export_group("UI", "ui_")
+## 背景图资源路径，留空表示等待美术出图。
+@export var ui_background_art: String = ""
+## 主视觉图资源路径，留空表示等待美术出图。
+@export var ui_key_art: String = ""
+## 主视觉占位组件的说明文字。
+@export var ui_key_art_label: String = "主视觉 · 工厂剖面图"
+## 背景占位组件的说明文字。
+@export var ui_background_label: String = "背景图 · 废弃工厂"
+## 背景光斑强度 0~1。
+@export_range(0.0, 1.0, 0.05) var ui_glow_intensity: float = 0.35
+## 按钮弹跳缩放的目标值。
+@export var ui_pop_scale: float = 1.06
+## 飘字上升距离（像素）。
+@export var ui_feedback_rise: float = 48.0
+## 飘字存活时长（秒）。
+@export var ui_feedback_duration: float = 0.9
+
+@export_group("Tutorial", "tutorial_")
+## 教程步骤数据路径。
+@export var tutorial_steps_path: String = "res://Data/Tutorial/tutorial_steps.tres"
+## 是否在第 1 关自动触发教程。
+@export var tutorial_enabled: bool = true
+## 教程遮罩的不透明度。
+@export_range(0.0, 1.0, 0.05) var tutorial_mask_alpha: float = 0.72
+## 教程气泡与目标的间距（像素）。
+@export var tutorial_bubble_gap: float = 18.0
+## 高亮呼吸的缩放幅度。
+@export var tutorial_highlight_pulse: float = 0.04

@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="TutorialScript" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Tutorial/TutorialStep.gd" id="1_step"]
+[ext_resource type="Script" path="res://Code/Entities/Tutorial/TutorialScript.gd" id="2_script"]
+
+[sub_resource type="Resource" id="TutorialStep_welcome"]
+script = ExtResource("1_step")
+step_id = "welcome"
+title = "欢迎来到鬼工厂"
+description = "你是新来的厂长。厂里不产货，只产鬼。"
+target_anchor = "board"
+wait_for = 0
+skippable = true
+auto_duration = 2.5
+
+[sub_resource type="Resource" id="TutorialStep_place"]
+script = ExtResource("1_step")
+step_id = "place"
+title = "放置长舌鬼"
+description = "从下面的鬼牌栏把「长舌鬼」拖到棋盘上。"
+target_anchor = "palette"
+wait_for = 1
+skippable = true
+auto_duration = 2.5
+
+[sub_resource type="Resource" id="TutorialStep_connect"]
+script = ExtResource("1_step")
+step_id = "connect"
+title = "连一条线"
+description = "点长舌鬼的输出端口，再点供品口，连起来。"
+target_anchor = "terminal"
+wait_for = 2
+skippable = true
+auto_duration = 2.5
+
+[sub_resource type="Resource" id="TutorialStep_deliver"]
+script = ExtResource("1_step")
+step_id = "deliver"
+title = "看它自己干活"
+description = "长舌鬼会从采集区抓料，沿线送进供品口。交付够 20 份就过关。"
+target_anchor = "board"
+wait_for = 3
+skippable = true
+auto_duration = 2.5
+
+[sub_resource type="Resource" id="TutorialStep_spirit"]
+script = ExtResource("1_step")
+step_id = "spirit"
+title = "鬼能就是钱"
+description = "造鬼要花鬼能。产能区的鬼被推一下能产鬼能。"
+target_anchor = "palette"
+wait_for = 4
+skippable = true
+auto_duration = 2.5
+
+[sub_resource type="Resource" id="TutorialStep_finish"]
+script = ExtResource("1_step")
+step_id = "finish"
+title = "就这些"
+description = "后面两关会用到加工与分流。祝你顺利。"
+target_anchor = "board"
+wait_for = 4
+skippable = true
+auto_duration = 2.5
+
+[resource]
+script = ExtResource("2_script")
+steps = Array[TutorialStep]([SubResource("TutorialStep_welcome"), SubResource("TutorialStep_place"), SubResource("TutorialStep_connect"), SubResource("TutorialStep_deliver"), SubResource("TutorialStep_spirit"), SubResource("TutorialStep_finish")])
