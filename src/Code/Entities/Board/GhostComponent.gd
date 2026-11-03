@@ -22,6 +22,18 @@ const HIGHLIGHT_COLOR: Color = Color(1.0, 0.9, 0.35, 0.9)
 ## 手动鬼提示圈的呼吸周期（秒）。
 const PULSE_PERIOD: float = 1.2
 
+## 鬼本体呼吸缩放的周期（秒）。
+const IDLE_BREATH_PERIOD: float = 2.6
+
+## 鬼本体呼吸缩放的幅度（比例）。
+const IDLE_BREATH_AMPLITUDE: float = 0.045
+
+## 鬼本体漂浮的幅度（像素）。
+const IDLE_FLOAT_DISTANCE: float = 3.0
+
+## 鬼本体漂浮的周期（秒）。
+const IDLE_FLOAT_PERIOD: float = 3.4
+
 ## 该鬼的占位形状（相对本体原点的格偏移）。留空则用 GhostData.footprint。
 @export var footprint: Array[Vector2i] = []:
 	set(value):
@@ -67,10 +79,18 @@ const PULSE_PERIOD: float = 1.2
 
 var _ghost_data: Resource = null
 var _pulse_time: float = 0.0
+var _idle_time: float = 0.0
+var _idle_enabled: bool = true
+## 漂浮绘制偏移，不影响节点变换。
+var _drift_offset: Vector2 = Vector2.ZERO
+## 呼吸缩放的绘制系数，不影响节点变换。
+var _draw_scale: float = 1.0
 
 func _ready() -> void:
 	add_to_group(COMPONENT_GROUP)
 	_align_to_cell()
+	# 相位按实例错开，避免所有鬼同步呼吸显得机械。
+	_idle_time = float(get_instance_id() % 100) / 100.0 * IDLE_BREATH_PERIOD
 	queue_redraw()
 
 ## 推进呼吸动画。手动鬼未激活时用 modulate 做提示。
@@ -78,11 +98,36 @@ func _process(delta: float) -> void:
 	if not (IsManual() and not manual_activated):
 		if modulate.a < 1.0:
 			modulate = Color.WHITE
+		_update_idle_motion(delta)
 		return
 	_pulse_time += delta
 	var wave := 0.5 + 0.5 * sin(TAU * _pulse_time / PULSE_PERIOD)
 	modulate = Color(1.0, 1.0, 1.0, lerpf(0.55, 1.0, wave))
+	_update_idle_motion(delta)
 	queue_redraw()
+
+## 更新鬼本体的待机动效：呼吸缩放加轻微上下漂浮，让鬼看起来是活物。
+## 呼吸与漂浮只作用于绘制，不改变节点变换，保证 position 语义稳定，
+## 避免与 SetCell 的位置断言冲突，也不影响点击命中判定。编辑器预览下不启用。
+## @param delta 帧间隔（秒）。
+func _update_idle_motion(delta: float) -> void:
+	if not _idle_enabled or Engine.is_editor_hint():
+		return
+	_idle_time += delta
+	var breath := sin(TAU * _idle_time / IDLE_BREATH_PERIOD)
+	var float_wave := sin(TAU * _idle_time / IDLE_FLOAT_PERIOD)
+	_draw_scale = 1.0 + IDLE_BREATH_AMPLITUDE * breath
+	_drift_offset = Vector2(0, float_wave * IDLE_FLOAT_DISTANCE)
+	queue_redraw()
+
+## 开关鬼本体的待机动效。
+## @param enabled true 开启呼吸与漂浮。
+func SetIdleMotion(enabled: bool) -> void:
+	_idle_enabled = enabled
+	if not enabled:
+		_draw_scale = 1.0
+		_drift_offset = Vector2.ZERO
+		queue_redraw()
 
 ## 把节点位置对齐到本体原点的格子中心。
 func _align_to_cell() -> void:
@@ -91,6 +136,8 @@ func _align_to_cell() -> void:
 
 ## 绘制占位方块、中心符号与标签。
 func _draw() -> void:
+	# 漂浮与呼吸只作用于绘制，不改变节点变换。
+	draw_set_transform(_drift_offset, 0.0, Vector2(_draw_scale, _draw_scale))
 	var body_offsets := GetBodyOffsets()
 	var appendage_offsets := GetAppendageOffsets()
 	var body_color := GetBodyColor()
@@ -112,6 +159,7 @@ func _draw() -> void:
 		draw_arc(Vector2.ZERO, GridUtil.CELL_SIZE * lerpf(0.42, 0.58, wave), 0.0, TAU, 32, HIGHLIGHT_COLOR, 2.0)
 
 	_draw_label()
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 ## 画一个占位格。
 ## @param offset 相对本体原点的格偏移。

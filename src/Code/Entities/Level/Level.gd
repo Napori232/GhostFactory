@@ -36,6 +36,9 @@ func _ready() -> void:
 	_build_board()
 	_apply_level_data()
 	_setup_palette()
+	_setup_theme()
+	_setup_hud_motion()
+	_setup_side_panel()
 	_setup_tutorial()
 	_pause_button.pressed.connect(_on_pause_pressed)
 	_resume_button.pressed.connect(_on_resume_pressed)
@@ -61,6 +64,109 @@ func _setup_tutorial() -> void:
 	add_child(controller)
 	if controller.has_method("set"):
 		controller.set("anchor_resolver", Callable(self, "_resolve_tutorial_anchor"))
+
+## 应用全局主题，让 HUD 与棋盘面板使用统一的玻璃质感样式。
+func _setup_theme() -> void:
+	UIPalette.ApplyTheme(self)
+	var hud_bar := get_node_or_null("Root/Column/HudBar") as PanelContainer
+	if hud_bar != null:
+		hud_bar.add_theme_stylebox_override("panel", _glass_style())
+	var board_frame := get_node_or_null("Root/Column/MiddleRow/BoardFrame") as PanelContainer
+	if board_frame != null:
+		board_frame.add_theme_stylebox_override("panel", _glass_style())
+	var side_panel := get_node_or_null("Root/Column/MiddleRow/SidePanel") as PanelContainer
+	if side_panel != null:
+		side_panel.add_theme_stylebox_override("panel", _glass_style())
+	var ghost_frame := get_node_or_null("Root/Column/GhostBarRow/GhostBarFrame") as PanelContainer
+	if ghost_frame != null:
+		ghost_frame.add_theme_stylebox_override("panel", _glass_style())
+	_style_pause_menu()
+	for button in [_pause_button, _resume_button, _settings_button, _restart_button, _quit_button, _simulate_button]:
+		if button != null:
+			UIEffects.AttachInteractive(button, ExportSettings.ui_hover_scale, ExportSettings.ui_press_scale, ExportSettings.ui_hover_duration)
+
+## 填充右侧情报面板：交付目标、空间预算与已放置鬼数。
+func _setup_side_panel() -> void:
+	if _level_data == null:
+		return
+	var goal_label := get_node_or_null("Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/GoalValue") as Label
+	if goal_label != null:
+		goal_label.text = str(_level_data.goal_score)
+	var space_label := get_node_or_null("Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/SpaceValue") as Label
+	if space_label != null:
+		space_label.text = "%d 格" % _level_data.space_budget
+	_style_legend()
+	_refresh_placed_count()
+
+## 给图例色块按色板上色，让玩家能对应棋盘上的元素。
+func _style_legend() -> void:
+	var base := "Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/"
+	var entries := {
+		"LegendRaw": UIPalette.ACCENT,
+		"LegendTerminal": UIPalette.WARNING,
+		"LegendField": UIPalette.SUCCESS,
+		"LegendWall": UIPalette.TEXT_SECONDARY,
+	}
+	for node_name in entries:
+		var swatch := get_node_or_null(base + node_name + "/Swatch") as ColorRect
+		if swatch == null:
+			continue
+		var tint: Color = entries[node_name]
+		swatch.color = tint
+
+## 刷新已放置鬼数。
+func _refresh_placed_count() -> void:
+	var placed_label := get_node_or_null("Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/PlacedValue") as Label
+	if placed_label == null:
+		return
+	var count := 0
+	for child in _board_host.get_children():
+		if child.has_method("GetGhostId"):
+			count += 1
+	placed_label.text = "%d 只" % count
+
+## 生成玻璃质感面板样式盒。
+## @return StyleBoxFlat。
+func _glass_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = UIPalette.GLASS_BG
+	style.border_color = UIPalette.GLASS_BORDER
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(14)
+	style.content_margin_left = 14.0
+	style.content_margin_right = 14.0
+	style.content_margin_top = 10.0
+	style.content_margin_bottom = 10.0
+	style.shadow_color = Color(0, 0, 0, 0.4)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 3)
+	return style
+
+## 给暂停菜单卡片套上玻璃样式。
+func _style_pause_menu() -> void:
+	var card := get_node_or_null("PauseMenu/Center/PauseCard") as PanelContainer
+	if card == null:
+		return
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(UIPalette.BG_PANEL.r, UIPalette.BG_PANEL.g, UIPalette.BG_PANEL.b, 0.96)
+	style.border_color = UIPalette.GLASS_BORDER
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(20)
+	style.shadow_color = Color(UIPalette.PRIMARY.r, UIPalette.PRIMARY.g, UIPalette.PRIMARY.b, 0.3)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 6)
+	card.add_theme_stylebox_override("panel", style)
+
+## 配置 HUD 动效：数值变化时弹跳，倒计时紧张时转为警告色并脉冲。
+func _setup_hud_motion() -> void:
+	for label in [_spirit_label, _delivered_label, _timer_label]:
+		if label == null:
+			continue
+		label.pivot_offset = label.size * 0.5
+		label.resized.connect(func() -> void:
+			if is_instance_valid(label):
+				label.pivot_offset = label.size * 0.5
+		)
 
 ## 解析教程锚点到画布矩形。
 ## @param anchor_name 锚点名，例如 palette / board / terminal。
@@ -135,6 +241,29 @@ func _build_board() -> void:
 		_runner.call("AddSpirit", _start_spirit())
 	SignalBus.SpiritChanged.connect(_on_spirit_changed)
 	SignalBus.DeliveredChanged.connect(_on_delivered_changed)
+	_center_board(instance, grid)
+
+## 把棋盘在板面容器内居中，避免右侧留出大片空白。
+## @param instance 关卡布局实例。
+## @param grid 棋盘网格节点。
+func _center_board(instance: Node2D, grid: Node2D) -> void:
+	if grid == null:
+		return
+	# 等布局完成后按网格实际尺寸重新居中。
+	await get_tree().process_frame
+	var grid_rect: Rect2 = Rect2()
+	if grid.has_method("get_world_rect"):
+		grid_rect = grid.get_world_rect()
+	if grid_rect.size.x <= 0.0 or grid_rect.size.y <= 0.0:
+		return
+	var host_rect := _board_host.size
+	var offset := Vector2(
+		maxf(0.0, (host_rect.x - grid_rect.size.x) * 0.5),
+		maxf(0.0, (host_rect.y - grid_rect.size.y) * 0.5)
+	)
+	instance.position = offset
+	# 网格居中后把坐标原点补偿掉，组件仍按原格位渲染。
+	grid.position = Vector2.ZERO
 
 ## 取得建造起始鬼能。
 ## @return 鬼能数量。
@@ -192,12 +321,21 @@ func _apply_level_data() -> void:
 ## @param spirit 当前鬼能
 func _on_spirit_changed(spirit: int) -> void:
 	_spirit_label.text = str(spirit)
+	_pop_value(_spirit_label)
 
 ## 刷新交付计数显示。
 ## @param delivered 已交付数量
 ## @param goal 目标数量
 func _on_delivered_changed(delivered: int, goal: int) -> void:
 	_delivered_label.text = "%d / %d" % [delivered, goal]
+	_pop_value(_delivered_label)
+
+## 数值变化时做一次弹跳，让玩家注意到状态更新。
+## @param label 目标数值标签。
+func _pop_value(label: Label) -> void:
+	if label == null or not is_instance_valid(label):
+		return
+	UIEffects.PopScale(label, 1.0, 1.18, 0.22)
 
 ## 每帧推进占位倒计时。
 func _process(delta: float) -> void:
@@ -207,12 +345,35 @@ func _process(delta: float) -> void:
 	if fmod(_elapsed, 0.1) < delta:
 		_time_left = maxf(0.0, _time_left - 0.1)
 		_timer_label.text = "%d 秒" % int(ceil(_time_left))
+		_update_timer_warning()
 		SignalBus.LevelTimerTick.emit(_time_left)
+
+## 时间不足十秒时把倒计时转成警告色并持续脉冲。
+func _update_timer_warning() -> void:
+	if _timer_label == null or not is_instance_valid(_timer_label):
+		return
+	var urgent := _time_left <= 10.0
+	var target := UIPalette.WARNING if urgent else UIPalette.TEXT_PRIMARY
+	if _timer_label.get_meta("timer_urgent", false) == urgent and _timer_label.get_meta("timer_urgent_set", false):
+		return
+	_timer_label.set_meta("timer_urgent", urgent)
+	_timer_label.set_meta("timer_urgent_set", true)
+	_timer_label.add_theme_color_override("font_color", target)
+	if urgent:
+		UIEffects.GlowPulse(_timer_label, 0.3, 1.0)
+	else:
+		_timer_label.modulate = Color.WHITE
 
 ## 打开暂停菜单。
 func _on_pause_pressed() -> void:
 	_pause_menu.visible = true
 	get_tree().paused = true
+	# 暂停卡片弹入，避免菜单突然闪现。
+	var card := get_node_or_null("PauseMenu/Center/PauseCard") as Control
+	if card != null:
+		card.pivot_offset = card.size * 0.5
+		UIEffects.PopScale(card, 0.85, 1.0, 0.28)
+		UIEffects.FadeIn(card, 0.22)
 
 ## 关闭暂停菜单。
 func _on_resume_pressed() -> void:

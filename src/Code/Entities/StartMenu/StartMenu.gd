@@ -5,9 +5,9 @@ extends Control
 
 const GAME_VERSION: String = "0.1.0"
 ## 主按钮（开始游戏）使用的实心底色。
-const PRIMARY_BG: Color = Color(0.486274, 0.360784, 1, 1)
+const PRIMARY_BG: Color = UIPalette.PRIMARY
 ## 次级按钮使用的描边色。
-const SECONDARY_BORDER: Color = Color(0.486274, 0.360784, 1, 0.85)
+const SECONDARY_BORDER: Color = UIPalette.PRIMARY_SOFT
 ## 次级按钮的透明底色。
 const SECONDARY_BG: Color = Color(0.086275, 0.066667, 0.101961, 0.62)
 
@@ -40,6 +40,42 @@ func _ready() -> void:
 	_start_button.grab_focus()
 	SignalBus.ProgressChanged.connect(_refresh_continue_state)
 	_play_intro()
+	_play_idle_motion()
+
+## 播放持续动效：标题呼吸与摇摆、主按钮呼吸、主视觉占位浮动、按钮悬停反馈。
+## 这些动效与入场动画并行，入场结束后接管，让界面始终处于「活着」的状态。
+func _play_idle_motion() -> void:
+	# 标题：持续呼吸缩放 + 轻微左右摇摆。等入场动画走完再叠加，避免两者互相覆盖 scale。
+	await get_tree().create_timer(1.0).timeout
+	if not is_instance_valid(_title):
+		return
+	_anchor_pivot(_title)
+	UIEffects.BreatheLoop(_title, ExportSettings.ui_breathe_amplitude * 1.5, ExportSettings.ui_breathe_period * 1.4)
+	UIEffects.Sway(_title, 1.5, ExportSettings.ui_sway_period * 1.2)
+
+	# 主按钮：幅度更小的呼吸，作为视觉焦点。
+	_anchor_pivot(_start_button)
+	UIEffects.BreatheLoop(_start_button, ExportSettings.ui_breathe_amplitude * 0.6, ExportSettings.ui_breathe_period)
+
+	# 主视觉占位：上下浮动，缓慢漂移。
+	if _key_art != null:
+		UIEffects.FloatBob(_key_art, ExportSettings.ui_float_distance, 4.2)
+		UIEffects.Sway(_key_art, 1.2, 5.0)
+
+	# 所有按钮：悬停放大 + 按下回弹。
+	for button in [_start_button, _continue_button, _level_select_button, _settings_button, _quit_button]:
+		UIEffects.AttachInteractive(button, ExportSettings.ui_hover_scale, ExportSettings.ui_press_scale, ExportSettings.ui_hover_duration)
+
+## 把控件的旋转轴心设到自身中心，保证摇摆不会绕左上角甩出去。
+## @param node 目标控件。
+func _anchor_pivot(node: Control) -> void:
+	if node == null:
+		return
+	node.pivot_offset = node.size * 0.5
+	node.resized.connect(func() -> void:
+		if is_instance_valid(node):
+			node.pivot_offset = node.size * 0.5
+	)
 
 ## 配置背景层与主视觉占位，等待美术资源到位后自动替换。
 func _setup_background() -> void:

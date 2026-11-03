@@ -5,9 +5,9 @@ extends Control
 ## 美术资源到位后把资源路径填进 art_path，占位框会自动变成真实图片。
 
 ## 占位框默认描边色（主色系，低不透明度）。
-const DEFAULT_BORDER_COLOR: Color = Color(0.49, 0.42, 1.0, 0.35)
+const DEFAULT_BORDER_COLOR: Color = Color(0.486, 0.361, 1.0, 0.45)
 ## 占位框默认填充色（主色系，极低不透明度）。
-const DEFAULT_FILL_COLOR: Color = Color(0.49, 0.42, 1.0, 0.06)
+const DEFAULT_FILL_COLOR: Color = Color(0.486, 0.361, 1.0, 0.05)
 ## 标签文字字号。
 const LABEL_FONT_SIZE: int = 16
 ## 虚线段长度（像素）。

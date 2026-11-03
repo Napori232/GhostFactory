@@ -73,6 +73,23 @@ func _rebuild() -> void:
 		_card_row.add_child(card)
 		_cards.append(card)
 	_refresh_affordability()
+	_play_card_motion()
+
+## 给每张鬼牌挂上持续呼吸与悬停反馈，相位按序号错开，让牌面不至于死板。
+func _play_card_motion() -> void:
+	for i in _cards.size():
+		var card := _cards[i] as Control
+		if card == null or not is_instance_valid(card):
+			continue
+		card.pivot_offset = card.size * 0.5
+		card.resized.connect(func() -> void:
+			if is_instance_valid(card):
+				card.pivot_offset = card.size * 0.5
+		)
+		# 呼吸幅度按序号递减，避免所有牌同步抖动显得杂乱。
+		var scale_factor := 1.0 - float(i) * 0.12
+		UIEffects.BreatheLoop(card, ExportSettings.ui_breathe_amplitude * scale_factor, ExportSettings.ui_breathe_period, float(i) * 0.17)
+		UIEffects.AttachInteractive(card, ExportSettings.ui_hover_scale, ExportSettings.ui_press_scale, ExportSettings.ui_hover_duration)
 
 ## 构建一张鬼牌。
 ## @param ghost_id 鬼 id
@@ -82,6 +99,8 @@ func _build_card(ghost_id: String) -> Control:
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size = Vector2(card_width, 76)
 	panel.set_meta("ghost_id", ghost_id)
+	panel.mouse_filter = Control.MOUSE_FILTER_PASS
+	panel.add_theme_stylebox_override("panel", _card_style(UIPalette.GLASS_BORDER))
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 2)
 	panel.add_child(box)
@@ -91,13 +110,14 @@ func _build_card(ghost_id: String) -> Control:
 	name_label.text = ResourceUtil.GetString(data, "display_name", ghost_id)
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.add_theme_font_size_override("font_size", 15)
+	name_label.add_theme_color_override("font_color", UIPalette.TEXT_PRIMARY)
 	box.add_child(name_label)
 
 	var cost_label := Label.new()
 	cost_label.name = "CostLabel"
 	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	cost_label.add_theme_font_size_override("font_size", 13)
-	cost_label.add_theme_color_override("font_color", Color(0.75, 0.8, 0.85))
+	cost_label.add_theme_color_override("font_color", UIPalette.ACCENT)
 	cost_label.text = "造价 %d" % ResourceUtil.GetInt(data, "cost") if show_cost and data != null else ""
 	box.add_child(cost_label)
 
@@ -105,7 +125,7 @@ func _build_card(ghost_id: String) -> Control:
 	footprint_label.name = "FootprintLabel"
 	footprint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	footprint_label.add_theme_font_size_override("font_size", 11)
-	footprint_label.add_theme_color_override("font_color", Color(0.55, 0.6, 0.66))
+	footprint_label.add_theme_color_override("font_color", UIPalette.TEXT_SECONDARY)
 	var size_text := ""
 	if data != null:
 		var fp := ResourceUtil.GetArray(data, "footprint")
@@ -115,6 +135,24 @@ func _build_card(ghost_id: String) -> Control:
 	box.add_child(footprint_label)
 
 	return panel
+
+## 生成鬼牌卡片的玻璃质感样式盒。
+## @param border 描边色。
+## @return StyleBoxFlat。
+func _card_style(border: Color) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = UIPalette.GLASS_BG
+	style.border_color = border
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(12)
+	style.content_margin_left = 8.0
+	style.content_margin_right = 8.0
+	style.content_margin_top = 6.0
+	style.content_margin_bottom = 6.0
+	style.shadow_color = Color(UIPalette.PRIMARY.r, UIPalette.PRIMARY.g, UIPalette.PRIMARY.b, 0.22)
+	style.shadow_size = 8
+	style.shadow_offset = Vector2(0, 2)
+	return style
 
 ## 加载鬼数据资源。
 ## @param ghost_id 鬼 id

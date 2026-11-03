@@ -1,9 +1,10 @@
 extends Control
 
 ## 关卡选择界面。列出全部关卡卡片，展示解锁状态、关卡参数与历史星级。
-## 视觉使用 UIPalette 的 12 色板：已解锁卡片左侧描边用主色，星级用警告色，解锁状态用成功色。
+## 视觉使用 UIPalette 的 23 色板：已解锁卡片描边用主色，星级用暖橙点缀，解锁状态用成功色。
 
-const LOCKED_MODULATE: Color = Color(1.0, 1.0, 1.0, 0.45)
+## 未解锁卡片的整体压暗程度。保持禁用感但仍能读出关卡信息。
+const LOCKED_MODULATE: Color = Color(0.72, 0.76, 0.88, 0.68)
 const STAR_FILLED: String = "★"
 const STAR_EMPTY: String = "☆"
 const MAX_STARS: int = 3
@@ -108,8 +109,18 @@ func _build_card(level_id: int) -> PanelContainer:
 		box.add_child(_make_label("时长 %d 秒" % data.time_limit, 14, UIPalette.TEXT_SECONDARY))
 		box.add_child(_make_label("目标交付 %d" % data.goal_score, 14, UIPalette.TEXT_SECONDARY))
 		box.add_child(_make_label("空间预算 %d 格" % data.space_budget, 14, UIPalette.TEXT_SECONDARY))
-		box.add_child(_make_label(_format_stars(stars), 22, UIPalette.WARNING))
-		box.add_child(_make_label("已解锁" if unlocked else "未解锁", 14, UIPalette.SUCCESS if unlocked else UIPalette.TEXT_DISABLED))
+		box.add_child(_make_label(_format_stars(stars), 22, UIPalette.ACCENT))
+		# 状态文案区分已通关、下一关推荐与未解锁，让玩家一眼知道该打哪关。
+		var status_text := "未解锁"
+		var status_color: Color = UIPalette.TEXT_DISABLED
+		if unlocked:
+			if stars > 0:
+				status_text = "已通关"
+				status_color = UIPalette.SUCCESS
+			else:
+				status_text = "可挑战"
+				status_color = UIPalette.GLOW_CYAN
+		box.add_child(_make_label(status_text, 14, status_color))
 
 	var button := Button.new()
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -119,6 +130,16 @@ func _build_card(level_id: int) -> PanelContainer:
 	box.add_child(button)
 	if unlocked:
 		panel.mouse_entered.connect(_on_card_hovered.bind(panel))
+		# 卡片持续轻微呼吸并左右轻摆，让列表有生气；未解锁卡片保持静止。
+		panel.pivot_offset = panel.size * 0.5
+		panel.resized.connect(func() -> void:
+			if is_instance_valid(panel):
+				panel.pivot_offset = panel.size * 0.5
+		)
+		var phase := float(level_id % 4) * 0.2
+		UIEffects.BreatheLoop(panel, ExportSettings.ui_breathe_amplitude * 0.8, ExportSettings.ui_breathe_period * 1.2, phase)
+		UIEffects.Sway(panel, 1.6, ExportSettings.ui_sway_period * 1.3, phase)
+		UIEffects.AttachInteractive(panel, ExportSettings.ui_hover_scale, ExportSettings.ui_press_scale, ExportSettings.ui_hover_duration)
 	return panel
 
 ## 返回主菜单按钮使用次要描边样式。
@@ -157,19 +178,22 @@ func _make_label(text: String, font_size: int, color: Color = UIPalette.TEXT_PRI
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return label
 
-## 生成卡片外观样式：已解锁卡片左侧描边用主色，未解锁用中性描边。
+## 生成卡片外观样式：已解锁卡片用玻璃面板加主色描边，未解锁用中性描边。
 ## @param unlocked 关卡是否已解锁
 ## @return StyleBoxFlat 样式。
 func _make_card_style(unlocked: bool) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = UIPalette.BG_RAISED if unlocked else UIPalette.BG_PANEL
-	style.set_corner_radius_all(12)
+	style.bg_color = UIPalette.GLASS_BG if unlocked else UIPalette.BG_PANEL
+	style.set_corner_radius_all(16)
 	style.set_content_margin_all(16.0)
-	style.border_color = UIPalette.PRIMARY if unlocked else UIPalette.BORDER
+	style.border_color = UIPalette.GLASS_BORDER if unlocked else UIPalette.BORDER
 	style.border_width_left = 4 if unlocked else 2
 	style.border_width_top = 2
 	style.border_width_right = 2
 	style.border_width_bottom = 2
+	style.shadow_color = Color(UIPalette.PRIMARY.r, UIPalette.PRIMARY.g, UIPalette.PRIMARY.b, 0.25 if unlocked else 0.0)
+	style.shadow_size = 12 if unlocked else 0
+	style.shadow_offset = Vector2(0, 4)
 	return style
 
 ## 卡片入场动画与悬停缩放。

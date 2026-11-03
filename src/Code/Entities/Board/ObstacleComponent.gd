@@ -7,11 +7,11 @@ extends Node2D
 ## 组件分组名，加入后由 BoardGrid 统一收集。
 const COMPONENT_GROUP: StringName = &"board_component"
 
-## 障碍物填充色。本地常量，暂不进 ExportSettings。
-const FILL_COLOR: Color = Color(0.3, 0.3, 0.34, 0.95)
+## 障碍物填充色，冷调深灰蓝，与深靛蓝背景协调。
+const FILL_COLOR: Color = Color(0.145, 0.169, 0.239, 0.95)
 
-## 障碍物描边色。
-const FRAME_COLOR: Color = Color(0.55, 0.55, 0.6, 0.95)
+## 障碍物描边色，冷调石板灰。
+const FRAME_COLOR: Color = Color(0.353, 0.400, 0.529, 0.95)
 
 ## 障碍覆盖的格（相对 origin_cell 的偏移）。
 @export var shape: Array[Vector2i] = []:
@@ -78,7 +78,7 @@ func _draw_label() -> void:
 	var size := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12)
 	var pos := Vector2(-size.x * 0.5, GridUtil.CELL_SIZE * 0.62)
 	draw_string(font, pos + Vector2(1, 1), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(0, 0, 0, 0.6))
-	draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(0.85, 0.85, 0.9, 0.9))
+	draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(0.667, 0.706, 0.800, 0.95))
 
 ## 取得障碍覆盖的格子（相对 origin_cell 的偏移）。
 ## shape 为空时退化为单格 (0,0)，保证组件永远有可见占位。

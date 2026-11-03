@@ -22,14 +22,14 @@ const EDITOR_REDRAW_INTERVAL: float = 0.25
 		draw_grid = value
 		queue_redraw()
 
-## 可放置区域高亮色。
-@export var placement_color: Color = Color(0.3, 0.8, 0.4, 0.08):
+## 可放置区域高亮色，带一点主色倾向而非纯绿。
+@export var placement_color: Color = Color(0.486, 0.361, 1.0, 0.07):
 	set(value):
 		placement_color = value
 		queue_redraw()
 
-## 网格线颜色。
-@export var grid_line_color: Color = Color(1, 1, 1, 0.08):
+## 网格线颜色，冷调低透明，与深靛蓝底协调。
+@export var grid_line_color: Color = Color(0.627, 0.706, 0.937, 0.16):
 	set(value):
 		grid_line_color = value
 		queue_redraw()

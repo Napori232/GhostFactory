@@ -95,6 +95,12 @@ extends Node
 @export var sim_tongue_rest: float = 0.9
 ## 采集区掉落速率的面积指数，边际递减。
 @export var sim_area_exponent: float = 0.5
+## 长舌鬼的取料周期（秒）。越小产料越快。
+@export var sim_tongue_cycle: float = 1.0
+
+@export_group("Build", "build_")
+## 每关开局赠送的初始鬼能。够玩家盖出第一条产线且有余量。
+@export var build_start_spirit: int = 30
 
 @export_group("UI", "ui_")
 ## 背景图资源路径，留空表示等待美术出图。
@@ -113,6 +119,24 @@ extends Node
 @export var ui_feedback_rise: float = 48.0
 ## 飘字存活时长（秒）。
 @export var ui_feedback_duration: float = 0.9
+## 呼吸缩放的相对幅度，0.03 表示上下浮动 3%。
+@export_range(0.0, 0.2, 0.005) var ui_breathe_amplitude: float = 0.03
+## 呼吸缩放的单次周期（秒）。
+@export_range(0.4, 10.0, 0.1) var ui_breathe_period: float = 2.4
+## 左右摇摆的角度幅度（度）。
+@export_range(0.0, 20.0, 0.5) var ui_sway_angle_deg: float = 3.0
+## 左右摇摆的单次周期（秒）。
+@export_range(0.4, 10.0, 0.1) var ui_sway_period: float = 3.2
+## 悬停时放大到的倍数。
+@export_range(1.0, 1.5, 0.01) var ui_hover_scale: float = 1.05
+## 按下时缩小到的倍数。
+@export_range(0.5, 1.0, 0.01) var ui_press_scale: float = 0.96
+## 悬停与按下反馈的过渡时长（秒）。
+@export_range(0.04, 0.6, 0.02) var ui_hover_duration: float = 0.16
+## 列表项依次入场的间隔（秒）。
+@export_range(0.0, 0.5, 0.01) var ui_stagger_interval: float = 0.06
+## 装饰元素上下浮动的距离（像素）。
+@export_range(0.0, 30.0, 0.5) var ui_float_distance: float = 6.0
 
 @export_group("Tutorial", "tutorial_")
 ## 教程步骤数据路径。

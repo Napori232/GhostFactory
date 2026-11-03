@@ -1,7 +1,7 @@
 extends Control
 
 ## 设置面板。提供音量、开关、画质与重置进度入口，可作为独立页面或嵌入面板使用。
-## 视觉使用 UIPalette 12 色板：音量滑条主色、开关开启态成功色、画质下拉主色描边、重置按钮危险色描边。
+## 视觉使用 UIPalette 23 色板：音量滑条主色、开关开启态成功色、画质下拉主色描边、重置按钮危险色描边。
 
 const QUALITY_VALUES: Array[String] = ["low", "medium", "high"]
 const QUALITY_LABELS: Array[String] = ["低", "中", "高"]
@@ -40,6 +40,20 @@ func _ready() -> void:
 	SyncFromStorage()
 	_refresh_switch_colors()
 	_play_intro_item(_title, 0.0)
+	_setup_interaction()
+	# 标题持续轻微呼吸，避免静态界面显得僵硬。
+	await get_tree().create_timer(0.6).timeout
+	if is_instance_valid(_title):
+		UIEffects.BreatheLoop(_title, ExportSettings.ui_breathe_amplitude * 0.8, ExportSettings.ui_breathe_period * 1.5)
+
+## 配置交互反馈：按钮悬停放大与按下回弹，滑条与开关挂上悬停反馈。
+func _setup_interaction() -> void:
+	for button in [_reset_button, _back_button]:
+		UIEffects.AttachInteractive(button, ExportSettings.ui_hover_scale, ExportSettings.ui_press_scale, ExportSettings.ui_hover_duration)
+	for slider in [_master_slider, _music_slider, _sfx_slider, _dialogue_slider, _ambience_slider]:
+		UIEffects.AttachInteractive(slider, 1.03, 0.97, ExportSettings.ui_hover_duration)
+	for check in [_skip_tutorial_check, _screen_shake_check]:
+		UIEffects.AttachInteractive(check, 1.03, 0.97, ExportSettings.ui_hover_duration)
 
 ## 从存档与音频设置刷新界面显示。
 func SyncFromStorage() -> void:

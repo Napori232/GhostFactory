@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/Level/Level.gd" id="1_level"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Level/ResultPanel.tscn" id="2_resultpanel"]
+[ext_resource type="PackedScene" path="res://Code/UI/BackgroundLayer.tscn" id="3_background"]
 
 [node name="Level" type="Control"]
 layout_mode = 3
@@ -12,15 +13,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_level")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" parent="." instance=ExtResource("3_background")]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.062745, 0.066667, 0.086275, 1)
+show_grid = true
+glow_intensity = 0.22
 
 [node name="Root" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -113,20 +110,176 @@ custom_minimum_size = Vector2(80, 40)
 layout_mode = 2
 text = "暂停"
 
-[node name="BoardFrame" type="PanelContainer" parent="Root/Column"]
+[node name="MiddleRow" type="HBoxContainer" parent="Root/Column"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 16
 
-[node name="BoardHost" type="Control" parent="Root/Column/BoardFrame"]
+[node name="BoardFrame" type="PanelContainer" parent="Root/Column/MiddleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BoardHost" type="Control" parent="Root/Column/MiddleRow/BoardFrame"]
 unique_name_in_owner = true
 clip_contents = true
 custom_minimum_size = Vector2(0, 320)
 layout_mode = 2
 mouse_filter = 1
 
+[node name="SidePanel" type="PanelContainer" parent="Root/Column/MiddleRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SideMargin" type="MarginContainer" parent="Root/Column/MiddleRow/SidePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="SideColumn" type="VBoxContainer" parent="Root/Column/MiddleRow/SidePanel/SideMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SideTitle" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.627451, 0.643137, 0.784314, 1)
+theme_override_font_sizes/font_size = 13
+text = "关卡情报"
+
+[node name="SideSeparator" type="HSeparator" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+
+[node name="GoalTitle" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.478431, 0.513725, 0.678431, 1)
+theme_override_font_sizes/font_size = 12
+text = "交付目标"
+
+[node name="GoalValue" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.623529, 0.270588, 1)
+theme_override_font_sizes/font_size = 24
+text = "0"
+
+[node name="SpaceTitle" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.478431, 0.513725, 0.678431, 1)
+theme_override_font_sizes/font_size = 12
+text = "空间预算"
+
+[node name="SpaceValue" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_size = 18
+text = "0 格"
+
+[node name="PlacedTitle" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.478431, 0.513725, 0.678431, 1)
+theme_override_font_sizes/font_size = 12
+text = "已放置鬼"
+
+[node name="PlacedValue" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_size = 18
+text = "0 只"
+
+[node name="SideTip" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.478431, 0.513725, 0.678431, 1)
+theme_override_font_sizes/font_size = 13
+text = "从下方鬼牌栏拖鬼到棋盘上，用规则拼出一条能交付的产线。"
+autowrap_mode = 3
+
+[node name="SideSeparator2" type="HSeparator" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+
+[node name="LegendTitle" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.478431, 0.513725, 0.678431, 1)
+theme_override_font_sizes/font_size = 12
+text = "图例"
+
+[node name="LegendColumn" type="VBoxContainer" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LegendRaw" type="HBoxContainer" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Swatch" type="ColorRect" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendRaw"]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(1, 0.623529, 0.270588, 1)
+
+[node name="Text" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendRaw"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.945098, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "原料口"
+
+[node name="LegendTerminal" type="HBoxContainer" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Swatch" type="ColorRect" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendTerminal"]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(1, 0.705882, 0.329412, 1)
+
+[node name="Text" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendTerminal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.945098, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "供品口"
+
+[node name="LegendField" type="HBoxContainer" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Swatch" type="ColorRect" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendField"]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.239216, 0.862745, 0.592157, 1)
+
+[node name="Text" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendField"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.945098, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "采集区"
+
+[node name="LegendWall" type="HBoxContainer" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Swatch" type="ColorRect" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendWall"]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.352941, 0.4, 0.529412, 1)
+
+[node name="Text" type="Label" parent="Root/Column/MiddleRow/SidePanel/SideMargin/SideColumn/LegendColumn/LegendWall"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.945098, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "障碍"
+
 [node name="GhostBarRow" type="VBoxContainer" parent="Root/Column"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 6
 
 [node name="GhostBarTitle" type="Label" parent="Root/Column/GhostBarRow"]
 layout_mode = 2
@@ -134,9 +287,12 @@ theme_override_colors/font_color = Color(0.607843, 0.615686, 0.658824, 1)
 theme_override_font_sizes/font_size = 14
 text = "鬼牌栏（拖到棋盘上放置）"
 
-[node name="GhostBar" type="Control" parent="Root/Column/GhostBarRow"]
+[node name="GhostBarFrame" type="PanelContainer" parent="Root/Column/GhostBarRow"]
+layout_mode = 2
+
+[node name="GhostBar" type="Control" parent="Root/Column/GhostBarRow/GhostBarFrame"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
 
 [node name="PauseMenu" type="Control" parent="."]
@@ -157,7 +313,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.6)
+color = Color(0.043137, 0.058824, 0.117647, 0.68)
 
 [node name="Center" type="CenterContainer" parent="PauseMenu"]
 layout_mode = 1
@@ -167,41 +323,54 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Box" type="VBoxContainer" parent="PauseMenu/Center"]
+[node name="PauseCard" type="PanelContainer" parent="PauseMenu/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+
+[node name="PauseMargin" type="MarginContainer" parent="PauseMenu/Center/PauseCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 20
+
+[node name="Box" type="VBoxContainer" parent="PauseMenu/Center/PauseCard/PauseMargin"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="PauseMenu/Center/Box"]
+[node name="Title" type="Label" parent="PauseMenu/Center/PauseCard/PauseMargin/Box"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.933333, 0.945098, 1, 1)
 theme_override_font_sizes/font_size = 28
 text = "暂停"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="PauseMenu/Center/Box"]
+[node name="ResumeButton" type="Button" parent="PauseMenu/Center/PauseCard/PauseMargin/Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 44)
 layout_mode = 2
 text = "继续"
 
-[node name="SettingsButton" type="Button" parent="PauseMenu/Center/Box"]
+[node name="SettingsButton" type="Button" parent="PauseMenu/Center/PauseCard/PauseMargin/Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 44)
 layout_mode = 2
 text = "设置"
 
-[node name="RestartButton" type="Button" parent="PauseMenu/Center/Box"]
+[node name="RestartButton" type="Button" parent="PauseMenu/Center/PauseCard/PauseMargin/Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 44)
 layout_mode = 2
 text = "重玩本关"
 
-[node name="SimulateButton" type="Button" parent="PauseMenu/Center/Box"]
+[node name="SimulateButton" type="Button" parent="PauseMenu/Center/PauseCard/PauseMargin/Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 44)
 layout_mode = 2
 text = "模拟结算（调试）"
 
-[node name="QuitButton" type="Button" parent="PauseMenu/Center/Box"]
+[node name="QuitButton" type="Button" parent="PauseMenu/Center/PauseCard/PauseMargin/Box"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 44)
 layout_mode = 2

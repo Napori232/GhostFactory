@@ -8,7 +8,7 @@ extends Node2D
 const COMPONENT_GROUP: StringName = &"board_component"
 
 ## 供品口本体色。本地常量，暂不进 ExportSettings。
-const BODY_COLOR: Color = Color(0.95, 0.78, 0.35)
+const BODY_COLOR: Color = Color(1, 0.705882, 0.329412)
 
 ## 供品口外框色。
 const FRAME_COLOR: Color = Color(0.35, 0.28, 0.12)

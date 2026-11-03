@@ -98,9 +98,13 @@ Code/
 | `Code/Common/FormData.gd` | 形态数据：生料、加工品、垃圾 |
 | `Code/Common/RecipeData.gd` | 配方数据：形态转换关系与产出率 |
 | `Code/Common/GridUtil.gd` | 网格几何工具：格子换算、路径生成、占位重叠检测 |
-| `Code/Common/UIPalette.gd` | UI 12 色板与全局主题生成 |
-| `Code/Common/UIEffects.gd` | UI 动效库：缩放弹跳、淡入淡出、粒子迸发、数字滚动 |
+| `Code/Common/UIPalette.gd` | UI 23 色板与全局主题生成：深靛蓝底、玻璃面板、霓虹描边、暖橙点缀 |
+| `Code/Common/UIEffects.gd` | UI 动效库：缩放弹跳、淡入淡出、粒子迸发、数字滚动、呼吸、左右摇摆、悬浮、辉光脉冲、悬停与按下反馈 |
 | `Code/Common/ResourceUtil.gd` | 资源属性读取工具：统一处理 Object.get 与 Dictionary.get 的差异 |
+| `Code/UI/BackgroundLayer.gd` | 背景层：竖向渐变底、蓝图网格、漂移呼吸光斑与暗角 |
+| `Code/UI/BackgroundLayer.tscn` | 背景层场景，供主菜单、关卡选择与关卡场景复用 |
+| `Code/UI/ArtPlaceholder.gd` | 美术占位框：资源未就位时显示虚线框与标签 |
+| `Code/UI/UIFeedback.gd` | 界面反馈：飘字与提示条 |
 
 ### 10.4 业务实体
 
@@ -112,8 +116,8 @@ Code/
 | `Code/Entities/LevelSelect/LevelSelect.gd` | 关卡列表构建与解锁状态刷新 |
 | `Code/Entities/Setting/SettingPanel.tscn` | 设置面板：音量、开关、画质与重置进度 |
 | `Code/Entities/Setting/SettingPanel.gd` | 设置项读写、音量实时应用与二次确认流程 |
-| `Code/Entities/Level/Level.tscn` | 关卡场景框架：HUD、棋盘占位、鬼牌栏与暂停菜单 |
-| `Code/Entities/Level/Level.gd` | 关卡进入流程、HUD 刷新与暂停/结算触发 |
+| `Code/Entities/Level/Level.tscn` | 关卡场景框架：HUD、棋盘占位、右侧情报栏、鬼牌栏与暂停菜单 |
+| `Code/Entities/Level/Level.gd` | 关卡进入流程、HUD 刷新、情报栏填充与暂停/结算触发 |
 | `Code/Entities/Level/ResultPanel.tscn` | 结算面板：三轴评分、星级与解锁展示 |
 | `Code/Entities/Level/ResultPanel.gd` | 结算展示、星级写档与下一关解锁 |
 | `Code/Tests/SaveManagerRoundTrip.tscn` | 存档与关卡数据的 headless 往返测试 |

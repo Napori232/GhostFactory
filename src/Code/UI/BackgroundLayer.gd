@@ -1,8 +1,8 @@
 class_name BackgroundLayer
 extends Control
 
-## 背景层。铺底色 + 若干柔和主色光斑，并内嵌一个 ArtPlaceholder 作为背景图位。
-## 主菜单与关卡选择共用；美术资源到位后把路径填到 background_art_path 即可替换占位框。
+## 背景层。竖向渐变底 + 蓝图网格线 + 若干柔和光斑（持续漂移与呼吸），并内嵌一个 ArtPlaceholder 作为背景图位。
+## 主菜单、关卡选择与关卡场景共用；美术资源到位后把路径填到 background_art_path 即可替换占位框。
 
 ## 光斑的随机分布种子，保证每次运行的布局一致。
 const GLOW_SEED: int = 20260903
@@ -12,15 +12,29 @@ const GLOW_DRIFT_SPEED: float = 18.0
 const GLOW_DRIFT_RANGE: float = 60.0
 ## 背景图占位与底色之间的层级差。
 const ART_LAYER_OFFSET: int = 0
+## 蓝图网格的间距（像素）。
+const GRID_SPACING: float = 48.0
+## 网格线的不透明度。
+const GRID_ALPHA: float = 0.18
+## 渐变铺底的纵向分段数，越大越平滑。
+const GRADIENT_BANDS: int = 64
 
-## 背景底色。
+## 背景底色，同时作为渐变下方的兜底色。
 @export var base_color: Color = UIPalette.BG_DEEP
+## 渐变顶部色。
+@export var gradient_top: Color = UIPalette.BG_GRADIENT_TOP
+## 渐变底部色。
+@export var gradient_bottom: Color = UIPalette.BG_GRADIENT_BOTTOM
 ## 主色光晕颜色。
 @export var glow_color: Color = UIPalette.PRIMARY
+## 次级光晕颜色，与主色交替出现。
+@export var glow_color_alt: Color = UIPalette.GLOW_CYAN
 ## 背景图占位组件。
 @export var art_placeholder: ArtPlaceholder = null
 ## 是否启用缓慢流动的光斑。
 @export var animate_glow: bool = true
+## 是否绘制蓝图网格线。
+@export var show_grid: bool = true
 ## 光斑数量。
 @export var glow_count: int = 5
 ## 背景图资源路径，留空表示等待美术。
@@ -95,21 +109,66 @@ func _build_spots() -> void:
 			"radius": rng.randf_range(0.12, 0.26),
 			"speed": rng.randf_range(0.4, 1.0),
 			"phase": rng.randf_range(0.0, TAU),
+			"alternate": i % 2 == 1,
 		})
+
+## 绘制竖向渐变底色。
+func _draw_gradient() -> void:
+	var bands := maxi(1, GRADIENT_BANDS)
+	var band_height := size.y / float(bands)
+	for i in bands:
+		var t := float(i) / float(bands)
+		var color := gradient_top.lerp(gradient_bottom, t)
+		draw_rect(Rect2(0.0, band_height * i, size.x, band_height + 1.0), color, true)
+
+## 绘制蓝图风格的网格线。
+func _draw_grid() -> void:
+	var grid_color := Color(UIPalette.BORDER.r, UIPalette.BORDER.g, UIPalette.BORDER.b, GRID_ALPHA)
+	var x := 0.0
+	while x <= size.x:
+		draw_line(Vector2(x, 0.0), Vector2(x, size.y), grid_color, 1.0)
+		x += GRID_SPACING
+	var y := 0.0
+	while y <= size.y:
+		draw_line(Vector2(0.0, y), Vector2(size.x, y), grid_color, 1.0)
+		y += GRID_SPACING
+
+## 绘制四边暗角，压住画面边缘让中心更聚焦。
+func _draw_vignette() -> void:
+	var vignette := Color(0.0, 0.0, 0.0, 0.28)
+	var depth := 120.0
+	var bands := 12
+	for i in bands:
+		var t := float(i) / float(bands)
+		var alpha: float = vignette.a * (1.0 - t)
+		var inset := depth * t
+		draw_rect(Rect2(0.0, 0.0, size.x, inset), Color(0, 0, 0, alpha), true)
+		draw_rect(Rect2(0.0, size.y - inset, size.x, inset), Color(0, 0, 0, alpha), true)
+		draw_rect(Rect2(0.0, 0.0, inset, size.y), Color(0, 0, 0, alpha), true)
+		draw_rect(Rect2(size.x - inset, 0.0, inset, size.y), Color(0, 0, 0, alpha), true)
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), base_color, true)
+	_draw_gradient()
+	if show_grid:
+		_draw_grid()
 	for spot in _spots:
 		var anchor: Vector2 = spot["anchor"]
 		var radius: float = spot["radius"]
 		var speed: float = spot["speed"]
 		var offset_phase: float = spot["phase"]
+		var alternate: bool = spot["alternate"]
+		var tint: Color = glow_color_alt if alternate else glow_color
 		var drift := Vector2(
 			sin(_phase * speed + offset_phase),
 			cos(_phase * speed * 0.7 + offset_phase)
 		) * GLOW_DRIFT_RANGE
 		var center := anchor * size + drift
-		var spot_radius: float = maxf(size.x, size.y) * radius
-		var alpha: float = glow_intensity * 0.35
-		draw_circle(center, spot_radius, Color(glow_color.r, glow_color.g, glow_color.b, alpha))
-		draw_circle(center, spot_radius * 0.55, Color(glow_color.r, glow_color.g, glow_color.b, alpha * 0.8))
+		# 半径随时间呼吸，让光斑不是死板的圆。
+		var breath: float = 1.0 + 0.12 * sin(_phase * 0.35 * speed + offset_phase)
+		var spot_radius: float = maxf(size.x, size.y) * radius * breath
+		var alpha: float = glow_intensity * 0.28
+		draw_circle(center, spot_radius, Color(tint.r, tint.g, tint.b, alpha))
+		draw_circle(center, spot_radius * 0.55, Color(tint.r, tint.g, tint.b, alpha * 0.8))
+		draw_circle(center, spot_radius * 0.25, Color(tint.r, tint.g, tint.b, alpha * 0.6))
+	_draw_vignette()

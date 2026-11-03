@@ -42,7 +42,7 @@ theme_override_constants/separation = 10
 [node name="Title" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.949019, 0.933333, 1, 1)
+theme_override_colors/font_color = Color(0.933333, 0.945098, 1, 1)
 theme_override_colors/font_outline_color = Color(0.486274, 0.360784, 1, 0.85)
 theme_override_constants/outline_size = 10
 theme_override_colors/font_shadow_color = Color(0.486274, 0.360784, 1, 0.35)
@@ -54,14 +54,14 @@ text = "鬼工厂"
 [node name="Subtitle" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.658824, 0.623529, 0.831373, 1)
+theme_override_colors/font_color = Color(0.603922, 0.643137, 0.784314, 1)
 theme_override_font_sizes/font_size = 22
 text = "在废弃工厂里，用规则造出鬼，让鬼替你干活。"
 
 [node name="WorldLabel" type="Label" parent="Layout/Content/LeftColumn"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.372549, 0.345098, 0.564706, 1)
+theme_override_colors/font_color = Color(0.478431, 0.513725, 0.678431, 1)
 theme_override_font_sizes/font_size = 16
 text = "拼接规则 · 引流 · 交付 —— 每一关都是一道会动的机关题。"
 

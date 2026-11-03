@@ -17,9 +17,31 @@ extends Control
 var _level_id: int = 1
 
 func _ready() -> void:
+	UIPalette.ApplyTheme(self)
 	_next_button.pressed.connect(_on_next_pressed)
 	_retry_button.pressed.connect(_on_retry_pressed)
 	_menu_button.pressed.connect(_on_menu_pressed)
+	for button in [_next_button, _retry_button, _menu_button]:
+		UIEffects.AttachInteractive(button, ExportSettings.ui_hover_scale, ExportSettings.ui_press_scale, ExportSettings.ui_hover_duration)
+	_style_card()
+
+## 把结算卡片改成玻璃质感面板。
+func _style_card() -> void:
+	var card := get_node_or_null("Center/Card") as PanelContainer
+	if card == null:
+		return
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(UIPalette.BG_PANEL.r, UIPalette.BG_PANEL.g, UIPalette.BG_PANEL.b, 0.94)
+	style.border_color = UIPalette.GLASS_BORDER
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(20)
+	style.shadow_color = Color(UIPalette.PRIMARY.r, UIPalette.PRIMARY.g, UIPalette.PRIMARY.b, 0.28)
+	style.shadow_size = 18
+	style.shadow_offset = Vector2(0, 6)
+	card.add_theme_stylebox_override("panel", style)
+	var stars := _stars_label
+	if stars != null:
+		stars.add_theme_color_override("font_color", UIPalette.ACCENT)
 
 ## 展示结算结果。
 ## @param level_id 本次结算的关卡编号，从 1 开始
@@ -35,6 +57,32 @@ func ShowResult(level_id: int, stars: int) -> void:
 	_update_unlock_text()
 	_next_button.disabled = level_id >= ExportSettings.level_count
 	visible = true
+	_play_show_motion(stars)
+
+## 播放结算展示动效：面板入场、三轴分数数字滚动、星级弹跳与脉冲。
+## @param stars 本次获得的星级数。
+func _play_show_motion(stars: int) -> void:
+	UIEffects.PopScale(self, 0.92, 1.0, 0.32)
+	var targets: Array[Label] = [_efficiency_value, _manual_value, _space_value]
+	var scores: Array[int] = [
+		ExportSettings.placeholder_score_efficiency,
+		ExportSettings.placeholder_score_manual,
+		ExportSettings.placeholder_score_space,
+	]
+	for i in targets.size():
+		var label := targets[i]
+		var score := scores[i]
+		await get_tree().create_timer(float(i) * ExportSettings.ui_stagger_interval).timeout
+		if not is_instance_valid(label):
+			continue
+		label.text = "0"
+		UIEffects.CountTo(label, 0, score, 0.5)
+		UIEffects.PopScale(label, 1.0, 1.2, 0.24)
+	await get_tree().create_timer(float(targets.size()) * ExportSettings.ui_stagger_interval).timeout
+	if not is_instance_valid(_stars_label):
+		return
+	UIEffects.PopScale(_stars_label, 0.4, 1.0, 0.45)
+	UIEffects.GlowPulse(_stars_label, 0.3, 1.6)
 
 ## 写入进度：记录最佳星级，解锁下一关。
 ## @param level_id 本次结算的关卡编号

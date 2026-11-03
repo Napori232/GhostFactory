@@ -8,7 +8,7 @@ extends Node2D
 const COMPONENT_GROUP: StringName = &"board_component"
 
 ## 采集区填充色。本地常量，暂不进 ExportSettings。
-const FILL_COLOR: Color = Color(0.35, 0.7, 0.45, 0.35)
+const FILL_COLOR: Color = Color(0.239216, 0.862745, 0.592157, 0.35)
 
 ## 采集区边框色。
 const FRAME_COLOR: Color = Color(0.55, 0.9, 0.62, 0.9)

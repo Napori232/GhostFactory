@@ -5,7 +5,7 @@ extends Node
 ## 失败时以非 0 退出码结束，方便 CI 判定。
 
 ## 期望的色板常量数量。
-const EXPECTED_COLOR_COUNT: int = 15
+const EXPECTED_COLOR_COUNT: int = 23
 ## 主菜单应包含的按钮数量。
 const EXPECTED_MENU_BUTTON_COUNT: int = 5
 
