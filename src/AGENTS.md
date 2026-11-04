@@ -90,10 +90,8 @@ Code/
 | `Code/Common/GameInputControl.gd` | 输入控制组件基类 |
 | `Code/Common/InteractionDot.gd` | 实体交互提示圆点组件 |
 | `Code/Common/TouchActionButton.gd` | 移动端虚拟触控动作按钮 |
-| `Code/Common/LevelData.gd` | 关卡数据资源：时长、目标、空间预算、可用鬼池与地图占位 |
 | `Code/Common/SceneRouter.gd` | 场景路由：跨场景跳转的唯一入口 |
 | `Code/Common/StarRating.gd` | 结算星级计算（当前为占位阈值） |
-| `Code/Common/GhostData.gd` | 鬼的数据模板：造价、占位、端口标签、CD 与产出率 |
 | `Code/Common/GhostTag.gd` | 端口标签常量：GRAB / HANG / SWALLOW / FEED / SPLIT / MIRROR / OFFER / SPIT |
 | `Code/Common/FormData.gd` | 形态数据：生料、加工品、垃圾 |
 | `Code/Common/RecipeData.gd` | 配方数据：形态转换关系与产出率 |
@@ -116,12 +114,10 @@ Code/
 | `Code/Entities/LevelSelect/LevelSelect.gd` | 关卡列表构建与解锁状态刷新 |
 | `Code/Entities/Setting/SettingPanel.tscn` | 设置面板：音量、开关、画质与重置进度 |
 | `Code/Entities/Setting/SettingPanel.gd` | 设置项读写、音量实时应用与二次确认流程 |
-| `Code/Entities/Level/Level.tscn` | 关卡场景框架：HUD、棋盘占位、右侧情报栏、鬼牌栏与暂停菜单 |
-| `Code/Entities/Level/Level.gd` | 关卡进入流程、HUD 刷新、情报栏填充与暂停/结算触发 |
-| `Code/Entities/Level/ResultPanel.tscn` | 结算面板：三轴评分、星级与解锁展示 |
-| `Code/Entities/Level/ResultPanel.gd` | 结算展示、星级写档与下一关解锁 |
 | `Code/Tests/SaveManagerRoundTrip.tscn` | 存档与关卡数据的 headless 往返测试 |
 | `Code/Tests/UiFlowTest.tscn` | UI 流程的 headless 测试 |
+
+> **待重建**（v10 玩法层）：`Entities/Board/`（网格、机关组件、掉落物、线路、运行时）、`Entities/Level/`（关卡流程、目标、计时、结算）、`Entities/Tutorial/`（新手教程与聚光灯）、`Common/GhostData.gd`、`Common/LevelData.gd`。
 
 ### 10.5 资源目录约定
 
@@ -131,8 +127,10 @@ Code/
 | `res://Music/` | 音频资源；`bgm/` 背景音乐，`SFX/` 音效 |
 | `res://CopyWriting/` | 剧情与文案文本 |
 | `res://Data/` | 表格与配置数据 |
-| `res://Docs/GameDesign.md` | 策划案：核心玩法、共鸣系统、关卡、存档与系统需求的事实来源 |
-| `res://Docs/Ghosts.md` | 鬼总表：每只鬼的机制、端口、反射、几何占位、数值与共鸣规则 |
+| `res://Docs/GameDesign.md` | 策划案 v10：鬼＝机关的类型/触发/可动性、鬼能经济、采集、空间、关卡、存档与系统数值的事实来源 |
+| `res://Docs/Ghosts.md` | 机关总表：每只机关的类型、触发方式、端口、几何占位、数值、故障条件与涌现案例 |
+| `res://Docs/LevelDesign.md` | Demo 三关设计：地图、预置设施、目标、吞吐与空间核对 |
+| `res://Docs/PhysicsLayer.md` | 物理层说明：涌现模型、端口标签职责、意图与结算、代码目标形态与迁移顺序 |
 | `res://../tools/` | 仓库级离线工具（切图打包、图块归一化等），不参与运行时 |
 | `res://addons/` | 第三方插件：Godot AI（MCP）、Phantom Camera；不得修改其内容 |
 
