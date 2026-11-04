@@ -73,8 +73,6 @@ extends Node
 @export_range(0.05, 2.0, 0.05) var sim_search_step_interval: float = 0.1
 ## 采集鬼拾取一件掉落物所需时间（秒）。
 @export_range(0.05, 5.0, 0.05) var sim_pickup_interval: float = 0.5
-## 采集鬼搜索区面积上限（格）。
-@export_range(1, 64, 1) var sim_search_area_limit: int = 9
 ## 生产鬼生产周期（秒）。
 @export_range(0.1, 10.0, 0.1) var sim_producer_cycle: float = 2.0
 ## 生产鬼单次产量。
