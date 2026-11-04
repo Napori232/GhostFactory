@@ -67,7 +67,7 @@ extends Node
 @export var sim_stack_threshold: int = 5
 ## 格子边长（像素）。
 @export var sim_cell_size: int = 64
-## 机关移动一格所需时间（秒）。
+## 鬼移动一格所需时间（秒）。
 @export_range(0.05, 2.0, 0.05) var sim_ghost_move_interval: float = 0.3
 ## 采集鬼搜索一步所需时间（秒）。
 @export_range(0.05, 2.0, 0.05) var sim_search_step_interval: float = 0.1
@@ -99,7 +99,7 @@ extends Node
 @export_group("Build", "build_")
 ## 每关开局赠送的初始鬼能。够玩家盖出第一条产线且有余量。
 @export var build_start_spirit: int = 30
-## 拆除机关时是否全额退还鬼能。
+## 拆除鬼时是否全额退还鬼能。
 @export var build_refund_on_remove: bool = true
 
 @export_group("UI", "ui_")

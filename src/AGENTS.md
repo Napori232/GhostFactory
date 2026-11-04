@@ -117,7 +117,7 @@ Code/
 | `Code/Tests/SaveManagerRoundTrip.tscn` | 存档与形态/配方资源的 headless 往返测试 |
 | `Code/Tests/UiFlowTest.tscn` | UI 流程的 headless 测试 |
 
-> **待重建**（v10 玩法层）：`Entities/Board/`（网格、机关组件、掉落物、线路、运行时）、`Entities/Level/`（关卡流程、目标、计时、结算）、`Entities/Tutorial/`（新手教程与聚光灯）、`Common/GhostData.gd`、`Common/LevelData.gd`。
+> **待重建**（v10 玩法层）：`Entities/Board/`（网格、鬼组件、掉落物、线路、运行时）、`Entities/Level/`（关卡流程、目标、计时、结算）、`Entities/Tutorial/`（新手教程与聚光灯）、`Common/GhostData.gd`、`Common/LevelData.gd`。
 
 ### 10.5 资源目录约定
 
@@ -127,8 +127,8 @@ Code/
 | `res://Music/` | 音频资源；`bgm/` 背景音乐，`SFX/` 音效 |
 | `res://CopyWriting/` | 剧情与文案文本 |
 | `res://Data/` | 表格与配置数据 |
-| `res://Docs/GameDesign.md` | 策划案 v10：鬼＝机关的类型/触发/可动性、鬼能经济、采集、空间、关卡、存档与系统数值的事实来源 |
-| `res://Docs/Ghosts.md` | 机关总表：每只机关的类型、触发方式、端口、几何占位、数值、故障条件与涌现案例 |
+| `res://Docs/GameDesign.md` | 策划案 v10：鬼的种类/触发/可动性、鬼能经济、采集、空间、关卡、存档与系统数值的事实来源 |
+| `res://Docs/Ghosts.md` | 鬼总表：每只鬼的种类、触发方式、端口、几何占位、数值、故障条件与涌现案例 |
 | `res://Docs/LevelDesign.md` | Demo 三关设计：地图、预置设施、目标、吞吐与空间核对 |
 | `res://Docs/PhysicsLayer.md` | 物理层说明：涌现模型、端口标签职责、意图与结算、代码目标形态与迁移顺序 |
 | `res://../tools/` | 仓库级离线工具（切图打包、图块归一化等），不参与运行时 |

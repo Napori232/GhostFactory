@@ -26,8 +26,8 @@ const SECONDARY_BG: Color = Color(0.086275, 0.066667, 0.101961, 0.62)
 func _ready() -> void:
 	UIPalette.ApplyTheme(self)
 	_title.text = "鬼工厂"
-	_subtitle.text = "在阴间工厂里摆出会自己干活的机关，把鬼能变成贡品。"
-	_world_label.text = "限时 · 限地 · 限量交付 —— 每一关都是一道会动的机关题。"
+	_subtitle.text = "在阴间工厂里摆出会自己干活的鬼，把鬼能变成贡品。"
+	_world_label.text = "限时 · 限地 · 限量交付 —— 每一关都是一道会动的机器题。"
 	_version.text = "v%s" % GAME_VERSION
 	_setup_background()
 	_style_buttons()
