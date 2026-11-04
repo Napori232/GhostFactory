@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_formdata")
-id = "Raw"
-display_name = "生料"
-letter = "R"
-color = Color(0.75, 0.8, 0.85, 1)
+id = "Offer"
+display_name = "贡品"
+letter = "O"
+color = Color(0.98, 0.76, 0.32, 1)
+deliverable = true

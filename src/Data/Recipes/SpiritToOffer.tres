@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_recipedata")
-id = "RawToProcessed"
-from_form = "Raw"
-to_form = "Processed"
-yield_rate = 0.8
+id = "SpiritToOffer"
+from_form = "Spirit"
+to_form = "Offer"
+yield_rate = 0.75
 cycle_time = 1.2

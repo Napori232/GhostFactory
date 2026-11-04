@@ -26,20 +26,12 @@ extends Node
 @export var save_version: int = 1
 
 @export_group("Level", "level_")
-## 关卡数据资源目录，存放 Level%02d.tres。
-@export var levels_directory: String = "res://Data/Levels"
-## 关卡数据文件命名模板，%02d 为关卡编号。
-@export var level_file_template: String = "Level%02d.tres"
 ## Demo 关卡总数。
 @export_range(1, 20, 1) var level_count: int = 3
 ## 结算三轴的星级阈值，占位数值，玩法实装后按真实评分调整。
 @export var star_threshold_efficiency: float = 1.0
 @export var star_threshold_manual: float = 1.0
 @export var star_threshold_space: float = 1.0
-## 结算面板三轴的占位分数，玩法未实现时写死显示。
-@export var placeholder_score_efficiency: int = 0
-@export var placeholder_score_manual: int = 0
-@export var placeholder_score_space: int = 0
 ## 关卡内模拟结算按钮是否显示，玩法未实现时用于验证结算流程。
 @export var debug_level_simulate_enabled: bool = true
 
@@ -48,7 +40,7 @@ extends Node
 @export var scene_menu: String = "res://Code/Entities/StartMenu/StartMenu.tscn"
 ## 关卡选择场景路径。
 @export var scene_level_select: String = "res://Code/Entities/LevelSelect/LevelSelect.tscn"
-## 关卡场景路径。
+## 关卡场景路径。关卡玩法层待重建，重建后此路径生效。
 @export var scene_level: String = "res://Code/Entities/Level/Level.tscn"
 ## 设置场景路径。
 @export var scene_settings: String = "res://Code/Entities/Setting/SettingPanel.tscn"
@@ -73,34 +65,44 @@ extends Node
 @export var sim_line_capacity: int = 3
 ## 同格堆叠压缩阈值。
 @export var sim_stack_threshold: int = 5
-## 推挤链上每只不倒翁鬼的单次产鬼能。
-@export var sim_tumbler_spirit: int = 3
-## 加工鬼吞吐速率减半（共鸣代价）。
-@export var sim_processing_rate_halved: float = 0.5
-## 镜鬼复制品产出比例。
-@export var sim_mirror_output_scale: float = 0.5
-## 镜鬼复制品寿命（秒）。
-@export var sim_mirror_lifetime: float = 8.0
-## 收容鬼处理一个垃圾的耗时（秒）。
-@export var sim_contain_interval: float = 2.0
-## 收容鬼每吃一个垃圾返还的鬼能。
-@export var sim_contain_refund: int = 1
-## 长舌鬼舌头节拍：伸出。
-@export var sim_tongue_extend: float = 0.4
-## 长舌鬼舌头节拍：停留。
-@export var sim_tongue_hold: float = 0.3
-## 长舌鬼舌头节拍：收回。
-@export var sim_tongue_retract: float = 0.4
-## 长舌鬼舌头节拍：间歇。
-@export var sim_tongue_rest: float = 0.9
-## 采集区掉落速率的面积指数，边际递减。
-@export var sim_area_exponent: float = 0.5
-## 长舌鬼的取料周期（秒）。越小产料越快。
-@export var sim_tongue_cycle: float = 1.0
+## 格子边长（像素）。
+@export var sim_cell_size: int = 64
+## 机关移动一格所需时间（秒）。
+@export_range(0.05, 2.0, 0.05) var sim_ghost_move_interval: float = 0.3
+## 采集鬼搜索一步所需时间（秒）。
+@export_range(0.05, 2.0, 0.05) var sim_search_step_interval: float = 0.1
+## 采集鬼拾取一件掉落物所需时间（秒）。
+@export_range(0.05, 5.0, 0.05) var sim_pickup_interval: float = 0.5
+## 采集鬼搜索区面积上限（格）。
+@export_range(1, 64, 1) var sim_search_area_limit: int = 9
+## 生产鬼生产周期（秒）。
+@export_range(0.1, 10.0, 0.1) var sim_producer_cycle: float = 2.0
+## 生产鬼单次产量。
+@export_range(1, 10, 1) var sim_producer_output: int = 1
+## 生产鬼输出缓冲容量。
+@export_range(0, 20, 1) var sim_producer_buffer: int = 3
+## 采集鬼输出缓冲容量。
+@export_range(0, 20, 1) var sim_collector_buffer: int = 3
+## 运输鬼输入缓冲容量。
+@export_range(0, 20, 1) var sim_transporter_input_buffer: int = 1
+## 运输鬼输出缓冲容量。
+@export_range(0, 20, 1) var sim_transporter_output_buffer: int = 1
+## 处理鬼输入缓冲容量。
+@export_range(0, 20, 1) var sim_processor_input_buffer: int = 2
+## 处理鬼输出缓冲容量。
+@export_range(0, 20, 1) var sim_processor_output_buffer: int = 2
+## 处理鬼损耗率，差额部分转为杂质。
+@export_range(0.0, 1.0, 0.05) var sim_processor_impurity_rate: float = 0.25
+## 处理鬼再处理（杂质回收）耗时（秒）。
+@export_range(0.1, 10.0, 0.1) var sim_processor_recycle_interval: float = 1.6
+## 缺料等待多久判定为故障（秒）。
+@export_range(1.0, 60.0, 1.0) var sim_fault_timeout: float = 5.0
 
 @export_group("Build", "build_")
 ## 每关开局赠送的初始鬼能。够玩家盖出第一条产线且有余量。
 @export var build_start_spirit: int = 30
+## 拆除机关时是否全额退还鬼能。
+@export var build_refund_on_remove: bool = true
 
 @export_group("UI", "ui_")
 ## 背景图资源路径，留空表示等待美术出图。
@@ -139,7 +141,7 @@ extends Node
 @export_range(0.0, 30.0, 0.5) var ui_float_distance: float = 6.0
 
 @export_group("Tutorial", "tutorial_")
-## 教程步骤数据路径。
+## 教程步骤数据路径。教程层待重建，重建后此路径生效。
 @export var tutorial_steps_path: String = "res://Data/Tutorial/tutorial_steps.tres"
 ## 是否在第 1 关自动触发教程。
 @export var tutorial_enabled: bool = true

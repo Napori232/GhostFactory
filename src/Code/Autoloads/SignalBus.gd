@@ -62,10 +62,10 @@ signal ProgressChanged
 ## @param spirit 当前鬼能
 signal SpiritChanged(spirit: int)
 
-## 供品交付计数变化。
+## 已交付贡品计数变化。
 ## @param delivered 已交付数量
 ## @param goal 关卡目标数量
-signal DeliveredChanged(delivered: int, goal: int)
+signal OfferScored(delivered: int, goal: int)
 
 ## 鬼被放置。
 ## @param ghost 放置的鬼组件节点
@@ -81,9 +81,35 @@ signal GhostRemoved(ghost: Node)
 ## @param to_cell 位移后的格子
 signal GhostDisplaced(ghost: Node, from_cell: Vector2i, to_cell: Vector2i)
 
-## 供品口收到一份供品。
-## @param form 供品形态 id
-## @param terminal 接收的供品口节点
+## 鬼的状态发生变化（待机 / 运行 / 暂停）。
+## @param ghost 状态变化的鬼组件节点
+## @param state 新状态
+signal GhostStateChanged(ghost: Node, state: StringName)
+
+## 鬼进入故障。
+## @param ghost 进入故障的鬼组件节点
+signal GhostFaulted(ghost: Node)
+
+## 鬼能产出。
+## @param amount 产出数量
+signal SpiritProduced(amount: int)
+
+## 鬼能掉落到地面。
+## @param cell 掉落所在格
+## @param amount 掉落数量
+signal SpiritDropped(cell: Vector2i, amount: int)
+
+## 鬼能被拾取。
+## @param amount 拾取数量
+signal SpiritPicked(amount: int)
+
+## 杂质产生并落地占格。
+## @param cell 落地所在格
+signal ImpurityCreated(cell: Vector2i)
+
+## 贡品口收到一份贡品。
+## @param form 贡品形态 id
+## @param terminal 接收的贡品口节点
 signal ItemDelivered(form: String, terminal: Node)
 
 ## 鬼的缓冲状态变化。
@@ -99,6 +125,14 @@ signal LevelTimerTick(time_left: float)
 ## @param from 起点鬼节点
 ## @param to 终点鬼节点
 signal LineCreated(from: Node, to: Node)
+
+## 连线被阻断（下游缓冲满或端口不兼容）。
+## @param from 起点鬼节点
+signal LineBlocked(from: Node)
+
+## 教程步骤切换。
+## @param step_index 当前步骤序号
+signal TutorialStepChanged(step_index: int)
 
 ## 教程全部步骤完成。
 signal TutorialCompleted

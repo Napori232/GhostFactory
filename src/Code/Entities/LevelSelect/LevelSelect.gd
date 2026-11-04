@@ -83,7 +83,6 @@ func _count_cleared_levels() -> int:
 ## @param level_id 关卡编号，从 1 开始
 ## @return 构建完成的 PanelContainer。
 func _build_card(level_id: int) -> PanelContainer:
-	var data: LevelData = LevelData.LoadLevel(level_id)
 	var unlocked := SaveManager.IsLevelUnlocked(level_id)
 	var stars := SaveManager.GetBestStars(level_id)
 
@@ -100,33 +99,27 @@ func _build_card(level_id: int) -> PanelContainer:
 	panel.add_child(box)
 
 	box.add_child(_make_label("关卡 %d" % level_id, 20, UIPalette.TEXT_SECONDARY))
-	if data == null:
-		box.add_child(_make_label("数据缺失", 20, UIPalette.TEXT_PRIMARY))
-		box.add_child(_make_label("关卡配置加载失败，无法开始。", 14, UIPalette.TEXT_SECONDARY))
-	else:
-		box.add_child(_make_label(data.display_name, 20, UIPalette.TEXT_PRIMARY))
-		box.add_child(_make_label(data.description, 14, UIPalette.TEXT_SECONDARY))
-		box.add_child(_make_label("时长 %d 秒" % data.time_limit, 14, UIPalette.TEXT_SECONDARY))
-		box.add_child(_make_label("目标交付 %d" % data.goal_score, 14, UIPalette.TEXT_SECONDARY))
-		box.add_child(_make_label("空间预算 %d 格" % data.space_budget, 14, UIPalette.TEXT_SECONDARY))
-		box.add_child(_make_label(_format_stars(stars), 22, UIPalette.ACCENT))
-		# 状态文案区分已通关、下一关推荐与未解锁，让玩家一眼知道该打哪关。
-		var status_text := "未解锁"
-		var status_color: Color = UIPalette.TEXT_DISABLED
-		if unlocked:
-			if stars > 0:
-				status_text = "已通关"
-				status_color = UIPalette.SUCCESS
-			else:
-				status_text = "可挑战"
-				status_color = UIPalette.GLOW_CYAN
-		box.add_child(_make_label(status_text, 14, status_color))
+	# 关卡数据与关卡场景已随旧实现一并移除，关卡列表暂只保留骨架与存档状态。
+	box.add_child(_make_label("待重建", 20, UIPalette.TEXT_PRIMARY))
+	box.add_child(_make_label("关卡场景重建后此处显示关卡说明。", 14, UIPalette.TEXT_SECONDARY))
+	box.add_child(_make_label(_format_stars(stars), 22, UIPalette.ACCENT))
+	# 状态文案区分已通关、下一关推荐与未解锁，让玩家一眼知道该打哪关。
+	var status_text := "未解锁"
+	var status_color: Color = UIPalette.TEXT_DISABLED
+	if unlocked:
+		if stars > 0:
+			status_text = "已通关"
+			status_color = UIPalette.SUCCESS
+		else:
+			status_text = "可挑战"
+			status_color = UIPalette.GLOW_CYAN
+	box.add_child(_make_label(status_text, 14, status_color))
 
 	var button := Button.new()
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	button.text = "开始关卡" if unlocked else "未解锁"
-	button.disabled = not unlocked or data == null
-	button.pressed.connect(_on_card_pressed.bind(level_id))
+	# 关卡场景尚未重建，卡片按钮暂不可用。
+	button.text = "待重建" if unlocked else "未解锁"
+	button.disabled = true
 	box.add_child(button)
 	if unlocked:
 		panel.mouse_entered.connect(_on_card_hovered.bind(panel))

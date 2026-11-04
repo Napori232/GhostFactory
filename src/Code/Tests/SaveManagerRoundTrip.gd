@@ -18,7 +18,8 @@ func _run_all() -> void:
 	_test_save_round_trip()
 	_test_reset_progress()
 	_test_best_stars_monotonic()
-	_test_level_resources()
+	_test_form_resources()
+	_test_recipe_resources()
 
 ## 测试存档写入后能读回一致。
 func _test_save_round_trip() -> void:
@@ -74,25 +75,42 @@ func _test_best_stars_monotonic() -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(tmp_path))
 	ExportSettings.save_game_path = ORIGINAL_SAVE_PATH
 
-## 测试三个关卡资源可加载且字段正确。
-func _test_level_resources() -> void:
+## 测试三个形态资源可加载且字段正确。
+func _test_form_resources() -> void:
 	var expected := {
-		1: {"name": "第一关：输送线", "time": 80, "goal": 20, "space": 12},
-		2: {"name": "第二关：加工与损耗", "time": 100, "goal": 28, "space": 18},
-		3: {"name": "第三关：产能与分流", "time": 90, "goal": 30, "space": 24},
+		"Spirit": {"name": "鬼能", "deliverable": false},
+		"Offer": {"name": "贡品", "deliverable": true},
+		"Impurity": {"name": "杂质", "deliverable": false},
 	}
-	for level_id: int in expected:
-		var data := LevelData.LoadLevel(level_id)
+	for form_id: String in expected:
+		var path := "res://Data/Forms/%s.tres" % form_id
+		var data := ResourceLoader.load(path) as FormData
 		if data == null:
-			_check(false, "Level%02d.tres 加载失败" % level_id)
+			_check(false, "%s.tres 加载失败" % form_id)
 			continue
-		var exp: Dictionary = expected[level_id]
-		_check(data.display_name == exp["name"], "Level%02d display_name 正确" % level_id)
-		_check(data.time_limit == exp["time"], "Level%02d time_limit 正确" % level_id)
-		_check(data.goal_score == exp["goal"], "Level%02d goal_score 正确" % level_id)
-		_check(data.space_budget == exp["space"], "Level%02d space_budget 正确" % level_id)
-		_check(data.level_id == level_id, "Level%02d level_id 正确" % level_id)
-	_check(LevelData.LoadLevel(99) == null, "不存在的关卡返回 null")
+		var exp: Dictionary = expected[form_id]
+		_check(data.id == form_id, "%s id 正确" % form_id)
+		_check(data.display_name == exp["name"], "%s display_name 正确" % form_id)
+		_check(data.deliverable == exp["deliverable"], "%s deliverable 正确" % form_id)
+
+## 测试两条配方可加载且字段正确。
+func _test_recipe_resources() -> void:
+	var expected := {
+		"SpiritToOffer": {"from": "Spirit", "to": "Offer", "yield": 0.75, "cycle": 1.2},
+		"ImpurityToSpirit": {"from": "Impurity", "to": "Spirit", "yield": 1.0, "cycle": 1.6},
+	}
+	for recipe_id: String in expected:
+		var path := "res://Data/Recipes/%s.tres" % recipe_id
+		var data := ResourceLoader.load(path) as RecipeData
+		if data == null:
+			_check(false, "%s.tres 加载失败" % recipe_id)
+			continue
+		var exp: Dictionary = expected[recipe_id]
+		_check(data.id == recipe_id, "%s id 正确" % recipe_id)
+		_check(data.from_form == exp["from"], "%s from_form 正确" % recipe_id)
+		_check(data.to_form == exp["to"], "%s to_form 正确" % recipe_id)
+		_check(is_equal_approx(data.yield_rate, exp["yield"]), "%s yield_rate 正确" % recipe_id)
+		_check(is_equal_approx(data.cycle_time, exp["cycle"]), "%s cycle_time 正确" % recipe_id)
 
 ## 执行一条断言。
 ## @param condition 断言条件

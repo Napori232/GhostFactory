@@ -38,8 +38,6 @@ func _reset_to_defaults() -> void:
 	}
 	_unlocked = {
 		"ghosts": PackedStringArray(),
-		"forms": PackedStringArray(),
-		"recipes": PackedStringArray(),
 	}
 	_settings = {
 		"skip_tutorial": false,
@@ -135,8 +133,6 @@ func ResetProgress() -> bool:
 	}
 	_unlocked = {
 		"ghosts": PackedStringArray(),
-		"forms": PackedStringArray(),
-		"recipes": PackedStringArray(),
 	}
 	_meta["clear_count"] = 0
 	var success := SaveGame()
@@ -202,18 +198,8 @@ func UnlockGhost(ghost_id: String) -> void:
 	_unlock_id_list("ghosts", ghost_id)
 	SignalBus.GhostUnlocked.emit(ghost_id)
 
-## 解锁一个形态，幂等。
-## @param form_id 形态的 id
-func UnlockForm(form_id: String) -> void:
-	_unlock_id_list("forms", form_id)
-
-## 解锁一个配方，幂等。
-## @param recipe_id 配方的 id
-func UnlockRecipe(recipe_id: String) -> void:
-	_unlock_id_list("recipes", recipe_id)
-
 ## 向指定解锁表追加一个 id 并写盘。
-## @param key 解锁表名：ghosts、forms 或 recipes
+## @param key 解锁表名：ghosts
 ## @param id 要追加的 id
 func _unlock_id_list(key: String, id: String) -> void:
 	var list: PackedStringArray = _unlocked.get(key, PackedStringArray())

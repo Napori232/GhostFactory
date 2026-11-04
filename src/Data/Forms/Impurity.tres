@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_formdata")
-id = "Garbage"
-display_name = "垃圾"
-letter = "G"
+id = "Impurity"
+display_name = "杂质"
+letter = "I"
 color = Color(0.35, 0.35, 0.38, 1)
+deliverable = false

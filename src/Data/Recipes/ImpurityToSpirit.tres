@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/RecipeData.gd" id="1_recipedata"]
+
+[resource]
+script = ExtResource("1_recipedata")
+id = "ImpurityToSpirit"
+from_form = "Impurity"
+to_form = "Spirit"
+yield_rate = 1.0
+cycle_time = 1.6

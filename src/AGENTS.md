@@ -92,9 +92,9 @@ Code/
 | `Code/Common/TouchActionButton.gd` | 移动端虚拟触控动作按钮 |
 | `Code/Common/SceneRouter.gd` | 场景路由：跨场景跳转的唯一入口 |
 | `Code/Common/StarRating.gd` | 结算星级计算（当前为占位阈值） |
-| `Code/Common/GhostTag.gd` | 端口标签常量：GRAB / HANG / SWALLOW / FEED / SPLIT / MIRROR / OFFER / SPIT |
-| `Code/Common/FormData.gd` | 形态数据：生料、加工品、垃圾 |
-| `Code/Common/RecipeData.gd` | 配方数据：形态转换关系与产出率 |
+| `Code/Common/GhostTag.gd` | 端口标签词表：SPIRIT / OFFER / IMPURITY 物料标签与 HAUL / GROUND 动作标签；连线合法性校验 |
+| `Code/Common/FormData.gd` | 形态数据：鬼能 / 贡品 / 杂质 |
+| `Code/Common/RecipeData.gd` | 配方数据：形态转换关系、产出率与加工耗时 |
 | `Code/Common/GridUtil.gd` | 网格几何工具：格子换算、路径生成、占位重叠检测 |
 | `Code/Common/UIPalette.gd` | UI 23 色板与全局主题生成：深靛蓝底、玻璃面板、霓虹描边、暖橙点缀 |
 | `Code/Common/UIEffects.gd` | UI 动效库：缩放弹跳、淡入淡出、粒子迸发、数字滚动、呼吸、左右摇摆、悬浮、辉光脉冲、悬停与按下反馈 |
@@ -114,7 +114,7 @@ Code/
 | `Code/Entities/LevelSelect/LevelSelect.gd` | 关卡列表构建与解锁状态刷新 |
 | `Code/Entities/Setting/SettingPanel.tscn` | 设置面板：音量、开关、画质与重置进度 |
 | `Code/Entities/Setting/SettingPanel.gd` | 设置项读写、音量实时应用与二次确认流程 |
-| `Code/Tests/SaveManagerRoundTrip.tscn` | 存档与关卡数据的 headless 往返测试 |
+| `Code/Tests/SaveManagerRoundTrip.tscn` | 存档与形态/配方资源的 headless 往返测试 |
 | `Code/Tests/UiFlowTest.tscn` | UI 流程的 headless 测试 |
 
 > **待重建**（v10 玩法层）：`Entities/Board/`（网格、机关组件、掉落物、线路、运行时）、`Entities/Level/`（关卡流程、目标、计时、结算）、`Entities/Tutorial/`（新手教程与聚光灯）、`Common/GhostData.gd`、`Common/LevelData.gd`。
