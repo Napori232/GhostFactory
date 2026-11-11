@@ -141,6 +141,67 @@ func _build_ghosts() -> Array[GhostData]:
 	processor.color = Color(0.94, 0.78, 0.34)
 	result.append(processor)
 
+	# ── 推动链三件（Docs/Ghosts.md 推动链四件中的三件，鼓鬼留作长期规划）──
+	# 这三只都不走四个大类的默认行为，靠 behavior_id 单独分派。
+	# 几何占位形状「待美术定」，先一律按 1 格实装。
+
+	# 推舌鬼：自动触发、刚体，每 2.0 s 出舌把前方柔体推开一格，是推动链的起点。
+	var pusher := GhostData.new()
+	pusher.id = &"pusher"
+	pusher.behavior_id = &"pusher"
+	pusher.display_name = "推舌鬼"
+	pusher.category = GhostData.CATEGORY_TRANSPORT
+	pusher.trigger_type = GhostData.TRIGGER_AUTO
+	pusher.movability = GhostData.MOVABILITY_RIGID
+	var pusher_materials: Array[StringName] = [GhostTag.SPIRIT, GhostTag.OFFER, GhostTag.IMPURITY]
+	var pusher_ports: Array[BoardPortDef] = [
+		_port(&"in", true, pusher_materials, [], 1),
+		_port(&"out", false, [], pusher_materials, 1),
+	]
+	pusher.ports = pusher_ports
+	pusher.cost = 8
+	pusher.cycle_time = 2.0
+	pusher.buffer_capacity = 1
+	pusher.color = Color(0.62, 0.55, 0.95)
+	result.append(pusher)
+
+	# 守财鬼：被动触发、柔体，被推一次掉 1 鬼能——永动机引擎的核心件。
+	# 无端口（0/0），只能靠被推产生产出。
+	var miser := GhostData.new()
+	miser.id = &"miser"
+	miser.behavior_id = &"miser"
+	miser.display_name = "守财鬼"
+	miser.category = GhostData.CATEGORY_TRANSPORT
+	miser.trigger_type = GhostData.TRIGGER_PASSIVE
+	miser.movability = GhostData.MOVABILITY_SOFT
+	var miser_ports: Array[BoardPortDef] = []
+	miser.ports = miser_ports
+	miser.cost = 4
+	miser.cycle_time = 0.0
+	miser.buffer_capacity = 0
+	miser.color = Color(0.98, 0.82, 0.42)
+	result.append(miser)
+
+	# 吊死鬼：被动触发、柔体、需手动摆位；被推动后下一 tick 荡回原位，是推力链的中继。
+	var hang := GhostData.new()
+	hang.id = &"hang"
+	hang.behavior_id = &"hang"
+	hang.display_name = "吊死鬼"
+	hang.category = GhostData.CATEGORY_TRANSPORT
+	hang.trigger_type = GhostData.TRIGGER_PASSIVE
+	hang.movability = GhostData.MOVABILITY_SOFT
+	var hang_ports: Array[BoardPortDef] = [
+		_port(&"in", true, pusher_materials, [], 1),
+		_port(&"out", false, [], pusher_materials, 1),
+	]
+	hang.ports = hang_ports
+	hang.cost = 5
+	hang.cycle_time = 0.3
+	hang.buffer_capacity = 1
+	hang.is_manual = true
+	hang.color = Color(0.55, 0.72, 0.62)
+	result.append(hang)
+
 	return result
 
 ## 生成矩形格区域。

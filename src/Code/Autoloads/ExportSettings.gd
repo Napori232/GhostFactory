@@ -109,6 +109,9 @@ extends Node
 @export_range(0.1, 10.0, 0.1) var sim_processor_cycle: float = 1.2
 ## 运输鬼搬运一格的基础耗时，单位：秒。
 @export_range(0.05, 2.0, 0.05) var sim_transporter_interval: float = 0.3
+
+## 推舌鬼出舌周期：每 2.0 s 尝试把前方一格推开（Docs/Ghosts.md 推舌鬼）。
+@export_range(0.2, 20.0, 0.1) var sim_pusher_cycle: float = 2.0
 ## 采集搜索区软上限，单位：格；每超 1 格拾取步进 +10%（GameDesign §13）。
 @export_range(1, 100, 1) var sim_search_soft_cap: int = 9
 

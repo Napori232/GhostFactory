@@ -8,12 +8,18 @@ extends Node
 
 ## 关卡资源路径模板。
 const LEVEL_PATH: String = "res://Code/Data/Levels/Level%02d.tres"
-## 四只基础鬼的资源路径。
+## 鬼资源目录。新增一只鬼只需往这里丢一份 .tres，核心层不用改
+## （Docs/PhysicsLayer.md §5「新增一只鬼 = 一个 .tres + 一个 Behavior 类」）。
+const GHOST_DIR: String = "res://Code/Data/Ghosts/"
+## 目录列举不可用时的兜底清单（导出包或异常环境下使用）。
 const GHOST_PATHS: Array[String] = [
 	"res://Code/Data/Ghosts/Producer.tres",
 	"res://Code/Data/Ghosts/Collector.tres",
 	"res://Code/Data/Ghosts/Transporter.tres",
 	"res://Code/Data/Ghosts/Processor.tres",
+	"res://Code/Data/Ghosts/Pusher.tres",
+	"res://Code/Data/Ghosts/Miser.tres",
+	"res://Code/Data/Ghosts/Hang.tres",
 ]
 
 var level: LevelData = null
@@ -35,14 +41,26 @@ var _next_uid: int = 1
 var _tick_acc: float = 0.0
 var _timer_acc: float = 0.0
 
-## 载入四只基础鬼的静态配置表。
+## 载入全部鬼的静态配置表：优先扫目录，扫不到时退回固定清单。
 ## @return 以 GhostData.id 为键的字典。
 static func LoadGhostLibrary() -> Dictionary:
 	var library: Dictionary = {}
-	for path in GHOST_PATHS:
-		var data := load(path) as GhostData
-		if data != null:
-			library[data.id] = data
+	var dir := DirAccess.open(GHOST_DIR)
+	if dir != null:
+		dir.list_dir_begin()
+		var file_name := dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and file_name.ends_with(".tres"):
+				var scanned := load(GHOST_DIR + file_name) as GhostData
+				if scanned != null:
+					library[scanned.id] = scanned
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	if library.is_empty():
+		for path in GHOST_PATHS:
+			var data := load(path) as GhostData
+			if data != null:
+				library[data.id] = data
 	return library
 
 ## 载入指定关卡的资源。
@@ -208,6 +226,35 @@ func RemoveGhostAt(cell: Vector2i) -> bool:
 	if ExportSettings.build_refund_on_remove:
 		AddSpirit(ghost.data.cost)
 	SignalBus.GhostRemoved.emit(self)
+	MarkChanged()
+	return true
+
+## 把一只已放置的柔体鬼沿推动方向挪一格（推动链专用，Docs/GameDesign.md §8.3）。
+## 位移后原有连线会错位，按「被推离原设计位就是布局失误的代价」一并拆除。
+## @param ghost 待移动的鬼实例。
+## @param target 目标原点格坐标。
+## @return 移动成功返回 true。
+func MoveGhost(ghost, target: Vector2i) -> bool:
+	if ghost == null:
+		return false
+	var next_cells: Array[Vector2i] = ghost.data.GetFootprintAt(target)
+	for cell in next_cells:
+		if not GridUtil.InBounds(cell, level.grid_size):
+			return false
+		if grid.obstacles.has(cell) or grid.facility_cells.has(cell):
+			return false
+		if grid.GetItemAt(cell) != null:
+			return false
+		var occupant = grid.GetGhostAt(cell)
+		if occupant != null and occupant != ghost:
+			return false
+	for cell in ghost.data.GetFootprintAt(ghost.cell):
+		grid.ClearGhost(cell)
+	ghost.cell = target
+	for cell in next_cells:
+		grid.SetGhost(cell, ghost)
+	connections.RemoveLinksOf(ghost.uid)
+	SignalBus.GhostPushed.emit(self, ghost)
 	MarkChanged()
 	return true
 

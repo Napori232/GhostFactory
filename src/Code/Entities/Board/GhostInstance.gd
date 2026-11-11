@@ -23,6 +23,8 @@ var input_buffer: Array[String] = []
 var output_buffer: Array[String] = []
 var process_counter: int = 0
 var search_cells: Array[Vector2i] = []
+## 吊死鬼专属：被推动后记下的推力方向，下一 tick 沿反方向荡回原位。
+var sway_dir: Vector2i = Vector2i.ZERO
 
 ## 构造运行时实例。
 ## @param ghost_data 静态配置。

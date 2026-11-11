@@ -28,6 +28,10 @@ const MOVABILITY_SOFT: StringName = &"SOFT"
 
 ## 资源内唯一 id，例如 &"producer"。
 @export var id: StringName = &""
+## 行为分派键。留空时按 category 走四个大类的基础行为；
+## 填了具体键（pusher / miser / hang）则走推动链专用行为。
+## 存在的意义是「新增一只鬼 = 一份 .tres + 一个行为分支」，不必给大类加判定分支。
+@export var behavior_id: StringName = &""
 ## 中文显示名，例如「生产鬼」。
 @export var display_name: String = ""
 ## 四个大类之一，仅用于分类与 UI，不参与判定。

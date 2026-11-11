@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GhostData" format=3]
+
+[ext_resource type="Script" path="res://Code/Common/BoardPortDef.gd" id="1_3grsx"]
+[ext_resource type="Script" path="res://Code/Common/GhostData.gd" id="2_v2o1n"]
+
+[resource]
+script = ExtResource("2_v2o1n")
+id = &"miser"
+behavior_id = &"miser"
+display_name = "守财鬼"
+category = &"TRANSPORT"
+trigger_type = &"PASSIVE"
+movability = &"SOFT"
+cost = 4
+cycle_time = 0.0
+buffer_capacity = 0
+color = Color(0.98, 0.82, 0.42, 1)

@@ -105,7 +105,7 @@ Code/
 | `Code/UI/ArtPlaceholder.gd` | 美术位组件：真实纹理 > 程序化图案 > 裸占位框，供主视觉与背景复用 |
 | `Code/UI/UIFeedback.gd` | 界面反馈：飘字与提示条 |
 | `Code/Common/BoardPortDef.gd` | 端口定义资源：输入输出物料标签、缓冲容量与连线合法性 |
-| `Code/Common/GhostData.gd` | 鬼的静态配置：大类、触发、可动性、占位、端口、周期与造价 |
+| `Code/Common/GhostData.gd` | 鬼的静态配置：大类、触发、可动性、占位、端口、周期、造价与行为分派键 |
 | `Code/Common/GhostPlacement.gd` | 关卡预置鬼的落点与初始状态 |
 | `Code/Common/FacilityPlacement.gd` | 关卡预置交互口：交付 / 仓库、位置与接收形态 |
 | `Code/Common/StarThresholds.gd` | 关卡三轴评分阈值与 2★ 基准时间 |
@@ -131,7 +131,8 @@ Code/
 | `Code/Entities/Board/GhostInstance.gd` | 单只鬼的运行时状态：状态机、缓冲、计时与存档 |
 | `Code/Entities/Board/DroppedItem.gd` | 掉落物：格坐标、形态与堆叠数量 |
 | `Code/Entities/Board/ConnectionLayer.gd` | 连线层：动态物料标签、连线登记与移除 |
-| `Code/Entities/Board/GhostBehavior.gd` | 四类基础鬼各自的 tick 行为（静态分派） |
+| `Code/Entities/Board/GhostBehavior.gd` | 各类鬼的 tick 行为与「被推动反应」（静态分派） |
+| `Code/Entities/Board/PushResolver.gd` | 推动链结算：柔体让位、刚体止点、障碍与掉落物阻断 |
 | `Code/Entities/Board/BoardRunner.gd` | 固定 tick 时序驱动：意图执行与连线搬运结算 |
 | `Code/Entities/Level/Level.tscn` | 3D 关卡主场景，`ExportSettings.scene_level` 的入口 |
 | `Code/Entities/Level/Level.gd` | 关卡流程根：装配、输入分派、通关结算与存档 |
@@ -144,6 +145,7 @@ Code/
 | `Code/Entities/Level/Picker3D.gd` | 射线拾取：地面取整与鬼实体 AABB 最近命中 |
 | `Code/Tests/LevelDataLoadTest.tscn` | 数据层与端口标签、3D 坐标换算测试 |
 | `Code/Tests/BoardPlacementTest.tscn` | 棋盘放置、占格、拾取、状态与拆除测试 |
+| `Code/Tests/PushChainTest.tscn` | 推动链测试：柔体链、刚体止点、阻断、守财鬼掉落、吊死鬼回摆 |
 | `Code/Tests/Level01PlaythroughTest.tscn` | 关卡 1 脚本化通关测试 |
 | `Code/Tests/ManualCountTest.tscn` | 手动次数口径测试（D5） |
 | `Code/Tests/FaultTest.tscn` | 生产鬼四邻与缓冲双满的故障测试 |

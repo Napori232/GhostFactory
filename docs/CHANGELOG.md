@@ -7,6 +7,30 @@
 
 ---
 
+## 2026-11-11 · 实装推动链：柔体让位、刚体止点与三只推动链鬼
+
+- **起因**：用户要求「照着策划完成这个游戏」。对照 `Docs/GameDesign.md` §8.3 与 `Docs/PhysicsLayer.md` §3 核对，推动链是策划的核心玩法（v10 涌现模型），但代码里 `movability` 只是一个数据字段，`BoardRunner.RunTick` 只跑每只鬼自己的行为，没有任何推力结算——这是策划与实现之间最大的一块缺口。
+- **动了哪些文件**
+  - 新增：`src/Code/Entities/Board/PushResolver.gd`、`src/Code/Tests/PushChainTest.gd`、`src/Code/Tests/PushChainTest.tscn`、`src/Code/Data/Ghosts/Pusher.tres`、`Miser.tres`、`Hang.tres`
+  - 修改：`src/Code/Common/GhostData.gd`、`src/Code/Entities/Board/GhostInstance.gd`、`src/Code/Entities/Board/Board.gd`、`src/Code/Entities/Board/GhostBehavior.gd`、`src/Code/Autoloads/SignalBus.gd`、`src/Code/Autoloads/ExportSettings.gd`、`src/Code/Tests/GenerateResources.gd`、`src/AGENTS.md`
+- **具体改了什么**
+  - 推动链结算：从起点格沿世界四邻逐格推进，柔体让位一格、刚体是止点（整条链一格都不动）、障碍 / 设施 / 掉落物 / 出界一律阻断；链长上限 32 防止环形布局跑死
+  - 位移以格为最小结算单位，新增 `Board.MoveGhost` 同步占用表；被推离原位后原有连线按「布局失误的代价」一并拆除
+  - 三只鬼：推舌鬼（自动 / 刚体，每 2.0 s 出舌把前方柔体推开一格）、守财鬼（被动 / 柔体，被推一次掉 1 鬼能）、吊死鬼（被动 / 柔体，被推后下一 tick 沿反方向荡回原位）
+  - `GhostData.behavior_id` 作为行为分派键：新鬼走自己的分支，不给四个大类加判定分支（符合 §8.1 不设组合规则表）
+  - `Board.LoadGhostLibrary` 改为扫 `Code/Data/Ghosts/` 目录，扫不到时退回固定清单——以后加鬼只需丢一份 `.tres`
+- **怎么验证的**
+  - 新增 `PushChainTest`：35 项断言覆盖柔体链位移、刚体止点、障碍 / 掉落物 / 出界阻断、守财鬼掉落、吊死鬼回摆、位移断线
+  - 全量 14 套 headless 测试：**632 项断言 0 失败**，`SCRIPT ERROR` / `Parse Error` 全 0；启动冒烟 0 报错
+  - 既有三关脚本化通关测试全绿，参考解未受影响
+- **遗留与待裁决**
+  - 三只新鬼已进鬼库，但三关 `allowed_ghost_ids` 未开放，玩家暂时玩不到：要不要开第 4 关，或加进第 3 关白名单，待裁决
+  - 守财鬼策划写「占 4 格」、推舌鬼「1 本体 + 1 舌头附属」，但几何形状策划标「待美术定」，暂按 1 格实装
+  - 推舌鬼的「拉近再推出」在格结算下简化为单格推，避免一次出舌动两格破坏「一格是最小结算单位」
+  - 状态：未提交
+
+---
+
 ## 2026-11-11 · 以第 8 周文档为模板生成《第 9 周开发文档》
 
 - **起因**：用户要求以 `C:\Users\14110\Desktop\第8周开发文档_鬼工厂.docx`（正文标题实为《鬼工厂》第 6 周开发文档）为模板，按目前开发进度生成一份新的开发文档。

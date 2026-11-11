@@ -148,3 +148,8 @@ signal TutorialCompleted
 ## 棋盘状态发生任意变化，表现层据此刷新只读投影。
 ## @param revision 单调递增的状态版本号；表现层只需比较版本号决定是否重建视图
 signal BoardStateChanged(revision: int)
+
+## 推动链成功推进了一格（Docs/GameDesign.md §8.3）。
+## @param board 发生推动的棋盘
+## @param ghost 本次被推动的鬼
+signal GhostPushed(board: Node, ghost: Node)

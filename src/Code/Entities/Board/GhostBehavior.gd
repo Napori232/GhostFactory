@@ -14,6 +14,15 @@ extends RefCounted
 static func RunTick(board, ghost, dt: float) -> void:
 	if ghost == null or ghost.data == null:
 		return
+	# 推动链专用行为优先：只要 .tres 带了 behavior_id，就只跑它自己的那段，
+	# 不给四个大类加判定分支（Docs/GameDesign.md §8.1「不设组合规则表」）。
+	match ghost.data.behavior_id:
+		&"pusher":
+			_pusher_tick(board, ghost, dt)
+			return
+		&"hang":
+			_hang_tick(board, ghost, dt)
+			return
 	match ghost.data.category:
 		GhostData.CATEGORY_PRODUCTION:
 			_producer_tick(board, ghost, dt)
@@ -147,3 +156,57 @@ static func _processor_tick(board, ghost, dt: float) -> void:
 			board.SpawnImpurityNear(ghost.cell)
 	SignalBus.ItemProcessed.emit(output_form)
 	board.MarkChanged()
+
+## 推舌鬼：每 2.0 s 朝四邻中的柔体出舌，把整条链推开一格（Docs/Ghosts.md 推舌鬼）。
+## 策划案写的是「抓住后拉近再推出」，以格结算时「拉近一格」与「推开一格」是同一个位移，
+## 这里只做推，避免一次出舌动两格破坏「一格是最小结算单位」（GameDesign §8.2）。
+## @param board 棋盘实例。
+## @param ghost 推舌鬼实例。
+## @param dt 本 tick 时长，单位：秒。
+static func _pusher_tick(board, ghost, dt: float) -> void:
+	var cycle := maxf(ExportSettings.sim_pusher_cycle, 0.05)
+	ghost.timer += dt
+	if ghost.timer < cycle:
+		return
+	var directions := PushResolver.PushableDirections(board, ghost.cell)
+	if directions.is_empty():
+		return
+	ghost.timer -= cycle
+	var direction: Vector2i = directions[board.rng.randi_range(0, directions.size() - 1)]
+	var result := PushResolver.TryPush(board, ghost.cell, direction)
+	if bool(result["ok"]):
+		ghost.process_counter += 1
+		board.MarkChanged()
+
+## 吊死鬼：被推动后下一 tick 沿反方向荡回原位，是推动链的中继（Docs/Ghosts.md 吊死鬼）。
+## @param board 棋盘实例。
+## @param ghost 吊死鬼实例。
+## @param dt 本 tick 时长，单位：秒。
+static func _hang_tick(board, ghost, dt: float) -> void:
+	if ghost.sway_dir == Vector2i.ZERO:
+		return
+	var back: Vector2i = ghost.cell - ghost.sway_dir
+	ghost.sway_dir = Vector2i.ZERO
+	board.MoveGhost(ghost, back)
+
+## 被推动链推动后的反应。每只鬼只描述自己的反应，组合结果由摆放几何涌现。
+## @param board 棋盘实例。
+## @param ghost 被推动的鬼实例。
+## @param direction 本次推力的世界四邻方向。
+static func OnPushed(board, ghost, direction: Vector2i) -> void:
+	match ghost.data.behavior_id:
+		&"miser":
+			# 守财鬼：被推一次掉 1 鬼能——永动机引擎的核心件。
+			var empty: Array[Vector2i] = board.grid.GetEmptyNeighbors(ghost.cell)
+			if empty.is_empty():
+				return
+			var cell: Vector2i = empty[board.rng.randi_range(0, empty.size() - 1)]
+			board.SpawnItem(cell, "Spirit", 1)
+			SignalBus.SpiritProduced.emit(1)
+			SignalBus.SpiritDropped.emit(cell, 1)
+			board.MarkChanged()
+		&"hang":
+			# 记下推力方向，下一 tick 荡回原位。
+			ghost.sway_dir = direction
+		_:
+			pass
