@@ -27,7 +27,27 @@
   - 三只新鬼已进鬼库，但三关 `allowed_ghost_ids` 未开放，玩家暂时玩不到：要不要开第 4 关，或加进第 3 关白名单，待裁决
   - 守财鬼策划写「占 4 格」、推舌鬼「1 本体 + 1 舌头附属」，但几何形状策划标「待美术定」，暂按 1 格实装
   - 推舌鬼的「拉近再推出」在格结算下简化为单格推，避免一次出舌动两格破坏「一格是最小结算单位」
-  - 状态：未提交
+  - 状态：已推送（`7dbcff2`）
+
+---
+
+## 2026-11-11 · 推送本地提交到 GitHub（origin/master）
+
+- **起因**：用户提供 classic PAT，要求把本地积压的两次提交上传到 `https://github.com/Napori232/GhostFactory`。此前 HTTPS 被本机代理拦（`CONNECT tunnel failed 502`），GCM 设备码 / 浏览器授权均被同一代理挡在 `github.com/login/...`。
+- **动了哪些文件**：无代码改动。新增提交 `da7de8a`（108 文件 Demo 实装）与 `7dbcff2`（推动链 17 文件）。
+- **具体改了什么**
+  - 认证：令牌通过 `credential.helper` 的一次性 shell 函数注入，**不写入 `.gitconfig`、不落盘、不写 Windows 凭据管理器**
+  - 首次直推即成功（`0e3c37e..7dbcff2 master -> master`），无需再走 Git Data API 绕行脚本
+  - 之前为绕代理准备的 `gf_api_push.py` 未使用，已确认不在仓库内
+- **怎么验证的**
+  - `git fetch` 后本地 / 远端同为 `7dbcff2`，`rev-list --left-right --count` = `0 0`
+  - GitHub API 校验远端 tree `88eb590…` 与本地 `HEAD^{tree}` **逐字节一致**；远端文件总数 807、`truncated=false`
+  - 抽查关键文件均存在：`PushResolver.gd`、`PushChainTest.tscn`、`Pusher.tres`、`docs/CHANGELOG.md`、`docs/第9周开发文档_鬼工厂.docx`
+  - 工作区干净，无未跟踪残留
+- **遗留与待裁决**
+  - 该 PAT 已出现在对话记录中，**建议推送完成后立即到 GitHub Settings → Tokens 撤销**
+  - 本机仍未安装 git-lfs，仓库的 4 个 LFS hook 靠临时便携版通过；下次 push 若临时目录被清，需要重新放置 `git-lfs.exe`
+  - 三只推动链鬼仍不在三关白名单内，等裁决定第 4 关还是并入第 3 关
 
 ---
 
