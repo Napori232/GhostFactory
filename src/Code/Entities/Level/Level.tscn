@@ -1,0 +1,235 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Level/Level.gd" id="1_level"]
+[ext_resource type="Script" path="res://Code/Entities/Level/BoardView3D.gd" id="2_view"]
+[ext_resource type="Script" path="res://Code/Entities/Level/GridFloor.gd" id="3_floor"]
+[ext_resource type="Script" path="res://Code/Entities/Level/CameraRig.gd" id="4_camrig"]
+[ext_resource type="Script" path="res://Code/Entities/Level/LevelHud.gd" id="5_hud"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Board/Board.tscn" id="6_board"]
+
+[node name="Level3D" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="Board" parent="." instance=ExtResource("6_board")]
+
+[node name="World" type="Node3D" parent="."]
+script = ExtResource("2_view")
+
+[node name="GridFloor" type="MeshInstance3D" parent="World"]
+script = ExtResource("3_floor")
+
+[node name="CellMarkers" type="Node3D" parent="World"]
+
+[node name="Obstacles" type="Node3D" parent="World"]
+
+[node name="Facilities" type="Node3D" parent="World"]
+
+[node name="Lines" type="Node3D" parent="World"]
+
+[node name="Ghosts" type="Node3D" parent="World"]
+
+[node name="Items" type="Node3D" parent="World"]
+
+[node name="Sun" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 0.707, 0.707, 0, -0.707, 0.707, 0, 8, 0)
+light_energy = 1.1
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("4_camrig")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+projection = 1
+size = 12.0
+near = 0.1
+far = 200.0
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_hud")
+
+[node name="TopBar" type="HBoxContainer" parent="UILayer/HUD"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = -16.0
+offset_bottom = 48.0
+mouse_filter = 2
+theme_override_constants/separation = 28
+
+[node name="SpiritLabel" type="Label" parent="UILayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "鬼能  0"
+theme_override_font_sizes/font_size = 20
+
+[node name="ProgressLabel" type="Label" parent="UILayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "交付  0 / 30"
+theme_override_font_sizes/font_size = 20
+
+[node name="TimeLabel" type="Label" parent="UILayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "剩余  90.0 s"
+theme_override_font_sizes/font_size = 20
+
+[node name="CompassLabel" type="Label" parent="UILayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "北 · 0°"
+theme_override_font_sizes/font_size = 18
+
+[node name="ZoomLabel" type="Label" parent="UILayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "视野 12 格"
+theme_override_font_sizes/font_size = 18
+
+[node name="HintLabel" type="Label" parent="UILayer/HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 54.0
+offset_right = -16.0
+offset_bottom = 84.0
+text = "左键放鬼 / 拾取 / 交付"
+theme_override_font_sizes/font_size = 15
+
+[node name="GhostBar" type="HBoxContainer" parent="UILayer/HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -118.0
+offset_right = 720.0
+offset_bottom = -74.0
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="ToolBar" type="HBoxContainer" parent="UILayer/HUD"]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -66.0
+offset_right = -16.0
+offset_bottom = -14.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="StartAllButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "全部启动"
+
+[node name="ExpandSearchButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "采集范围 5×5"
+
+[node name="ConnectButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "接线"
+
+[node name="RemoveButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "拆除"
+
+[node name="XRayButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "透视 X"
+
+[node name="RotateLeftButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "↶ Q"
+
+[node name="RotateRightButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "E ↷"
+
+[node name="ZoomInButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "放大"
+
+[node name="ZoomOutButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "缩小"
+
+[node name="RestartButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "重开"
+
+[node name="MenuButton" type="Button" parent="UILayer/HUD/ToolBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "返回选关"
+
+[node name="ResultPanel" type="PanelContainer" parent="UILayer/HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -130.0
+offset_right = 230.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="UILayer/HUD/ResultPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/HUD/ResultPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ResultTitle" type="Label" parent="UILayer/HUD/ResultPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "关卡完成！"
+theme_override_font_sizes/font_size = 26
+
+[node name="ResultStars" type="Label" parent="UILayer/HUD/ResultPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "★☆☆"
+theme_override_font_sizes/font_size = 40
+
+[node name="ResultDetail" type="Label" parent="UILayer/HUD/ResultPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "耗时 0 s"
+theme_override_font_sizes/font_size = 16
+autowrap_mode = 2
+
+[node name="ResultCloseButton" type="Button" parent="UILayer/HUD/ResultPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "返回选关"

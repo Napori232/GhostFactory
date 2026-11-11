@@ -102,6 +102,32 @@ extends Node
 ## 拆除鬼时是否全额退还鬼能。
 @export var build_refund_on_remove: bool = true
 
+@export_group("Simulation Ext", "sim_")
+## 采集鬼拾取一件掉落物的基础耗时，单位：秒；搜索区超软上限会按比例变慢。
+@export_range(0.05, 5.0, 0.05) var sim_collector_interval: float = 0.5
+## 处理鬼单次加工耗时，单位：秒。
+@export_range(0.1, 10.0, 0.1) var sim_processor_cycle: float = 1.2
+## 运输鬼搬运一格的基础耗时，单位：秒。
+@export_range(0.05, 2.0, 0.05) var sim_transporter_interval: float = 0.3
+## 采集搜索区软上限，单位：格；每超 1 格拾取步进 +10%（GameDesign §13）。
+@export_range(1, 100, 1) var sim_search_soft_cap: int = 9
+
+@export_group("View3D", "view_")
+## 正交相机俯仰角，单位：度；固定 -45，不参与玩法判定。
+@export var view_pitch_degrees: float = -45.0
+## 三档缩放的正交视野高度，单位：格。
+@export var view_zoom_sizes: Array[float] = [8.0, 12.0, 16.0]
+## 相机旋转补间时长，单位：秒。
+@export_range(0.0, 2.0, 0.05) var view_rotate_duration: float = 0.2
+## 相机缩放补间时长，单位：秒。
+@export_range(0.0, 2.0, 0.05) var view_zoom_duration: float = 0.15
+## 相机平移补间时长，单位：秒。
+@export_range(0.0, 2.0, 0.05) var view_pan_duration: float = 0.1
+## 鬼与障碍墙的模型高度上限，单位：格；防止斜俯视下遮死地面。
+@export_range(0.2, 3.0, 0.1) var view_model_height_max: float = 1.0
+## X-Ray 开启时鬼模型的透明度，0~1。
+@export_range(0.05, 1.0, 0.05) var view_xray_alpha: float = 0.35
+
 @export_group("UI", "ui_")
 ## 背景图资源路径，留空表示等待美术出图。
 @export var ui_background_art: String = ""

@@ -86,6 +86,9 @@ func _build_card(level_id: int) -> PanelContainer:
 	var unlocked := SaveManager.IsLevelUnlocked(level_id)
 	var stars := SaveManager.GetBestStars(level_id)
 
+	var data := Board.LoadLevelData(level_id) as LevelData
+	var playable := unlocked and data != null
+
 	var panel := PanelContainer.new()
 	panel.name = "LevelCard%d" % level_id
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -99,9 +102,11 @@ func _build_card(level_id: int) -> PanelContainer:
 	panel.add_child(box)
 
 	box.add_child(_make_label("关卡 %d" % level_id, 20, UIPalette.TEXT_SECONDARY))
-	# 关卡数据与关卡场景已随旧实现一并移除，关卡列表暂只保留骨架与存档状态。
-	box.add_child(_make_label("待重建", 20, UIPalette.TEXT_PRIMARY))
-	box.add_child(_make_label("关卡场景重建后此处显示关卡说明。", 14, UIPalette.TEXT_SECONDARY))
+	# 关卡数据已随玩法层实装，卡片直接读 LevelData 展示真实参数。
+	box.add_child(_make_label(data.display_name if data != null else "关卡数据缺失", 20, UIPalette.TEXT_PRIMARY))
+	box.add_child(_make_label(_describe_level(data), 14, UIPalette.TEXT_SECONDARY))
+	if data != null:
+		box.add_child(_make_label("可用鬼：%s" % _ghost_names(data.GetAllowedGhostIds()), 14, UIPalette.TEXT_SECONDARY))
 	box.add_child(_make_label(_format_stars(stars), 22, UIPalette.ACCENT))
 	# 状态文案区分已通关、下一关推荐与未解锁，让玩家一眼知道该打哪关。
 	var status_text := "未解锁"
@@ -116,10 +121,15 @@ func _build_card(level_id: int) -> PanelContainer:
 	box.add_child(_make_label(status_text, 14, status_color))
 
 	var button := Button.new()
+	button.name = "EnterButton"
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	# 关卡场景尚未重建，卡片按钮暂不可用。
-	button.text = "待重建" if unlocked else "未解锁"
-	button.disabled = true
+	button.text = "进入关卡" if playable else ("未解锁" if not unlocked else "关卡数据缺失")
+	button.disabled = not playable
+	if playable:
+		button.pressed.connect(_on_card_pressed.bind(level_id))
+	button.add_theme_stylebox_override("normal", _make_button_style(UIPalette.BG_RAISED, UIPalette.PRIMARY))
+	button.add_theme_stylebox_override("hover", _make_button_style(UIPalette.BG_RAISED, UIPalette.GLOW_CYAN))
+	button.add_theme_stylebox_override("pressed", _make_button_style(UIPalette.BG_PANEL, UIPalette.PRIMARY_DARK))
 	box.add_child(button)
 	if unlocked:
 		panel.mouse_entered.connect(_on_card_hovered.bind(panel))
@@ -170,6 +180,42 @@ func _make_label(text: String, font_size: int, color: Color = UIPalette.TEXT_PRI
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return label
+
+## 关卡摘要：地台尺寸、时限与目标交付量。
+## @param data 关卡数据；为空时返回提示文案。
+## @return 单行摘要。
+func _describe_level(data: LevelData) -> String:
+	if data == null:
+		return "关卡资源缺失，请重跑 GenerateResources.tscn"
+	return "%d×%d 地台 · 限时 %d s · 交付 %d %s" % [
+		data.grid_size.x, data.grid_size.y, int(data.time_limit),
+		data.goal_amount, _form_name(data.goal_form),
+	]
+
+## 把本关可用鬼 id 列表转成中文名串，便于玩家选关时判断难度。
+## @param ids 本关可用鬼 id。
+## @return 顿号分隔的鬼名。
+func _ghost_names(ids: Array[StringName]) -> String:
+	var library := Board.LoadGhostLibrary()
+	var names: Array[String] = []
+	for ghost_id in ids:
+		var ghost := library.get(ghost_id) as GhostData
+		if ghost != null:
+			names.append(ghost.display_name)
+	return "、".join(names) if not names.is_empty() else "无"
+
+## 目标交付形态的中文名。
+## @param form 形态 id。
+## @return 中文名。
+func _form_name(form: String) -> String:
+	match form:
+		"Spirit":
+			return "鬼能"
+		"Offer":
+			return "贡品"
+		"Impurity":
+			return "杂质"
+	return form
 
 ## 生成卡片外观样式：已解锁卡片用玻璃面板加主色描边，未解锁用中性描边。
 ## @param unlocked 关卡是否已解锁

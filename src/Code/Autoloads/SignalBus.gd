@@ -99,6 +99,10 @@ signal SpiritProduced(amount: int)
 ## @param amount 掉落数量
 signal SpiritDropped(cell: Vector2i, amount: int)
 
+## 处理鬼完成一次加工（鬼能→贡品，或杂质→鬼能回收）。表现层与音效据此反馈。
+## @param form 本次产出的形态 id，例如 Offer / Spirit
+signal ItemProcessed(form: StringName)
+
 ## 鬼能被拾取。
 ## @param amount 拾取数量
 signal SpiritPicked(amount: int)
@@ -130,9 +134,17 @@ signal LineCreated(from: Node, to: Node)
 ## @param from 起点鬼节点
 signal LineBlocked(from: Node)
 
+## 一条连线被玩家拆除（重复接线或点击线身）。
+## @param board 发生拆除的棋盘节点
+signal LineRemoved(board: Node)
+
 ## 教程步骤切换。
 ## @param step_index 当前步骤序号
 signal TutorialStepChanged(step_index: int)
 
 ## 教程全部步骤完成。
 signal TutorialCompleted
+
+## 棋盘状态发生任意变化，表现层据此刷新只读投影。
+## @param revision 单调递增的状态版本号；表现层只需比较版本号决定是否重建视图
+signal BoardStateChanged(revision: int)

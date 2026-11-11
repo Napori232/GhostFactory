@@ -65,14 +65,23 @@ func _test_palette() -> void:
 ## 测试美术占位组件：无资源时 HasArt 为假，设置标签生效。
 func _test_art_placeholder() -> void:
 	var placeholder := ArtPlaceholder.new()
+	placeholder.size = Vector2(320, 240)
 	add_child(placeholder)
 	await get_tree().process_frame
 	_check(placeholder != null, "ArtPlaceholder 可实例化")
 	_check(not placeholder.HasArt(), "无美术资源时 HasArt() 为 false")
+	_check(placeholder.IsShowingPlaceholderFrame(), "裸实例仍显示占位框")
 	placeholder.SetLabel("背景图 · 测试")
 	_check(placeholder.label_text == "背景图 · 测试", "SetLabel 后文字生效", placeholder.label_text)
 	placeholder.SetArt("res://nonexistent_placeholder.png")
 	_check(not placeholder.HasArt(), "路径不存在时仍无美术资源")
+	# 程序化图案：给真实尺寸并等一帧，让 _draw() 真正跑一遍矢量绘制。
+	placeholder.SetProceduralArt(FactoryArt.KIND_KEY_ART)
+	await get_tree().process_frame
+	_check(not placeholder.IsShowingPlaceholderFrame(), "程序化主视觉替换占位框")
+	placeholder.SetProceduralArt(FactoryArt.KIND_BACKDROP)
+	await get_tree().process_frame
+	_check(not placeholder.IsShowingPlaceholderFrame(), "程序化背景替换占位框")
 	placeholder.queue_free()
 
 ## 测试背景层：可实例化、可绘制、光斑强度可调。
@@ -83,6 +92,8 @@ func _test_background_layer() -> void:
 	await get_tree().process_frame
 	_check(layer != null, "BackgroundLayer 可实例化")
 	_check(layer.art_placeholder != null, "BackgroundLayer 内嵌 ArtPlaceholder")
+	_check(layer.art_placeholder != null and layer.art_placeholder.procedural_art == FactoryArt.KIND_BACKDROP, "背景层自动使用程序化工厂远景")
+	_check(layer.art_placeholder != null and not layer.art_placeholder.IsShowingPlaceholderFrame(), "背景层不再显示占位框")
 	layer.SetGlowIntensity(0.6)
 	_check(is_equal_approx(layer.glow_intensity, 0.6), "SetGlowIntensity 生效", str(layer.glow_intensity))
 	layer.SetArt("res://nonexistent_background.png")
@@ -114,7 +125,10 @@ func _test_start_menu() -> void:
 	add_child(menu)
 	await get_tree().process_frame
 	_check(menu.get_node_or_null("%Background") is BackgroundLayer, "主菜单包含 BackgroundLayer")
-	_check(menu.get_node_or_null("%KeyArt") is ArtPlaceholder, "主菜单包含主视觉占位组件")
+	_check(menu.get_node_or_null("%KeyArt") is ArtPlaceholder, "主菜单包含主视觉组件")
+	var key_art: ArtPlaceholder = menu.get_node_or_null("%KeyArt") as ArtPlaceholder
+	_check(key_art != null and key_art.procedural_art == FactoryArt.KIND_KEY_ART, "主菜单主视觉使用程序化工厂剖面图")
+	_check(key_art != null and not key_art.IsShowingPlaceholderFrame(), "主菜单不再显示占位框")
 	for button_name in ["%StartButton", "%ContinueButton", "%LevelSelectButton", "%SettingsButton", "%QuitButton"]:
 		_check(menu.get_node_or_null(button_name) is Button, "主菜单包含按钮 %s" % button_name)
 	var start_button: Button = menu.get_node("%StartButton")
@@ -139,6 +153,16 @@ func _test_level_select() -> void:
 	_check(panel.get_node_or_null("%ProgressFill") is ColorRect, "关卡选择包含进度条填充节点")
 	var cards: HBoxContainer = panel.get_node("%Cards")
 	_check(cards.get_child_count() == ExportSettings.level_count, "关卡卡片数量与关卡总数一致", "%d / %d" % [cards.get_child_count(), ExportSettings.level_count])
+	var first_card := cards.get_child(0) as PanelContainer
+	_check(first_card != null, "第一张关卡卡片存在")
+	if first_card != null:
+		var enter := first_card.find_child("EnterButton", true, false) as Button
+		_check(enter != null and not enter.disabled, "选关已恢复：第一张卡片的进入关卡按钮可用")
+		var stale := false
+		for label in first_card.find_children("*", "Label", true, false):
+			if "待重建" in (label as Label).text:
+				stale = true
+		_check(not stale, "卡片不再显示「待重建」占位文案")
 	panel.queue_free()
 	await get_tree().process_frame
 

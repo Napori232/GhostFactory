@@ -88,6 +88,8 @@ func _setup_background() -> void:
 			_background.SetArt(ExportSettings.ui_background_art)
 	if _key_art != null:
 		_key_art.SetLabel(ExportSettings.ui_key_art_label)
+		# 程序化工厂剖面图作为主视觉兜底；真实素材到位后由 SetArt 覆盖。
+		_key_art.SetProceduralArt(FactoryArt.KIND_KEY_ART)
 		if ExportSettings.ui_key_art != "":
 			_key_art.SetArt(ExportSettings.ui_key_art)
 

@@ -1,7 +1,7 @@
 extends Node
 
 ## UI 流程的 headless 测试：主菜单、关卡选择与设置。
-## 关卡场景与结算面板随玩法层一并重建，重建后在此补回对应测试组。
+## 选关卡片已恢复为可进入关卡，测试覆盖按钮可用性与跳转绑定。
 ## 运行：Godot --headless --path D:/GhostFactory/src res://Code/Tests/UiFlowTest.tscn
 
 const ORIGINAL_SAVE_PATH: String = "user://savegame.cfg"
@@ -58,9 +58,15 @@ func _test_scene_navigation() -> void:
 
 ## 测试主菜单：按钮齐备、继续按钮在无存档时禁用。
 func _test_start_menu() -> void:
+	# 用临时存档隔离：不读真实进度，避免被通关类测试留下的「当前关卡」污染。
+	var tmp_path := "user://test_ui_flow_menu.cfg"
+	ExportSettings.save_game_path = tmp_path
+	SaveManager.ResetProgress()
 	var scene: PackedScene = load("res://Code/Entities/StartMenu/StartMenu.tscn")
 	_check(scene != null, "主菜单场景可加载")
 	if scene == null:
+		_remove_tmp(tmp_path)
+		_restore_save_path()
 		return
 	var menu := scene.instantiate()
 	add_child(menu)
@@ -75,6 +81,8 @@ func _test_start_menu() -> void:
 	_check(not continue_button.disabled, "继续按钮在有进度时可用")
 	_check("第 1 关" in continue_button.text, "继续按钮标注当前关卡，实际 %s" % continue_button.text)
 	menu.queue_free()
+	_remove_tmp(tmp_path)
+	_restore_save_path()
 
 ## 测试关卡选择：卡片数量与解锁态。
 func _test_level_select() -> void:
@@ -98,8 +106,11 @@ func _test_level_select() -> void:
 	if first_card != null:
 		_check(not first_card.modulate.a < 0.99, "已解锁卡片未变灰")
 		var first_button := _find_button(first_card)
-		# 关卡场景待重建，卡片按钮暂不可用。
-		_check(first_button != null and first_button.disabled, "关卡场景重建前卡片按钮禁用")
+		_check(first_button != null and not first_button.disabled, "已解锁卡片按钮可用（选关已恢复）")
+		_check(first_button != null and first_button.text == "进入关卡", "已解锁卡片按钮文案为「进入关卡」")
+		_check(first_button != null and first_button.get_signal_connection_list("pressed").size() > 0, "卡片按钮已绑定进入关卡回调")
+		var first_body := first_card.get_node_or_null("Body") as VBoxContainer
+		_check(first_body != null and "掉落与交付" in _collect_text(first_body), "卡片展示真实关卡名而非「待重建」")
 	var third_card := cards.get_child(2) as PanelContainer
 	_check(third_card != null, "第三张卡片存在")
 	if third_card != null:
@@ -145,6 +156,17 @@ func _find_button(node: Node) -> Button:
 		if found != null:
 			return found
 	return null
+
+## 递归收集容器下所有 Label 的文字，用于核对卡片内容。
+## @param node 起始节点。
+## @return 拼接后的文字。
+func _collect_text(node: Node) -> String:
+	var text := ""
+	if node is Label:
+		text += node.text + "\n"
+	for child in node.get_children():
+		text += _collect_text(child)
+	return text
 
 ## 恢复存档路径并清理临时文件。
 func _restore_save_path() -> void:

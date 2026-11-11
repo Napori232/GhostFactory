@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="LevelData" format=3]
+
+[ext_resource type="Script" path="res://Code/Common/FacilityPlacement.gd" id="1_3ru0x"]
+[ext_resource type="Script" path="res://Code/Common/GhostPlacement.gd" id="2_wlyqe"]
+[ext_resource type="Script" path="res://Code/Common/LevelData.gd" id="3_tkadw"]
+[ext_resource type="Script" path="res://Code/Common/StarThresholds.gd" id="4_p32ut"]
+
+[sub_resource type="Resource" id="Resource_n5ady"]
+script = ExtResource("1_3ru0x")
+kind = &"STORAGE"
+cell = Vector2i(1, 8)
+facing = Vector2i(1, 0)
+
+[sub_resource type="Resource" id="Resource_sw0nq"]
+script = ExtResource("1_3ru0x")
+cell = Vector2i(12, 2)
+accepted_form = "Offer"
+
+[sub_resource type="Resource" id="Resource_m0onu"]
+script = ExtResource("4_p32ut")
+two_star_time = 105.0
+three_star_time = 90.0
+manual_limit = 100
+space_budget = 26
+
+[resource]
+script = ExtResource("3_tkadw")
+id = 3
+display_name = "加工与损耗"
+grid_size = Vector2i(14, 10)
+time_limit = 120.0
+goal_form = "Offer"
+goal_amount = 55
+start_spirit = 50
+placeable_cells = Array[Vector2i]([Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2), Vector2i(2, 3), Vector2i(3, 3), Vector2i(4, 3), Vector2i(5, 3), Vector2i(2, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(8, 2), Vector2i(9, 2), Vector2i(8, 3), Vector2i(9, 3), Vector2i(9, 6), Vector2i(10, 6), Vector2i(9, 7), Vector2i(10, 7), Vector2i(9, 8), Vector2i(10, 8)])
+obstacle_cells = Array[Vector2i]([Vector2i(6, 2), Vector2i(6, 3), Vector2i(6, 4), Vector2i(7, 2), Vector2i(7, 3), Vector2i(7, 4), Vector2i(6, 5), Vector2i(7, 5)])
+preplaced_facilities = Array[ExtResource("1_3ru0x")]([SubResource("Resource_n5ady"), SubResource("Resource_sw0nq")])
+allowed_ghost_ids = Array[StringName]([&"producer", &"collector", &"transporter", &"processor"])
+producer_only_cells = Array[Vector2i]([Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2)])
+star_thresholds = SubResource("Resource_m0onu")
+camera_yaw = 1
+camera_zoom = 2

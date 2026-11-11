@@ -1,8 +1,10 @@
 class_name ArtPlaceholder
 extends Control
 
-## 美术占位组件。用程序绘制的虚线框与居中文字标出一块「将来放美术资源」的区域。
-## 美术资源到位后把资源路径填进 art_path，占位框会自动变成真实图片。
+## 美术位组件。优先级：art_path 指向的真实纹理 > procedural_art 程序化图案 > 虚线框占位。
+## 界面上的实例由 BackgroundLayer / StartMenu 指定程序化类别，因此默认不再出现「待补图」文字；
+## 美术资源到位后填 art_path 即可无缝替换，程序化图案只作兜底。
+## 直接 new 出来的裸实例仍走虚线框模式，供组件自测使用。
 
 ## 占位框默认描边色（主色系，低不透明度）。
 const DEFAULT_BORDER_COLOR: Color = Color(0.486, 0.361, 1.0, 0.45)
@@ -31,15 +33,41 @@ const LABEL_MARGIN: float = 16.0
 @export var label_at_bottom_right: bool = false
 ## 美术资源到位后要替换成的场景或纹理路径，留空表示暂无。
 @export var art_path: String = ""
+## 无真实素材时使用的程序化图案：none 裸占位框、key_art 主视觉、backdrop 全屏背景。
+@export var procedural_art: StringName = &"none"
+## 程序化图案是否启用缓慢动画（烟雾、幽灵漂浮、灯光闪烁）。
+@export var animate_procedural: bool = true
 
 var _texture: Texture2D = null
 var _art_node: Node = null
+var _phase: float = 0.0
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if not resized.is_connected(queue_redraw):
 		resized.connect(queue_redraw)
 	ReloadArt()
+	_refresh_animation()
+
+## 指定程序化图案类别并立即重绘。
+## @param kind FactoryArt.KIND_KEY_ART / KIND_BACKDROP，或 &"none" 退回裸占位框。
+func SetProceduralArt(kind: StringName) -> void:
+	procedural_art = kind
+	_refresh_animation()
+	queue_redraw()
+
+## 当前是否仍显示虚线框与占位文字（既无真实素材、也无程序化图案）。
+## @return 显示裸占位框时返回 true。
+func IsShowingPlaceholderFrame() -> bool:
+	return _texture == null and not FactoryArt.IsValidKind(procedural_art)
+
+## 只在程序化图案生效时开启逐帧重绘，避免静态界面白耗 CPU。
+func _refresh_animation() -> void:
+	set_process(animate_procedural and _texture == null and FactoryArt.IsValidKind(procedural_art))
+
+func _process(delta: float) -> void:
+	_phase += delta
+	queue_redraw()
 
 ## 设置占位说明文字。
 ## @param text 显示在占位框中央的文字。
@@ -69,6 +97,7 @@ func ReloadArt() -> void:
 				_art_node = instance
 				add_child(instance)
 				instance.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_refresh_animation()
 	queue_redraw()
 
 ## 清空已加载的美术资源。
@@ -93,6 +122,9 @@ func _draw() -> void:
 	var rect := Rect2(Vector2.ZERO, size)
 	if _texture != null:
 		_draw_texture_fitted(_texture, rect)
+		return
+	if FactoryArt.IsValidKind(procedural_art):
+		FactoryArt.Draw(self, procedural_art, size, _phase)
 		return
 	draw_rect(rect, fill_color, true)
 	if show_border:

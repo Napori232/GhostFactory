@@ -154,6 +154,91 @@ static func PathL(from_cell: Vector2i, to_cell: Vector2i, prefer_x_first: bool =
 				x2 += step_x2
 	return path
 
+## 生成两点之间绕开障碍的正交最短路径（广度优先搜索）。
+## 起终点总是保留在路径里；两点之间被障碍完全隔断时返回空数组。
+## @param from_cell 起点格。
+## @param to_cell 终点格。
+## @param is_blocked 判定某格不可通行的回调，签名 (cell: Vector2i) -> bool。
+## @param bounds 网格尺寸，用于裁剪搜索范围。
+## @return 含起点与终点的路径格列表；不可达时为空数组。
+static func PathAvoiding(from_cell: Vector2i, to_cell: Vector2i, is_blocked: Callable, bounds: Vector2i) -> Array[Vector2i]:
+	if not InBounds(from_cell, bounds) or not InBounds(to_cell, bounds):
+		return []
+	if from_cell == to_cell:
+		var single: Array[Vector2i] = [from_cell]
+		return single
+	var came_from: Dictionary = {}
+	var visited: Dictionary = {from_cell: true}
+	var queue: Array[Vector2i] = [from_cell]
+	var found := false
+	while not queue.is_empty() and not found:
+		var current: Vector2i = queue.pop_front()
+		for next in Neighbors4(current):
+			if visited.has(next) or not InBounds(next, bounds):
+				continue
+			if next != to_cell and bool(is_blocked.call(next)):
+				continue
+			visited[next] = true
+			came_from[next] = current
+			if next == to_cell:
+				found = true
+				break
+			queue.append(next)
+	if not found:
+		return []
+	var path: Array[Vector2i] = [to_cell]
+	var cursor: Vector2i = to_cell
+	while cursor != from_cell:
+		cursor = came_from[cursor]
+		path.append(cursor)
+	path.reverse()
+	return path
+
+## 生成「最多一次 90° 转弯」的 L 形连线路径，并绕开障碍格。
+## 依次尝试两种走向（先 X 后 Y / 先 Y 后 X），取较短且全程不撞墙的一条；
+## 两种都撞墙时返回空数组——此时必须靠中转鬼把线路拆成两段（每段各一次转弯）。
+## 与 PathAvoiding 的区别：本函数不允许折返式绕行，是为了让墙真正逼出「物理联动」。
+## @param from_cell 起点格。
+## @param to_cell 终点格。
+## @param is_blocked 判定某格不可通行的回调，签名 (cell: Vector2i) -> bool。
+## @param bounds 网格尺寸，用于裁剪路径范围。
+## @return 含起点与终点的路径格列表；无合法 L 形路径时为空数组。
+static func PathOneTurn(from_cell: Vector2i, to_cell: Vector2i, is_blocked: Callable, bounds: Vector2i) -> Array[Vector2i]:
+	if not InBounds(from_cell, bounds) or not InBounds(to_cell, bounds):
+		return []
+	var best: Array[Vector2i] = []
+	for i in range(2):
+		var prefer_x_first := i == 0
+		var candidate := PathL(from_cell, to_cell, prefer_x_first)
+		var valid := true
+		for cell in candidate:
+			if not InBounds(cell, bounds):
+				valid = false
+				break
+			if cell != from_cell and cell != to_cell and bool(is_blocked.call(cell)):
+				valid = false
+				break
+		if not valid:
+			continue
+		if best.is_empty() or candidate.size() < best.size():
+			best = candidate
+	return best
+
+## 统计一条正交路径的 90° 转弯次数。
+## @param path 含起点与终点的路径格列表。
+## @return 转弯次数；直线为 0，L 形为 1。
+static func CountTurns(path: Array[Vector2i]) -> int:
+	if path.size() < 3:
+		return 0
+	var turns := 0
+	var previous := path[1] - path[0]
+	for i in range(2, path.size()):
+		var direction: Vector2i = path[i] - path[i - 1]
+		if direction != previous:
+			turns += 1
+		previous = direction
+	return turns
+
 ## 把任意数组转换成 Vector2i 数组。
 ## 编辑器赋值、脚本动态赋值都可能给出无类型数组，这里统一转换，避免 setter 因类型不匹配而丢值。
 ## @param value 原始值，可以是 Array[Vector2i]、Array 或单个 Vector2i。

@@ -64,6 +64,9 @@ func _ready() -> void:
 	if art_placeholder != null:
 		art_placeholder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		art_placeholder.label_at_bottom_right = true
+		# 没有外部素材时画程序化的废弃工厂远景，界面上不再出现占位框与「待补图」文字。
+		if art_placeholder.procedural_art == &"none":
+			art_placeholder.SetProceduralArt(FactoryArt.KIND_BACKDROP)
 		if background_art_path != "":
 			art_placeholder.SetArt(background_art_path)
 	set_process(animate_glow)

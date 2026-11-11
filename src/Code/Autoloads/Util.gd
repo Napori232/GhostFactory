@@ -4,6 +4,8 @@ extends Node
 ## 全部为无状态或自持状态的辅助函数，不依赖具体实体。
 
 const BGM_CROSSFADE_DURATION: float = 2.5
+## 同一音效的最小重触发间隔（毫秒），避免高频事件把声道堵满。
+const SFX_THROTTLE_MS: int = 90
 
 var _bgm_player: AudioStreamPlayer = null
 var _bgm_tracks: Dictionary = {}
@@ -13,12 +15,57 @@ var _audio_initialized: bool = false
 var _audio_volumes: Dictionary = {}
 var _audio_buses: Dictionary = {}
 var _audio_base_db: Dictionary = {}
+var _game_sfx_connected: bool = false
+var _last_sfx_ms: Dictionary = {}
 
 func _ready() -> void:
 	call_deferred("_start_game_audio")
 
 func _start_game_audio() -> void:
 	_initialize_audio_settings()
+	_connect_game_sfx()
+	_start_ambient_bgm()
+
+## 把玩法事件接到程序化音效上。实体只发 SignalBus 信号，不直接碰音频节点。
+func _connect_game_sfx() -> void:
+	if _game_sfx_connected:
+		return
+	_game_sfx_connected = true
+	# 下周计划 §6-7 的四个基础音。
+	SignalBus.GhostPlaced.connect(func(_ghost): PlayGameSfx(GameSfx.ID_PLACE))
+	SignalBus.SpiritPicked.connect(func(_amount): PlayGameSfx(GameSfx.ID_PICKUP))
+	SignalBus.ItemProcessed.connect(func(_form): PlayGameSfx(GameSfx.ID_PROCESS))
+	SignalBus.ItemDelivered.connect(func(_form, _terminal): PlayGameSfx(GameSfx.ID_DELIVER))
+	# 其余状态反馈，音量按事件频率做区分。
+	SignalBus.LineCreated.connect(func(_from, _to): PlayGameSfx(GameSfx.ID_CONNECT))
+	SignalBus.LineRemoved.connect(func(_board): PlayGameSfx(GameSfx.ID_DISCONNECT))
+	SignalBus.SpiritDropped.connect(func(_cell, _amount): PlayGameSfx(GameSfx.ID_DROP, -8.0))
+	SignalBus.ImpurityCreated.connect(func(_cell): PlayGameSfx(GameSfx.ID_IMPURITY, -3.0))
+	SignalBus.GhostFaulted.connect(func(_ghost): PlayGameSfx(GameSfx.ID_FAULT))
+	SignalBus.LevelCompleted.connect(func(_level_id, _stars): PlayGameSfx(GameSfx.ID_COMPLETE))
+	SignalBus.LevelFailed.connect(func(_level_id): PlayGameSfx(GameSfx.ID_FAILED))
+
+## 启动工厂环境底噪。headless 回归不播放，避免无音频设备时干扰测试。
+func _start_ambient_bgm() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	var ambient := GameSfx.GetAmbient()
+	if ambient != null:
+		SwitchBgm(ambient, true)
+
+## 播放一个程序化音效，按 id 做最小间隔节流。
+## @param id GameSfx.SFX_IDS 中的音效标识。
+## @param volume_db 附加的音量分贝调节，默认 0。
+## @return 创建的播放器；未知 id 或被节流时返回 null。
+func PlayGameSfx(id: StringName, volume_db: float = 0.0) -> AudioStreamPlayer:
+	var stream := GameSfx.Get(id)
+	if stream == null:
+		return null
+	var now := Time.get_ticks_msec()
+	if now - int(_last_sfx_ms.get(id, -100000)) < SFX_THROTTLE_MS:
+		return null
+	_last_sfx_ms[id] = now
+	return PlaySFX(stream, ExportSettings.audio_sfx_bus, volume_db)
 
 ## 初始化并恢复独立音量设置；无参数，可重复调用且不会重置总线基准音量。
 func InitializeAudioSettings() -> void:
