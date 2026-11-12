@@ -27,7 +27,7 @@ extends Node
 
 @export_group("Level", "level_")
 ## Demo 关卡总数。
-@export_range(1, 20, 1) var level_count: int = 3
+@export_range(1, 20, 1) var level_count: int = 4
 ## 结算三轴的星级阈值，占位数值，玩法实装后按真实评分调整。
 @export var star_threshold_efficiency: float = 1.0
 @export var star_threshold_manual: float = 1.0

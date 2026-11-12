@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="LevelData" format=3]
+
+[ext_resource type="Script" path="res://Code/Common/FacilityPlacement.gd" id="1_xe5pu"]
+[ext_resource type="Script" path="res://Code/Common/GhostPlacement.gd" id="2_cxtu4"]
+[ext_resource type="Script" path="res://Code/Common/LevelData.gd" id="3_tk3qo"]
+[ext_resource type="Script" path="res://Code/Common/StarThresholds.gd" id="4_toci5"]
+
+[sub_resource type="Resource" id="Resource_edjec"]
+script = ExtResource("1_xe5pu")
+cell = Vector2i(11, 2)
+
+[sub_resource type="Resource" id="Resource_1tj0w"]
+script = ExtResource("4_toci5")
+two_star_time = 120.0
+three_star_time = 100.0
+manual_limit = 100
+space_budget = 30
+
+[resource]
+script = ExtResource("3_tk3qo")
+id = 4
+display_name = "推力与联动"
+grid_size = Vector2i(14, 10)
+time_limit = 150.0
+goal_amount = 60
+start_spirit = 80
+placeable_cells = Array[Vector2i]([Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(2, 3), Vector2i(3, 3), Vector2i(4, 3), Vector2i(5, 3), Vector2i(6, 3), Vector2i(7, 3), Vector2i(8, 3), Vector2i(9, 3), Vector2i(2, 4), Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4), Vector2i(6, 4), Vector2i(7, 4), Vector2i(8, 4), Vector2i(9, 4), Vector2i(2, 5), Vector2i(3, 5), Vector2i(4, 5), Vector2i(5, 5), Vector2i(6, 5), Vector2i(7, 5), Vector2i(8, 5), Vector2i(9, 5), Vector2i(2, 8), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8), Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8), Vector2i(9, 8), Vector2i(10, 8), Vector2i(11, 8), Vector2i(12, 8)])
+obstacle_cells = Array[Vector2i]([Vector2i(2, 9), Vector2i(3, 9), Vector2i(4, 9), Vector2i(5, 9), Vector2i(6, 9), Vector2i(7, 9), Vector2i(8, 9), Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9), Vector2i(12, 9)])
+preplaced_facilities = Array[ExtResource("1_xe5pu")]([SubResource("Resource_edjec")])
+allowed_ghost_ids = Array[StringName]([&"producer", &"collector", &"transporter", &"pusher", &"miser", &"hang"])
+producer_only_cells = Array[Vector2i]([Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2)])
+star_thresholds = SubResource("Resource_1tj0w")
+camera_yaw = 1
+camera_zoom = 2

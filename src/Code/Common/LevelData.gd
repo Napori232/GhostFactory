@@ -29,8 +29,8 @@ extends Resource
 @export var preplaced_facilities: Array[FacilityPlacement] = []
 ## 本关可用鬼的 id 白名单。
 @export var allowed_ghost_ids: Array[StringName] = []
-## 生产专属格：三关统一机制，非空时生产鬼只能放在这些格，其他鬼不得占用。
-## 空数组表示本关不限制（留给后续新增关卡），当前三关全部划了生产带。
+## 生产专属格：各关统一机制，非空时生产鬼只能放在这些格，其他鬼不得占用。
+## 空数组表示本关不限制（留给后续新增关卡），当前四关全部划了生产带。
 @export var producer_only_cells: Array[Vector2i] = []
 ## 三轴评分阈值。
 @export var star_thresholds: StarThresholds = null

@@ -71,7 +71,8 @@ func StartLevel(id: int) -> void:
 	view.Refresh(snapshot)
 	SignalBus.LevelStarted.emit(level_id)
 
-## 按本关配置拼开场提示：三关都有生产带，但只有开放运输鬼的关才需要讲接线规则。
+## 按本关配置拼开场提示：四关都有生产带，但只有开放运输鬼的关才需要讲接线规则；
+## 开放推舌鬼的关卡再补一句推动链玩法（第 4 关两者都有）。
 ## @param data 关卡数据。
 ## @return 一行提示文案。
 func _make_intro_hint(data: LevelData) -> String:
@@ -80,6 +81,9 @@ func _make_intro_hint(data: LevelData) -> String:
 	if data.HasProducerZone():
 		hint += "（本关 %d 格）" % data.GetProducerOnlyCells().size()
 	hint += "；蓝色格用来接掉落物" if only_producer else "；蓝色格留给其他鬼"
+	if data.allowed_ghost_ids.has(&"pusher"):
+		hint += "｜下方走廊：推舌鬼推守财鬼链，每推一次每只守财鬼掉 1 鬼能；吊死鬼被推后自己荡回，掉落物要放采集鬼收走，不然会堵住推链"
+		return hint
 	if data.allowed_ghost_ids.has(&"transporter"):
 		return hint + "｜接线只许转一次 90°，被墙挡住就放一只中转鬼把线拆成两段"
 	return hint + "｜本关全手动：点地面掉落物拾取，再点交付口交付"

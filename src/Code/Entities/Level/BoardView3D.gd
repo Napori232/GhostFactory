@@ -162,7 +162,7 @@ func _rebuild_ghosts(entries: Array) -> void:
 		var state_color: Color = STATE_COLORS.get(state, Color.WHITE)
 		var ring := _make_torus(ghosts_root, 0.32, 0.40, center + Vector3(0, 0.11, 0), state_color, 0.75, alpha)
 		_ghost_materials.append(ring.material_override as StandardMaterial3D)
-		for part in _build_ghost_shape(category, center, color, emission, alpha):
+		for part in _build_ghost_shape(String(entry.get("id", "")), category, center, color, emission, alpha):
 			_ghost_materials.append(part.material_override as StandardMaterial3D)
 		if uid == _selected_uid:
 			_make_torus(ghosts_root, 0.43, 0.48, center + Vector3(0, 0.13, 0), Color(1.0, 0.95, 0.60), 1.0, 0.95)
@@ -170,15 +170,34 @@ func _rebuild_ghosts(entries: Array) -> void:
 		_make_label(ghosts_root, "[%s] %d/%d" % [state, int(entry["input_count"]), int(entry["output_count"])], center + Vector3(0, 1.34, 0), state_color, 24)
 		_ghost_entries.append({"cell": cell, "uid": uid})
 
-## 按鬼的类别拼出可分辨的轮廓：炉体 / 漏斗 / 运输台 / 双塔。
+## 按鬼的类别拼出可分辨的轮廓：炉体 / 漏斗 / 运输台 / 双塔；
+## 推动链三鬼按 behavior_id 走专属造型（长舌 / 钱罐 / 吊绳）。
+## @param ghost_id 鬼的资源 id，用于区分同类别不同行为的新鬼。
 ## @param category GhostData.category 的字符串值。
 ## @param center 格中心世界坐标。
 ## @param color 该鬼的基色。
 ## @param emission 自发光强度。
 ## @param alpha 不透明度。
 ## @return 新建的 MeshInstance3D 数组。
-func _build_ghost_shape(category: String, center: Vector3, color: Color, emission: float, alpha: float) -> Array[MeshInstance3D]:
+func _build_ghost_shape(ghost_id: String, category: String, center: Vector3, color: Color, emission: float, alpha: float) -> Array[MeshInstance3D]:
 	var parts: Array[MeshInstance3D] = []
+	match ghost_id:
+		"pusher":
+			# 推舌鬼：蹲伏台座 + 朝北伸出的长舌与舌尖圆头。
+			parts.append(_make_box(ghosts_root, Vector3(0.52, 0.30, 0.52), center + Vector3(0, 0.27, 0.06), color, emission, alpha))
+			parts.append(_make_box(ghosts_root, Vector3(0.12, 0.10, 0.62), center + Vector3(0, 0.34, -0.34), Color(0.98, 0.86, 0.58), 0.55, alpha))
+			parts.append(_make_sphere(ghosts_root, 0.11, center + Vector3(0, 0.34, -0.62), Color(1.0, 0.92, 0.65), 0.85, alpha))
+			return parts
+		"miser":
+			# 守财鬼：矮胖钱罐 + 罐口塞着的金币。
+			parts.append(_make_sphere(ghosts_root, 0.34, center + Vector3(0, 0.34, 0), color, emission, alpha))
+			parts.append(_make_cylinder(ghosts_root, 0.13, 0.13, 0.10, center + Vector3(0, 0.62, 0), Color(0.98, 0.84, 0.40), 0.7, alpha))
+			return parts
+		"hang":
+			# 吊死鬼：从格顶垂下的吊绳 + 悬着的身体。
+			parts.append(_make_cylinder(ghosts_root, 0.035, 0.035, 0.62, center + Vector3(0, 0.66, 0), Color(0.72, 0.66, 0.55), 0.1, alpha))
+			parts.append(_make_sphere(ghosts_root, 0.26, center + Vector3(0, 0.30, 0), color, emission, alpha))
+			return parts
 	match category:
 		"PRODUCTION":
 			# 生产鬼：蒸馏炉 + 顶部冒出的鬼能球。

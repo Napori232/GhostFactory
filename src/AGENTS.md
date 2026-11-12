@@ -146,6 +146,7 @@ Code/
 | `Code/Tests/LevelDataLoadTest.tscn` | 数据层与端口标签、3D 坐标换算测试 |
 | `Code/Tests/BoardPlacementTest.tscn` | 棋盘放置、占格、拾取、状态与拆除测试 |
 | `Code/Tests/PushChainTest.tscn` | 推动链测试：柔体链、刚体止点、阻断、守财鬼掉落、吊死鬼回摆 |
+| `Code/Tests/Level04PlaythroughTest.tscn` | 关卡 4 推动链教学关参考解：产线 + 推链引擎 + 吊死鬼回摆 |
 | `Code/Tests/Level01PlaythroughTest.tscn` | 关卡 1 脚本化通关测试 |
 | `Code/Tests/ManualCountTest.tscn` | 手动次数口径测试（D5） |
 | `Code/Tests/FaultTest.tscn` | 生产鬼四邻与缓冲双满的故障测试 |

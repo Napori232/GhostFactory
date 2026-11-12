@@ -1,6 +1,6 @@
 extends Node
 
-## 数据层 headless 测试：四只基础鬼与三关资源可加载、字段与规格一致，
+## 数据层 headless 测试：七只鬼与四关资源可加载、字段与规格一致，
 ## 并覆盖端口标签判定规则（D1）与 3D 坐标换算互逆性。
 ## 运行：Godot --headless --path D:/GhostFactory/src res://Code/Tests/LevelDataLoadTest.tscn
 
@@ -72,12 +72,13 @@ func _test_ghosts() -> void:
 	_check(processor.recipe_id == "SpiritToOffer", "处理鬼关联配方正确")
 	_check(processor.GetInputPort().accepts.has(GhostTag.IMPURITY), "处理鬼可接受杂质回收")
 
-## 三关配置核对。
+## 四关配置核对。
 func _test_levels() -> void:
 	var l1 := _load(LEVEL_DIR + "Level01.tres") as LevelData
 	var l2 := _load(LEVEL_DIR + "Level02.tres") as LevelData
 	var l3 := _load(LEVEL_DIR + "Level03.tres") as LevelData
-	if l1 == null or l2 == null or l3 == null:
+	var l4 := _load(LEVEL_DIR + "Level04.tres") as LevelData
+	if l1 == null or l2 == null or l3 == null or l4 == null:
 		return
 
 	_check(l1.id == 1 and l1.grid_size == Vector2i(10, 8), "关卡 1 网格 10×8")
@@ -136,6 +137,28 @@ func _test_levels() -> void:
 	_check(l3.IsProducerOnly(Vector2i(2, 2)) and not l3.IsProducerOnly(Vector2i(2, 3)), "关卡 3 采集鬼所在格不是生产区")
 	for cell in l3.GetProducerOnlyCells():
 		_check(l3.IsPlaceable(cell), "关卡 3 生产格 %s 落在可放置区内" % cell)
+
+	_check(l4.id == 4 and l4.grid_size == Vector2i(14, 10), "关卡 4 网格 14×10")
+	_check(l4.display_name == "推力与联动", "关卡 4 名称「推力与联动」")
+	_check(l4.time_limit == 150.0, "关卡 4 时限 150 s")
+	_check(l4.goal_form == "Spirit" and l4.goal_amount == 60, "关卡 4 目标 60 个鬼能")
+	_check(l4.GetPlaceableCount() == 43, "关卡 4 可放置区 43 格（主区 32 + 走廊 11）")
+	_check(l4.obstacle_cells.size() == 11, "关卡 4 走廊底墙 11 格")
+	_check(l4.GetFacilityAt(Vector2i(11, 2)).accepted_form == "Spirit", "关卡 4 交付口接收鬼能")
+	for push_id in [&"pusher", &"miser", &"hang"]:
+		_check(l4.allowed_ghost_ids.has(push_id), "关卡 4 白名单含推动链鬼 %s" % push_id)
+	_check(
+		l1.HasProducerZone() and l2.HasProducerZone() and l3.HasProducerZone() and l4.HasProducerZone(),
+		"四关统一启用生产专属区"
+	)
+	_check(
+		l4.GetProducerOnlyCells() == [Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2)],
+		"关卡 4 生产带为主区顶排 4 格"
+	)
+	for cell in l4.GetProducerOnlyCells():
+		_check(l4.IsPlaceable(cell), "关卡 4 生产格 %s 落在可放置区内" % cell)
+	_check(l4.IsPlaceable(Vector2i(2, 8)) and l4.IsPlaceable(Vector2i(12, 8)), "关卡 4 走廊两端可放置")
+	_check(not l4.IsPlaceable(Vector2i(6, 9)), "关卡 4 走廊底墙不可放置")
 
 ## 端口标签判定：只认物料标签（D1）。
 func _test_port_rules() -> void:

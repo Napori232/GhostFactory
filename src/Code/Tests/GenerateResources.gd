@@ -1,6 +1,6 @@
 extends Node
 
-## 资源生成器：用 ResourceSaver 产出四只基础鬼与三关的 .tres，避免手写 .tres 格式出错。
+## 资源生成器：用 ResourceSaver 产出七只鬼与四关的 .tres，避免手写 .tres 格式出错。
 ## 运行：Godot --headless --path D:/GhostFactory/src res://Code/Tests/GenerateResources.tscn
 ## 资源落在 res://Code/Data/ 下（Code/ 目录内），符合 AGENTS.md §一 的权限边界。
 
@@ -217,8 +217,9 @@ func _rect(x0: int, x1: int, y0: int, y1: int) -> Array[Vector2i]:
 			cells.append(Vector2i(x, y))
 	return cells
 
-## 构造三关配置。
-## 地图、目标、时限取自 Docs/LevelDesign.md；关卡 2 目标形态按 D4 定稿改为 Spirit。
+## 构造四关配置。
+## 地图、目标、时限取自 Docs/LevelDesign.md；关卡 2 目标形态按 D4 定稿改为 Spirit；
+## 关卡 4 为推动链教学关（Docs/Ghosts.md 推动链四件）。
 ## @return 关卡数据资源数组。
 func _build_levels() -> Array[LevelData]:
 	var result: Array[LevelData] = []
@@ -357,5 +358,50 @@ func _build_levels() -> Array[LevelData]:
 	l3.camera_yaw = 1
 	l3.camera_zoom = 2
 	result.append(l3)
+
+	# 关卡 4：14×10，150 s，60 个鬼能。推动链教学关：
+	# 下方双车道走廊 + 顶墙底墙围出推链场，推舌鬼推守财鬼链产出掉落物，
+	# 吊死鬼被推后荡回可当中继；采集鬼负责清走廊里的掉落物，否则推链被「掉落物占格」卡死。
+	var l4 := LevelData.new()
+	l4.id = 4
+	l4.display_name = "推力与联动"
+	l4.grid_size = Vector2i(14, 10)
+	l4.time_limit = 150.0
+	l4.goal_form = "Spirit"
+	l4.goal_amount = 60
+	l4.start_spirit = 80
+	var l4_cells: Array[Vector2i] = []
+	l4_cells.append_array(_rect(2, 10, 2, 6))
+	l4_cells.append_array(_rect(2, 13, 8, 9))
+	l4.placeable_cells = l4_cells
+	# 生产专属区：主区顶排 4 格，延续第 2、3 关「生产带在最上面」的教学。
+	var l4_producer: Array[Vector2i] = _rect(2, 6, 2, 3)
+	l4.producer_only_cells = l4_producer
+	# 走廊底墙：把 y=8 车道围成单行推链轨道，守财鬼被推只能沿走廊前进。
+	var l4_obstacles: Array[Vector2i] = []
+	for x in range(2, 13):
+		l4_obstacles.append(Vector2i(x, 9))
+	l4.obstacle_cells = l4_obstacles
+	var l4_facilities: Array[FacilityPlacement] = []
+	var l4_delivery := FacilityPlacement.new()
+	l4_delivery.kind = FacilityPlacement.KIND_DELIVERY
+	l4_delivery.cell = Vector2i(11, 2)
+	l4_delivery.accepted_form = "Spirit"
+	l4_delivery.facing = Vector2i.LEFT
+	l4_facilities.append(l4_delivery)
+	l4.preplaced_facilities = l4_facilities
+	var l4_allowed: Array[StringName] = [
+		&"producer", &"collector", &"transporter", &"pusher", &"miser", &"hang",
+	]
+	l4.allowed_ghost_ids = l4_allowed
+	var l4_stars := StarThresholds.new()
+	l4_stars.two_star_time = 120.0
+	l4_stars.three_star_time = 100.0
+	l4_stars.manual_limit = 100
+	l4_stars.space_budget = 30
+	l4.star_thresholds = l4_stars
+	l4.camera_yaw = 1
+	l4.camera_zoom = 2
+	result.append(l4)
 
 	return result
