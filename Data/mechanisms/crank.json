@@ -1,0 +1,21 @@
+{
+  "id": "crank",
+  "name": "长撬机关",
+  "proverb": "一根撬杆能同时顶住两双脚——只要你摆得直。",
+  "role": "独立机关 · 整段施力",
+  "cost": 10,
+  "effect": "crank",
+  "reach": 2.3,
+  "min_reach": 0.3,
+  "force": 13.0,
+  "lever": 0.46,
+  "push_period": 2.0,
+  "energy_per_push": 1.0,
+  "head_radius": 0.26,
+  "geometry": {
+    "base": [0.7, 0.3, 0.7],
+    "rod_radius": 0.1,
+    "color": "#c9a06a",
+    "slot_color": "#5be0c0"
+  }
+}

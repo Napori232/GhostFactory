@@ -1,0 +1,90 @@
+{
+  "id": "03",
+  "name": "第三夜 · 大屋",
+  "subtitle": "一张大地图 · 越界即引鬼屋",
+  "next_level": "",
+  "start_zoom": 3,
+  "grid": { "w": 23, "h": 23 },
+  "buildable": { "x": 9, "y": 9, "w": 5, "h": 5 },
+  "center_radius": 1.8,
+  "spawn_radius": 14.0,
+  "max_breaches": 10,
+  "budget": 150,
+  "allow_outlaw": true,
+  "expand_per_wave": 1,
+  "outlaw_pressure": 0.5,
+  "aggro_radius": 7.0,
+  "outlaw_attack_time": 2.6,
+  "unlocks": ["waver", "swing", "lantern", "hum", "toll", "anchor", "hammer", "prop", "pendulum", "pusher", "crank", "belt", "express", "hand", "crystal", "cell"],
+  "initial": [
+    { "kind": "ghost", "type": "waver", "cell": [10, 10], "facing": 0 },
+    { "kind": "mechanism", "type": "pusher", "cell": [11, 10], "facing": 2 }
+  ],
+  "initial_crystals": [
+    { "cell": [10, 11], "charge": 5 },
+    { "cell": [12, 11], "charge": 5 },
+    { "cell": [11, 9], "charge": 0 }
+  ],
+  "hints": [
+    { "when": "no_mechanism", "text": "先把机关顶到鬼的脚边。大屋的每一点空间，都是靠鬼能换来的。" },
+    { "when": "no_power", "text": "机关要电：点地上的充能鬼晶，再点机关插进去。" },
+    { "when": "outlaw", "text": "领地外的造物会引魅集火，还会让鬼屋每波多刷怪。想往外扩，就得先守住它。" },
+    { "when": "no_belt", "text": "夜三的机器要自己转：先铺一条传送带（B），让装卸臂把充能晶送进机关。" },
+    { "when": "no_arm", "text": "有带子了，还缺一台装卸臂（N）：它面朝来料带、背对回程带，从正前方取料、把空晶放到背后。" },
+    { "when": "link_available", "text": "锤鬼要顶在它背后推倒，才会砸向前方；撑鬼放在邻鬼倒向的一侧，撑住它；摆锤鬼要挨一锤，才会荡起来。" },
+    { "when": "swing_available", "text": "摆臂鬼和翘脚鬼同频；把它们摆成一条线，场会叠起来。" },
+    { "when": "resonance", "text": "三只同频鬼踩在同一拍上，会打出共振波段——一次性扫过整片场。" },
+    { "when": "ghost_idle", "text": "鬼自己不会动。顶到它立正，它才按周期发脉冲。" },
+    { "when": "default", "text": "传送带负责送晶，装卸臂负责上下料。把充能晶送进机关，这条线就会自己活起来。" }
+  ],
+  "waves": [
+    {
+      "prep": 32.0,
+      "groups": [
+        { "count": 4, "interval": 2.2, "center_deg": 180, "arc_deg": 60, "hp": 45, "speed": 0.55 }
+      ]
+    },
+    {
+      "prep": 28.0,
+      "groups": [
+        { "count": 4, "interval": 2.0, "center_deg": 90, "arc_deg": 40, "hp": 60, "speed": 0.55 },
+        { "count": 3, "interval": 1.6, "center_deg": 0, "arc_deg": 360, "hp": 26, "speed": 0.95 }
+      ]
+    },
+    {
+      "prep": 26.0,
+      "groups": [
+        { "count": 5, "interval": 2.0, "center_deg": 270, "arc_deg": 80, "hp": 70, "speed": 0.5 },
+        { "count": 2, "interval": 3.0, "center_deg": 90, "arc_deg": 0, "hp": 130, "speed": 0.4, "armor": 0.5 }
+      ]
+    },
+    {
+      "prep": 26.0,
+      "groups": [
+        { "count": 7, "interval": 1.4, "center_deg": 0, "arc_deg": 360, "hp": 30, "speed": 0.95 }
+      ]
+    },
+    {
+      "prep": 26.0,
+      "groups": [
+        { "count": 2, "interval": 2.5, "center_deg": 135, "arc_deg": 30, "hp": 170, "speed": 0.4, "armor": 0.4 },
+        { "count": 5, "interval": 1.6, "center_deg": 315, "arc_deg": 120, "hp": 45, "speed": 0.7 }
+      ]
+    },
+    {
+      "prep": 32.0,
+      "groups": [
+        { "count": 1, "interval": 1.0, "center_deg": 180, "arc_deg": 0, "hp": 340, "speed": 0.19, "armor": 0.2, "boss": true },
+        { "count": 6, "interval": 1.6, "center_deg": 0, "arc_deg": 360, "hp": 26, "speed": 0.95 }
+      ]
+    }
+  ],
+  "rewards": [
+    { "budget": 25, "unlock": "arm" },
+    { "budget": 30, "unlock": "amp" },
+    { "budget": 30, "unlock": "tuner" },
+    { "budget": 35, "unlock": "reach" },
+    { "budget": 35, "unlock": "relay" },
+    { "budget": 40, "expand": 2 }
+  ]
+}

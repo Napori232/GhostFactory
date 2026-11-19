@@ -1,0 +1,19 @@
+{
+  "id": "pusher",
+  "name": "顶足机关",
+  "proverb": "得电才肯顶。顶错了地方，它会把人推倒。",
+  "role": "独立机关 · 把鬼能变成力",
+  "cost": 6,
+  "reach": 0.62,
+  "force": 12.0,
+  "lever": 0.45,
+  "push_period": 2.0,
+  "energy_per_push": 1.0,
+  "head_radius": 0.22,
+  "geometry": {
+    "base": [0.78, 0.32, 0.78],
+    "rod_radius": 0.085,
+    "color": "#c9a06a",
+    "slot_color": "#5be0c0"
+  }
+}

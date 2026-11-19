@@ -1,0 +1,36 @@
+{
+  "id": "toll",
+  "name": "守夜钟",
+  "proverb": "它三拍才响一次。听见的人已经太近了。",
+  "role": "被动 · 重阈值 · 长周期大振幅",
+  "cost": 16,
+  "geometry": {
+    "style": "bell",
+    "body": [0.58, 1.18, 0.58],
+    "color": "#d8c7a0",
+    "glow": "#fff0c8"
+  },
+  "tilt": {
+    "rest_angle": 0.66,
+    "stand_angle": 0.12,
+    "hysteresis": 0.08,
+    "gravity": 7.4,
+    "stop_stiffness": 9.5,
+    "damping": 3.4,
+    "inertia": 1.25
+  },
+  "contact": {
+    "foot_offset": 0.44,
+    "body_offset": 0.0,
+    "foot_radius": 0.16,
+    "body_radius": 0.32,
+    "topple_factor": 1.3
+  },
+  "pulse": {
+    "amplitude": 1.7,
+    "period": 3.2,
+    "range": 7.0,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

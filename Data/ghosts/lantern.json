@@ -1,0 +1,36 @@
+{
+  "id": "lantern",
+  "name": "提灯鬼",
+  "proverb": "它照得很远，但光很薄。远处的魅只是被它晃了一下。",
+  "role": "被动 · 低阈值 · 长射程",
+  "cost": 7,
+  "geometry": {
+    "style": "lantern",
+    "body": [0.42, 0.9, 0.42],
+    "color": "#ffd88a",
+    "glow": "#fff4cc"
+  },
+  "tilt": {
+    "rest_angle": 0.52,
+    "stand_angle": 0.15,
+    "hysteresis": 0.12,
+    "gravity": 4.4,
+    "stop_stiffness": 7.2,
+    "damping": 3.0,
+    "inertia": 0.85
+  },
+  "contact": {
+    "foot_offset": 0.4,
+    "body_offset": 0.0,
+    "foot_radius": 0.18,
+    "body_radius": 0.28,
+    "topple_factor": 1.1
+  },
+  "pulse": {
+    "amplitude": 0.6,
+    "period": 2.0,
+    "range": 8.5,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

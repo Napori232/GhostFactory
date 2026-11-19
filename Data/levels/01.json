@@ -1,0 +1,64 @@
+{
+  "id": "01",
+  "name": "第一夜 · 翘脚",
+  "subtitle": "魅从四面来 · 守住中央",
+  "next_level": "02",
+  "grid": { "w": 13, "h": 13 },
+  "buildable": { "x": 1, "y": 1, "w": 11, "h": 11 },
+  "center_radius": 1.6,
+  "spawn_radius": 8.0,
+  "max_breaches": 10,
+  "budget": 90,
+  "unlocks": ["waver", "pusher", "crystal"],
+  "initial": [
+    { "kind": "ghost", "type": "waver", "cell": [3, 8], "facing": 0 }
+  ],
+  "initial_crystals": [
+    { "cell": [5, 8], "charge": 5 },
+    { "cell": [5, 6], "charge": 5 },
+    { "cell": [3, 6], "charge": 0 }
+  ],
+  "hints": [
+    { "when": "no_mechanism", "text": "把一台顶足机关摆到翘脚鬼翘起的那只脚边（R 键转朝向），它才顶得到。" },
+    { "when": "no_power", "text": "机关要电。点地上的充能鬼晶，再点机关，把晶插进槽里。" },
+    { "when": "swing_available", "text": "新图纸：摆臂鬼。它和翘脚鬼踩同一个拍子——摆在哪里，比摆几只更重要。" },
+    { "when": "resonance", "text": "两只同频鬼还不够：再补一只，让它们在同一拍一起脉冲，整台机器会打出共振波段。" },
+    { "when": "ghost_idle", "text": "鬼自己不会动。顶到它立正，它才会按自己的周期发脉冲。" },
+    { "when": "default", "text": "热力图越亮，伤害越高；越过清场线的地方，魅会被直接抹掉。" }
+  ],
+  "waves": [
+    {
+      "prep": 35.0,
+      "groups": [
+        { "count": 2, "interval": 2.5, "center_deg": 180, "arc_deg": 0, "hp": 40, "speed": 0.50 }
+      ]
+    },
+    {
+      "prep": 30.0,
+      "groups": [
+        { "count": 4, "interval": 2.0, "center_deg": 90, "arc_deg": 70, "hp": 50, "speed": 0.55 },
+        { "count": 2, "interval": 1.6, "center_deg": 270, "arc_deg": 0, "hp": 24, "speed": 0.95 }
+      ]
+    },
+    {
+      "prep": 30.0,
+      "groups": [
+        { "count": 4, "interval": 2.0, "center_deg": 90, "arc_deg": 80, "hp": 55, "speed": 0.55 },
+        { "count": 2, "interval": 3.0, "center_deg": 270, "arc_deg": 0, "hp": 95, "speed": 0.40, "armor": 0.5 }
+      ]
+    },
+    {
+      "prep": 30.0,
+      "groups": [
+        { "count": 1, "interval": 1.0, "center_deg": 135, "arc_deg": 0, "hp": 280, "speed": 0.17, "armor": 0.2, "boss": true },
+        { "count": 4, "interval": 1.4, "center_deg": 0, "arc_deg": 360, "hp": 22, "speed": 0.95 }
+      ]
+    }
+  ],
+  "rewards": [
+    { "budget": 20, "unlock": "swing" },
+    { "budget": 20, "unlock": "hand" },
+    { "budget": 24 },
+    { "budget": 10 }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "pendulum",
+  "name": "摆锤鬼",
+  "proverb": "它不站，也不倒。它只是在两边之间越荡越快。",
+  "role": "被动 · 速度阈值 · 摆锤",
+  "cost": 13,
+  "kind": "oscillate",
+  "geometry": {
+    "style": "pendulum",
+    "body": [0.4, 1.4, 0.4],
+    "color": "#d9a6ff",
+    "glow": "#f0dcff"
+  },
+  "tilt": {
+    "rest_angle": 0.85,
+    "stand_angle": 0.2,
+    "hysteresis": 0.1,
+    "gravity": 4.0,
+    "stop_stiffness": 2.0,
+    "damping": 0.6,
+    "inertia": 1.1
+  },
+  "contact": {
+    "foot_offset": 0.42,
+    "body_offset": 0.0,
+    "foot_radius": 0.16,
+    "body_radius": 0.28,
+    "topple_factor": 1.0
+  },
+  "link": {
+    "strike_torque": 3.0,
+    "cooldown": 0.4,
+    "pulse_on_strike": true
+  },
+  "oscillate": {
+    "trigger_speed": 0.75,
+    "cooldown": 0.5
+  },
+  "pulse": {
+    "amplitude": 1.15,
+    "period": 1.8,
+    "range": 5.0,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

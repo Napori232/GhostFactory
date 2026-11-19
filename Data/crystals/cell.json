@@ -1,0 +1,13 @@
+{
+  "id": "cell",
+  "name": "引信匣",
+  "proverb": "装得少，换得快。短链路上比大匣子更顺手。",
+  "role": "容器 · 容量 2",
+  "cost": 2,
+  "capacity": 2,
+  "geometry": {
+    "radius": 0.16,
+    "height": 0.32,
+    "color": "#ffcf6b"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "modifiers": [
+    {
+      "id": "tight",
+      "name": "紧箍",
+      "desc": "预算 -30%",
+      "budget_mult": 0.7
+    },
+    {
+      "id": "solo",
+      "name": "孤军",
+      "desc": "没有搬运手，只能手搬",
+      "disable": ["hand"]
+    },
+    {
+      "id": "rush",
+      "name": "催命",
+      "desc": "准备时间 -40%",
+      "prep_mult": 0.6
+    }
+  ]
+}

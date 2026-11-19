@@ -1,0 +1,35 @@
+{
+  "id": "waver",
+  "name": "翘脚鬼",
+  "proverb": "它只肯在站直的那一瞬干活。",
+  "role": "被动 · 力阈值",
+  "cost": 10,
+  "geometry": {
+    "body": [0.62, 1.02, 0.46],
+    "color": "#79d4ff",
+    "glow": "#c8f2ff"
+  },
+  "tilt": {
+    "rest_angle": 0.58,
+    "stand_angle": 0.13,
+    "hysteresis": 0.10,
+    "gravity": 5.6,
+    "stop_stiffness": 9.0,
+    "damping": 3.2,
+    "inertia": 1.0
+  },
+  "contact": {
+    "foot_offset": 0.42,
+    "body_offset": 0.0,
+    "foot_radius": 0.16,
+    "body_radius": 0.30,
+    "topple_factor": 1.25
+  },
+  "pulse": {
+    "amplitude": 1.0,
+    "period": 2.0,
+    "range": 6.0,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

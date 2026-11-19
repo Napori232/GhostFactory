@@ -1,0 +1,43 @@
+{
+  "id": "prop",
+  "name": "撑鬼",
+  "proverb": "它自己不响。它撑着谁，谁才站得住。",
+  "role": "被动 · 承重触发 · 撑住邻鬼",
+  "cost": 11,
+  "kind": "brace",
+  "geometry": {
+    "style": "prop",
+    "body": [0.64, 0.92, 0.64],
+    "color": "#8fb8a6",
+    "glow": "#d8ffe8"
+  },
+  "tilt": {
+    "rest_angle": 0.62,
+    "stand_angle": 0.14,
+    "hysteresis": 0.12,
+    "gravity": 5.0,
+    "stop_stiffness": 8.0,
+    "damping": 3.0,
+    "inertia": 1.0
+  },
+  "contact": {
+    "foot_offset": 0.42,
+    "body_offset": 0.0,
+    "foot_radius": 0.18,
+    "body_radius": 0.32,
+    "topple_factor": 1.15
+  },
+  "link": {
+    "strike_torque": 2.0,
+    "cooldown": 0.6,
+    "support_capacity": 2,
+    "support_weight": 1.6
+  },
+  "pulse": {
+    "amplitude": 0.8,
+    "period": 2.4,
+    "range": 3.8,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

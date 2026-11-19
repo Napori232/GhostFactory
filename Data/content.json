@@ -1,0 +1,28 @@
+{
+  "comment": "建造栏顺序与关卡顺序。加内容时在这里登记一行，HUD 与快捷键会自动跟上。",
+  "version": 1,
+  "levels": ["01", "02", "03"],
+  "entries": [
+    { "kind": "ghost", "id": "waver", "hotkey": "1" },
+    { "kind": "ghost", "id": "swing", "hotkey": "2" },
+    { "kind": "ghost", "id": "lantern", "hotkey": "3" },
+    { "kind": "ghost", "id": "hum", "hotkey": "4" },
+    { "kind": "ghost", "id": "toll", "hotkey": "5" },
+    { "kind": "ghost", "id": "relay", "hotkey": "6" },
+    { "kind": "ghost", "id": "anchor", "hotkey": "7" },
+    { "kind": "ghost", "id": "hammer" },
+    { "kind": "ghost", "id": "prop" },
+    { "kind": "ghost", "id": "pendulum" },
+    { "kind": "mechanism", "id": "pusher", "hotkey": "8" },
+    { "kind": "mechanism", "id": "crank", "hotkey": "9" },
+    { "kind": "mechanism", "id": "tuner" },
+    { "kind": "mechanism", "id": "amp" },
+    { "kind": "mechanism", "id": "reach" },
+    { "kind": "belt", "id": "belt", "hotkey": "B" },
+    { "kind": "belt", "id": "express" },
+    { "kind": "swapper", "id": "arm", "hotkey": "N" },
+    { "kind": "swapper", "id": "hand" },
+    { "kind": "crystal", "id": "crystal", "hotkey": "0" },
+    { "kind": "crystal", "id": "cell" }
+  ]
+}

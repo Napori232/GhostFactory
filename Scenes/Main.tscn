@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://Code/Game/Main.gd" id="1_main"]
+[ext_resource type="Environment" path="res://Scenes/Environment.tres" id="2_env"]
+[ext_resource type="Script" path="res://Code/Game/CameraRig.gd" id="3_camera"]
+[ext_resource type="Script" path="res://Code/Game/WorldView.gd" id="4_world"]
+[ext_resource type="Script" path="res://Code/UI/Hud.gd" id="5_hud"]
+[ext_resource type="Script" path="res://Code/Game/Sfx.gd" id="6_sfx"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.9076, -0.6632, 0)
+light_color = Color(0.82, 0.9, 1, 1)
+light_energy = 1.25
+shadow_enabled = true
+directional_shadow_max_distance = 70.0
+
+[node name="Fill" type="OmniLight3D" parent="."]
+position = Vector3(5, 7, -4)
+light_color = Color(0.35, 0.55, 0.8, 1)
+light_energy = 0.7
+omni_range = 22.0
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("3_camera")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+fov = 42.0
+near = 0.1
+far = 200.0
+current = true
+
+[node name="World" type="Node3D" parent="."]
+script = ExtResource("4_world")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("5_hud")
+
+[node name="Sfx" type="Node" parent="."]
+script = ExtResource("6_sfx")

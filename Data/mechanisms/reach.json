@@ -1,0 +1,20 @@
+{
+  "id": "reach",
+  "name": "传声筒",
+  "proverb": "它让远处的鬼也听得见——就是听不太清。",
+  "role": "独立机关 · 延长鬼的射程",
+  "cost": 12,
+  "effect": "reach",
+  "range_mult": 1.55,
+  "effect_radius": 5.0,
+  "push_period": 3.0,
+  "energy_per_push": 1.0,
+  "reach": 0.2,
+  "head_radius": 0.1,
+  "geometry": {
+    "base": [0.6, 0.62, 0.6],
+    "rod_radius": 0.08,
+    "color": "#9ad9c9",
+    "slot_color": "#d8fff4"
+  }
+}

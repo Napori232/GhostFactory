@@ -1,0 +1,20 @@
+{
+  "id": "amp",
+  "name": "共鸣腔",
+  "proverb": "同一支曲子，塞进更大的屋子，就更响。",
+  "role": "独立机关 · 放大鬼的振幅",
+  "cost": 12,
+  "effect": "amp",
+  "amplitude_mult": 1.45,
+  "effect_radius": 4.5,
+  "push_period": 3.0,
+  "energy_per_push": 1.0,
+  "reach": 0.2,
+  "head_radius": 0.1,
+  "geometry": {
+    "base": [0.72, 0.5, 0.72],
+    "rod_radius": 0.09,
+    "color": "#d98fb8",
+    "slot_color": "#ffd0e8"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "hand",
+  "name": "搬运手",
+  "proverb": "它不生产鬼能，只是把晶挪个地方——顺手抽走一点。",
+  "role": "自动化 · 自动换晶",
+  "cost": 8,
+  "service_radius": 1.7,
+  "crystal_radius": 2.6,
+  "swap_period": 2.5,
+  "drain": 1.0,
+  "geometry": {
+    "base": [0.66, 0.24, 0.66],
+    "arm": 0.46,
+    "color": "#8fb7c9",
+    "claw_color": "#5be0c0"
+  }
+}

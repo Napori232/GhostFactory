@@ -1,0 +1,16 @@
+# Godot
+.godot/
+*.translation
+export.cfg
+export_presets.cfg
+*.import.bak
+
+# 本地生成物
+_shots/
+_acl-recovery/
+_newtest/
+_wtest.txt
+_test_save*.json
+
+# 最初的空骨架（未继承沙箱写入授权，已作废；见 ghost-factory/SUPERSEDED.md）
+ghost-factory/

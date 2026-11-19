@@ -1,0 +1,13 @@
+{
+  "id": "crystal",
+  "name": "鬼晶",
+  "proverb": "装的是鬼能，壳留下。",
+  "role": "容器 · 一次充能 2 单位",
+  "cost": 3,
+  "capacity": 5,
+  "geometry": {
+    "radius": 0.22,
+    "height": 0.46,
+    "color": "#4fe0c4"
+  }
+}

@@ -1,0 +1,2 @@
+# 误建目录的占位。真正的 SimGrid 在 res://Code/Core/SimGrid.gd。
+# 本目录已被 .gdignore 排除，可手动删除。

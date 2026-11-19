@@ -1,0 +1,38 @@
+{
+  "id": "anchor",
+  "name": "锚鬼",
+  "proverb": "一台机关扶不住它。它要两只手，才肯站直一次。",
+  "role": "被动 · 双支撑阈值 · 巨振幅",
+  "cost": 20,
+  "kind": "multi",
+  "geometry": {
+    "style": "anchor",
+    "body": [0.86, 0.94, 0.72],
+    "color": "#8fa6c9",
+    "glow": "#c8dcff"
+  },
+  "tilt": {
+    "rest_angle": 0.74,
+    "stand_angle": 0.1,
+    "hysteresis": 0.08,
+    "gravity": 6.2,
+    "stop_stiffness": 8.6,
+    "damping": 3.6,
+    "inertia": 1.4,
+    "contacts_required": 2
+  },
+  "contact": {
+    "foot_offset": 0.46,
+    "body_offset": 0.0,
+    "foot_radius": 0.2,
+    "body_radius": 0.4,
+    "topple_factor": 1.4
+  },
+  "pulse": {
+    "amplitude": 2.3,
+    "period": 2.0,
+    "range": 6.5,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

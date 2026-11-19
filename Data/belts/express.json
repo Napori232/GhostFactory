@@ -1,0 +1,13 @@
+{
+  "id": "express",
+  "name": "快带",
+  "proverb": "花两倍的钱，买两倍的时间。",
+  "role": "物流 · 双速双位",
+  "cost": 8,
+  "speed": 2.2,
+  "capacity": 2,
+  "geometry": {
+    "color": "#5c6f86",
+    "stripe": "#ffd88a"
+  }
+}

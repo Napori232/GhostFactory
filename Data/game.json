@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "comment": "全局调参。玩法数值只放这里，代码里不写死。",
+  "tick_rate": 20,
+  "cell_size": 1.0,
+  "wave_speed": 6.0,
+  "damage_line": 0.25,
+  "clear_line": 1.45,
+  "dps_scale": 60.0,
+  "heat_sample_hz": 5.0,
+  "starting_budget": 80,
+  "resonance_threshold": 3.0,
+  "resonance_damage": 22.0,
+  "resonance_radius": 6.0,
+  "resonance_cooldown": 7.0,
+  "resonance_decay": 0.4,
+  "resonance_charge_amount": 2.0,
+  "effect_amp_cap": 2.2,
+  "effect_range_cap": 2.4,
+  "save_version": 1
+}

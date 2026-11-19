@@ -1,0 +1,13 @@
+{
+  "id": "belt",
+  "name": "传送带",
+  "proverb": "它不生产鬼能。它只是把鬼能该在的地方，变成它现在在的地方。",
+  "role": "物流 · 一格一格送",
+  "cost": 4,
+  "speed": 1.0,
+  "capacity": 1,
+  "geometry": {
+    "color": "#6d7f96",
+    "stripe": "#a8e6ff"
+  }
+}

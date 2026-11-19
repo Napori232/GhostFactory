@@ -1,0 +1,66 @@
+{
+  "id": "02",
+  "name": "第二夜 · 走廊",
+  "subtitle": "一条窄道 · 两头来客",
+  "next_level": "03",
+  "start_zoom": 2,
+  "grid": { "w": 15, "h": 9 },
+  "buildable": { "x": 1, "y": 3, "w": 13, "h": 3 },
+  "center_radius": 1.6,
+  "spawn_radius": 8.5,
+  "max_breaches": 10,
+  "budget": 100,
+  "unlocks": ["waver", "swing", "pusher", "hand", "crystal"],
+  "initial": [
+    { "kind": "ghost", "type": "waver", "cell": [4, 4], "facing": 0 }
+  ],
+  "initial_crystals": [
+    { "cell": [6, 4], "charge": 5 },
+    { "cell": [8, 4], "charge": 5 },
+    { "cell": [9, 4], "charge": 0 }
+  ],
+  "hints": [
+    { "when": "no_mechanism", "text": "走廊只有三格宽。机关必须贴着鬼的脚，绕不了后。" },
+    { "when": "no_power", "text": "点地上的充能鬼晶，再点机关，把晶插进槽里。" },
+    { "when": "swing_available", "text": "摆臂鬼在这条窄道里最好用：两只鬼摆成一条线，场会沿着走廊叠起来。" },
+    { "when": "resonance", "text": "窄道里三只同频鬼能踩在同一拍上——共振波段会一次性扫过整条走廊。" },
+    { "when": "ghost_idle", "text": "鬼立正才会发脉冲。先把它顶直。" },
+    { "when": "default", "text": "窄道的两头是主要来向；热力图被截断的地方，就是防守的空洞。" }
+  ],
+  "waves": [
+    {
+      "prep": 30.0,
+      "groups": [
+        { "count": 3, "interval": 2.2, "center_deg": 180, "arc_deg": 0, "hp": 45, "speed": 0.55 },
+        { "count": 2, "interval": 1.6, "center_deg": 0, "arc_deg": 0, "hp": 24, "speed": 0.95 }
+      ]
+    },
+    {
+      "prep": 25.0,
+      "groups": [
+        { "count": 4, "interval": 2.0, "center_deg": 180, "arc_deg": 30, "hp": 55, "speed": 0.55 },
+        { "count": 2, "interval": 2.5, "center_deg": 0, "arc_deg": 0, "hp": 110, "speed": 0.45, "armor": 0.5 }
+      ]
+    },
+    {
+      "prep": 25.0,
+      "groups": [
+        { "count": 7, "interval": 1.3, "center_deg": 0, "arc_deg": 360, "hp": 22, "speed": 0.95 },
+        { "count": 2, "interval": 2.0, "center_deg": 90, "arc_deg": 0, "hp": 60, "speed": 0.55 }
+      ]
+    },
+    {
+      "prep": 25.0,
+      "groups": [
+        { "count": 1, "interval": 1.0, "center_deg": 0, "arc_deg": 0, "hp": 280, "speed": 0.17, "armor": 0.2, "boss": true },
+        { "count": 5, "interval": 1.4, "center_deg": 0, "arc_deg": 360, "hp": 22, "speed": 0.95 }
+      ]
+    }
+  ],
+  "rewards": [
+    { "budget": 20 },
+    { "budget": 22 },
+    { "budget": 24 },
+    { "budget": 12 }
+  ]
+}

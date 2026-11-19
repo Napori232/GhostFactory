@@ -1,0 +1,19 @@
+{
+  "id": "arm",
+  "name": "装卸臂",
+  "proverb": "带子只往前。它负责把东西放上去，也负责把东西拿下来。",
+  "role": "物流 · 带面 / 机关 / 地面四向搬运",
+  "cost": 10,
+  "source": "belt",
+  "service_radius": 3.2,
+  "crystal_radius": 2.6,
+  "belt_radius": 2.1,
+  "swap_period": 1.1,
+  "drain": 1.0,
+  "geometry": {
+    "base": [0.7, 0.26, 0.7],
+    "arm": 0.58,
+    "color": "#b0a08c",
+    "claw_color": "#ffd88a"
+  }
+}

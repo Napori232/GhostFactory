@@ -1,0 +1,20 @@
+{
+  "id": "tuner",
+  "name": "节拍机关",
+  "proverb": "它不推任何东西。它只是让旁边的东西，改成同一个拍子。",
+  "role": "独立机关 · 改写鬼的周期",
+  "cost": 14,
+  "effect": "tune",
+  "target_period": 2.0,
+  "effect_radius": 5.5,
+  "push_period": 2.4,
+  "energy_per_push": 1.0,
+  "reach": 0.2,
+  "head_radius": 0.1,
+  "geometry": {
+    "base": [0.66, 0.42, 0.66],
+    "rod_radius": 0.07,
+    "color": "#7fb8d9",
+    "slot_color": "#5be0c0"
+  }
+}

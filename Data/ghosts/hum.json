@@ -1,0 +1,36 @@
+{
+  "id": "hum",
+  "name": "低鸣鬼",
+  "proverb": "它响得又密又小，像在给别的东西上发条。",
+  "role": "被动 · 低阈值 · 鬼能泵",
+  "cost": 12,
+  "geometry": {
+    "style": "drum",
+    "body": [0.7, 0.78, 0.56],
+    "color": "#9ee6b8",
+    "glow": "#d8ffe8"
+  },
+  "tilt": {
+    "rest_angle": 0.5,
+    "stand_angle": 0.14,
+    "hysteresis": 0.1,
+    "gravity": 4.2,
+    "stop_stiffness": 7.0,
+    "damping": 3.0,
+    "inertia": 0.9
+  },
+  "contact": {
+    "foot_offset": 0.4,
+    "body_offset": 0.0,
+    "foot_radius": 0.17,
+    "body_radius": 0.3,
+    "topple_factor": 1.15
+  },
+  "pulse": {
+    "amplitude": 0.7,
+    "period": 1.4,
+    "range": 4.0,
+    "charges_per_pulse": 2,
+    "charge_amount": 3.0
+  }
+}

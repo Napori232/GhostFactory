@@ -1,0 +1,46 @@
+{
+  "id": "hammer",
+  "name": "锤鬼",
+  "proverb": "它站着不出声。被推倒的那一下，才砸出声音。",
+  "role": "被动 · 倾倒触发 · 砸向邻格",
+  "cost": 12,
+  "kind": "topple",
+  "geometry": {
+    "style": "hammer",
+    "body": [0.48, 1.34, 0.48],
+    "color": "#c8a97e",
+    "glow": "#ffe0a8"
+  },
+  "tilt": {
+    "rest_angle": 0.78,
+    "stand_angle": 0.2,
+    "hysteresis": 0.1,
+    "gravity": 6.0,
+    "stop_stiffness": 4.5,
+    "damping": 2.0,
+    "inertia": 1.2
+  },
+  "contact": {
+    "foot_offset": 0.42,
+    "body_offset": 0.0,
+    "foot_radius": 0.17,
+    "body_radius": 0.32,
+    "topple_factor": 1.35
+  },
+  "link": {
+    "strike_torque": 4.2,
+    "cooldown": 1.2,
+    "pulse_on_strike": true
+  },
+  "topple": {
+    "topple_angle": 1.18,
+    "rearm_angle": 0.45
+  },
+  "pulse": {
+    "amplitude": 1.35,
+    "period": 1.6,
+    "range": 4.5,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "relay",
+  "name": "接力鬼",
+  "proverb": "它不站，也不顶。它只是在被扫过的地方，再响一次。",
+  "role": "被动 · 脉冲触发 · 中继",
+  "cost": 9,
+  "kind": "relay",
+  "geometry": {
+    "style": "antenna",
+    "body": [0.34, 1.34, 0.34],
+    "color": "#b6a0ff",
+    "glow": "#e6dcff"
+  },
+  "tilt": {
+    "rest_angle": 0.6,
+    "stand_angle": 0.2,
+    "hysteresis": 0.1,
+    "gravity": 5.0,
+    "stop_stiffness": 8.0,
+    "damping": 3.0,
+    "inertia": 1.0
+  },
+  "contact": {
+    "foot_offset": 0.4,
+    "body_offset": 0.0,
+    "foot_radius": 0.16,
+    "body_radius": 0.26,
+    "topple_factor": 1.0
+  },
+  "pulse": {
+    "amplitude": 0.95,
+    "period": 2.0,
+    "range": 4.5,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  },
+  "relay": {
+    "delay": 0.12,
+    "cooldown": 0.9
+  }
+}

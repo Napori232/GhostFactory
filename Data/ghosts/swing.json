@@ -1,0 +1,36 @@
+{
+  "id": "swing",
+  "name": "摆臂鬼",
+  "proverb": "它和邻居踩同一个拍子——摆在哪里，比摆几只更重要。",
+  "role": "被动 · 力阈值 · 同频",
+  "cost": 14,
+  "geometry": {
+    "style": "swing",
+    "body": [0.5, 1.28, 0.4],
+    "color": "#ffb86b",
+    "glow": "#ffe2b8"
+  },
+  "tilt": {
+    "rest_angle": 0.72,
+    "stand_angle": 0.11,
+    "hysteresis": 0.09,
+    "gravity": 4.6,
+    "stop_stiffness": 7.5,
+    "damping": 2.6,
+    "inertia": 1.15
+  },
+  "contact": {
+    "foot_offset": 0.40,
+    "body_offset": 0.0,
+    "foot_radius": 0.15,
+    "body_radius": 0.26,
+    "topple_factor": 1.1
+  },
+  "pulse": {
+    "amplitude": 1.25,
+    "period": 2.0,
+    "range": 4.5,
+    "charges_per_pulse": 1,
+    "charge_amount": 2.0
+  }
+}
